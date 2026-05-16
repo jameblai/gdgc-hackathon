@@ -8,11 +8,10 @@ import { ListingDetail } from "@/components/listings/listing-detail";
 import { ListingPhotoGrid } from "@/components/listings/listing-photo-grid";
 import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Typography } from "@/components/ui/typography";
 import { validateRequest } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { listingPhotos, listings as listingsTable } from "@/lib/db/schema";
+import { cn } from "@/lib/utils";
 
 export interface ListingPageProps {
   params: Promise<{
@@ -41,21 +40,18 @@ export default async function ListingPage({ params }: ListingPageProps) {
   const isOwner = user?.id === listing.userId;
 
   return (
-    <Container className="max-w-none px-0">
-      <main>
-        <header className="flex h-14 items-center gap-2 border-b px-4 md:hidden">
-          <SidebarTrigger />
-          <Typography variant="label">Listings</Typography>
-        </header>
-
-        <div className="grid gap-6 p-4 md:p-6 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_420px]">
+    <Container>
+      <main className="py-6 md:py-10">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_420px]">
           <section className="space-y-4">
             <div>
               <Link
-                className={buttonVariants({
-                  className: "px-0",
-                  variant: "link",
-                })}
+                className={cn(
+                  buttonVariants({
+                    className: "px-0",
+                    variant: "link",
+                  }),
+                )}
                 href="/listings"
               >
                 <ArrowLeftIcon />
@@ -71,7 +67,12 @@ export default async function ListingPage({ params }: ListingPageProps) {
             {isOwner ? (
               <div className="bg-card space-y-2 rounded-lg border p-5">
                 <Link
-                  className={buttonVariants({ className: "w-full", variant: "outline" })}
+                  className={cn(
+                    buttonVariants({
+                      variant: "outline",
+                      className: "w-full",
+                    }),
+                  )}
                   href={`/listings/${listing.id}/edit`}
                 >
                   <PencilIcon />

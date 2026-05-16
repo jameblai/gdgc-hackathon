@@ -3,7 +3,6 @@ import { notFound, redirect } from "next/navigation";
 
 import { ListingForm } from "@/components/listings/listing-form";
 import { Container } from "@/components/ui/container";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Typography } from "@/components/ui/typography";
 import { validateRequest } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -41,12 +40,7 @@ export default async function EditListingPage({
   return (
     <Container className="max-w-none px-0">
       <main>
-        <header className="flex h-14 items-center gap-2 border-b px-4 md:hidden">
-          <SidebarTrigger />
-          <Typography variant="label">Edit listing</Typography>
-        </header>
-
-        <div className="mx-auto max-w-3xl p-4 md:p-6">
+        <div className="mx-auto max-w-3xl px-4 py-6 md:py-10">
           <div className="mb-6">
             <Typography variant="h1">Edit listing</Typography>
             <Typography className="mt-1" variant="muted">
