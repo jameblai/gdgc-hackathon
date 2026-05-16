@@ -1,4 +1,3 @@
-
 // calls the page with all the info about the registration page
 import RegistrationPage from "./register";
 
