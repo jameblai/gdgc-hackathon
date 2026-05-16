@@ -1,5 +1,7 @@
 import { Claim } from "@/components/claims/claim";
 import { Button } from "@/components/ui/button";
+import { Page } from "@/components/ui/page";
+import { Typography } from "@/components/ui/typography";
 import { db } from "@/lib/db";
 
 export default async function AttestationsPage() {
@@ -10,17 +12,16 @@ export default async function AttestationsPage() {
   });
 
   return (
-    <main className="container mx-auto flex min-h-screen flex-col gap-8 px-4 py-4 md:py-8 lg:py-16">
+    <Page className="gap-8 py-4 md:py-8 lg:py-16">
       <div className="flex flex-1 flex-col gap-8">
         <section className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight">
-            Suggested Claims
-          </h1>
-          <p className="text-foreground/80">
+          <Typography variant="h1">Suggested Claims</Typography>
+          <Typography variant="lead">
             We found these people you may know in your circle. Create
             attestations to verify their claims.
-          </p>
+          </Typography>
         </section>
+
         <section className="space-y-6">
           {claims.map((claim) => (
             <Claim key={claim.id} claim={claim} />
@@ -33,6 +34,6 @@ export default async function AttestationsPage() {
           Continue
         </Button>
       </section>
-    </main>
+    </Page>
   );
 }
