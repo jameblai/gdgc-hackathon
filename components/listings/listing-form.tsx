@@ -341,7 +341,12 @@ function ListingForm(props: ListingFormProps) {
 
       {actionError ? <FieldError>{actionError}</FieldError> : null}
 
-      <Button className="w-full" disabled={isPending || isUploading} size="lg" type="submit">
+      <Button
+        className="w-full"
+        disabled={isPending || isUploading}
+        size="lg"
+        type="submit"
+      >
         {isPending
           ? "Saving..."
           : props.mode === "create"

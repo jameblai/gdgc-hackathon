@@ -17,12 +17,12 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 
-
 // textboxes default
 function Input({ placeholder, value, onChange, type = "text" }) {
   const [focused, setFocused] = useState(false);
   return (
-    <input  className = "tracking-tight"
+    <input
+      className="tracking-tight"
       type={type}
       placeholder={placeholder}
       value={value}
@@ -50,7 +50,8 @@ function Input({ placeholder, value, onChange, type = "text" }) {
 function Label({ children, sub }) {
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
-      <span className = "tracking-tight"
+      <span
+        className="tracking-tight"
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
@@ -67,7 +68,9 @@ function Label({ children, sub }) {
 // orienting the textboxes and labels in a column, with spacing
 function FieldGroup({ children, style }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "6px", ...style }}>
+    <div
+      style={{ display: "flex", flexDirection: "column", gap: "6px", ...style }}
+    >
       {children}
     </div>
   );
@@ -75,11 +78,11 @@ function FieldGroup({ children, style }) {
 
 // regestry form
 export default function LoginPage() {
-  const [username, setUsername]   = useState("");
-  const [password, setPassword]   = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
-    <div 
+    <div
       style={{
         minHeight: "100vh",
         background: "#F5F5F5",
@@ -90,14 +93,13 @@ export default function LoginPage() {
         boxSizing: "border-box",
       }}
     >
-
       {/* Card */}
       <div
         style={{
           width: "70%",
           maxWidth: "900px",
           minWidth: "320px",
-          background:"#CCCCCC",
+          background: "#CCCCCC",
           backdropFilter: "blur(20px)",
           borderRadius: "24px",
           border: "2px solid #1A1A1A",
@@ -110,69 +112,105 @@ export default function LoginPage() {
         {/* Top glow */}
         <div
           style={{
-            position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)",
-            width: "60%", height: "2px",
-            background: "linear-gradient(90deg, transparent, rgba(120,180,255,0.8), transparent)",
+            position: "absolute",
+            top: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "60%",
+            height: "2px",
+            background:
+              "linear-gradient(90deg, transparent, rgba(120,180,255,0.8), transparent)",
           }}
         />
-
-]
-
-        {/* Heading */}
+        ]{/* Heading */}
         <div style={{ textAlign: "center", padding: "16px 40px 28px" }}>
-          <h1 className = "tracking-tight"
+          <h1
+            className="tracking-tight"
             style={{
               margin: "0 0 10px",
               fontSize: "clamp(20px, 3vw, 28px)",
-              fontWeight: 700, color: "#1A1A1A",
-              letterSpacing: "-0.02em", lineHeight: 1.2,
+              fontWeight: 700,
+              color: "#1A1A1A",
+              letterSpacing: "-0.02em",
+              lineHeight: 1.2,
             }}
           >
             Log into your account:
           </h1>
-          <p className = "tracking-tight"
+          <p
+            className="tracking-tight"
             style={{
               margin: 0,
               fontSize: "clamp(13px, 1.5vw, 15px)",
               color: "#1A1A1A",
-              lineHeight: 1.6, maxWidth: "520px", marginInline: "auto",
+              lineHeight: 1.6,
+              maxWidth: "520px",
+              marginInline: "auto",
             }}
           >
             Input your username and password to log in.
           </p>
         </div>
-
         {/* Divider */}
         <div
           style={{
-            height: "2px", background: "#1A1A1A",
-            marginInline: "40px", marginBottom: "32px",
+            height: "2px",
+            background: "#1A1A1A",
+            marginInline: "40px",
+            marginBottom: "32px",
           }}
         />
-
         {/* Form */}
-        <div style={{ padding: "0 40px", display: "flex", flexDirection: "column", gap: "24px" }}>
-
+        <div
+          style={{
+            padding: "0 40px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+          }}
+        >
           {/* Username */}
           <FieldGroup>
-            <Label className = "tracking-tight">Username:</Label>
-            <Input className = "tracking-tight" placeholder="Username" value={username} onChange={setUsername} />
+            <Label className="tracking-tight">Username:</Label>
+            <Input
+              className="tracking-tight"
+              placeholder="Username"
+              value={username}
+              onChange={setUsername}
+            />
           </FieldGroup>
 
           {/* Password */}
           <FieldGroup>
-            <Label className = "tracking-tight">Password:</Label>
-            <Input className = "tracking-tight" placeholder="Password" type="password" value={password} onChange={setPassword} />
+            <Label className="tracking-tight">Password:</Label>
+            <Input
+              className="tracking-tight"
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={setPassword}
+            />
           </FieldGroup>
 
           {/* Log in */}
-          <div style={{ display: "flex", justifyContent: "center", paddingTop: "8px" }}>
-            <button className = "tracking-tight"
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              paddingTop: "8px",
+            }}
+          >
+            <button
+              className="tracking-tight"
               style={{
                 padding: "14px 56px",
                 background: "#1A1A1A",
-                color: "#F5F5F5", border: "none", borderRadius: "10px",
-                fontSize: "16px", fontWeight: 700, letterSpacing: "0.04em",
+                color: "#F5F5F5",
+                border: "none",
+                borderRadius: "10px",
+                fontSize: "16px",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
                 cursor: "pointer",
                 transition: "all 0.2s ease",
               }}
@@ -180,7 +218,6 @@ export default function LoginPage() {
               Register
             </button>
           </div>
-
         </div>
       </div>
     </div>

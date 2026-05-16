@@ -1,4 +1,3 @@
-
 // calls the page with all the info about the login page
 import LoginPage from "./login";
 
