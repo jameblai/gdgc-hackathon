@@ -119,6 +119,6 @@ export const logoutAction = actionClient.action(
       sessionCookie.attributes,
     );
 
-    redirect("/features/login");
+    redirect("/login");
   },
 );

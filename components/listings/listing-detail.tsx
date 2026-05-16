@@ -46,8 +46,7 @@ function ListingDetail({ listing }: { listing: ListingWithUserAndPhotos }) {
 
         <Separator />
 
-        <section className="space-y-2">
-          <Typography variant="h3">Description</Typography>
+        <section>
           <Typography className="leading-relaxed" variant="small">
             {listing.description}
           </Typography>
@@ -55,8 +54,7 @@ function ListingDetail({ listing }: { listing: ListingWithUserAndPhotos }) {
 
         <Separator />
 
-        <section className="space-y-2">
-          <Typography variant="h3">Seller Information</Typography>
+        <section>
           <div className="flex items-center gap-2">
             <Avatar size="lg">
               {listing.user.avatarUrl ? (
@@ -67,7 +65,7 @@ function ListingDetail({ listing }: { listing: ListingWithUserAndPhotos }) {
               ) : null}
               <AvatarFallback>{getInitials(listing.user.name)}</AvatarFallback>
             </Avatar>
-            <Typography variant="label">{listing.user.name}</Typography>
+            <Typography>{listing.user.name}</Typography>
           </div>
         </section>
       </div>

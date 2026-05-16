@@ -1,11 +1,14 @@
-import { desc, eq } from "drizzle-orm";
+import Link from "next/link";
+import { PlusIcon } from "lucide-react";
 
 import { ListingCard } from "@/components/listings/listing-card";
+import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 import { Typography } from "@/components/ui/typography";
 import { db } from "@/lib/db";
 import { listingPhotos, listings as listingsTable } from "@/lib/db/schema";
+import { desc, eq } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
 
@@ -22,14 +25,29 @@ export default async function ListingsPage() {
   });
 
   return (
-    <Container className="max-w-none px-0">
-      <main>
-        <header className="flex h-14 items-center gap-2 border-b px-4 md:hidden">
-          <SidebarTrigger />
-          <Typography variant="label">Listings</Typography>
-        </header>
+    <Container>
+      <main className="space-y-8 py-6 md:py-10">
+        <div className="space-y-8">
+          <section className="flex items-start justify-between gap-4">
+            <div className="space-y-1">
+              <Typography variant="h1">Listings</Typography>
+              <Typography variant="lead">
+                Browse active marketplace listings or create your own.
+              </Typography>
+            </div>
+            <Link
+              className={cn(
+                buttonVariants({
+                  variant: "default",
+                }),
+              )}
+              href="/listings/new"
+            >
+              <PlusIcon />
+              New Listing
+            </Link>
+          </section>
 
-        <div className="p-4 md:p-6">
           <section className="space-y-4">
             {listings.length > 0 ? (
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

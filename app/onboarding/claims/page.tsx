@@ -13,7 +13,7 @@ export default async function AttestationsPage() {
 
   return (
     <Container>
-      <main className="space-y-8 py-4 md:py-8 lg:py-16">
+      <main className="space-y-8 py-6 md:py-10">
         <div className="space-y-8">
           <section className="space-y-1">
             <Typography variant="h1">Suggested Claims</Typography>
