@@ -269,6 +269,7 @@ export const listingPhotos = pgTable(
       .notNull()
       .references(() => listings.id, { onDelete: "cascade" }),
     url: text("url").notNull(),
+    fileKey: text("file_key"),
     sortOrder: integer("sort_order").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()

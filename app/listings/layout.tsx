@@ -1,5 +1,7 @@
 import { PlusIcon } from "lucide-react";
+import Link from "next/link";
 
+import { buttonVariants } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -8,7 +10,6 @@ import {
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
@@ -39,12 +40,18 @@ export default function ListingsLayout({ children }: ListingsLayoutProps) {
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton tooltip="New Listing" variant="outline">
+                  <Link
+                    className={buttonVariants({
+                      className:
+                        "group/menu-button h-8 w-full justify-start gap-2 p-2 text-sm group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2!",
+                    })}
+                    href="/listings/new"
+                  >
                     <PlusIcon />
                     <span className="group-data-[collapsible=icon]:sr-only">
                       New Listing
                     </span>
-                  </SidebarMenuButton>
+                  </Link>
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>

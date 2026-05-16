@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
 import "./globals.css";
+import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +25,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       className={cn("h-full", "antialiased", "font-sans", dmSans.variable)}
     >
       <body className="flex min-h-full flex-col">
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>

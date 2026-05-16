@@ -31,28 +31,30 @@ export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
   return (
     <Field>
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            className = "tracking-tight"
-            variant="outline"
-            id="date"
-            type="button" // Prevents accidental form submissions
-            style={{
-              width: "100%",
-              justifyContent: "flex-start",
-              fontWeight: 400,
-              background: "rgb(255, 255, 255)",
-              border: "2px solid rgb(0, 0, 0)",
-              color: date ? "#000000" : "rgb(0, 0, 0)",
-              borderRadius: "8px",
-              padding: "11px 14px",
-              fontSize: "14px",
-              cursor: "pointer",
-            }}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
-            {date ? format(date, "PPP") : <span>Select date</span>}
-          </Button>
+        <PopoverTrigger
+          render={
+            <Button
+              className="tracking-tight"
+              id="date"
+              style={{
+                width: "100%",
+                justifyContent: "flex-start",
+                fontWeight: 400,
+                background: "rgb(255, 255, 255)",
+                border: "2px solid rgb(0, 0, 0)",
+                color: date ? "#000000" : "rgb(0, 0, 0)",
+                borderRadius: "8px",
+                padding: "11px 14px",
+                fontSize: "14px",
+                cursor: "pointer",
+              }}
+              type="button"
+              variant="outline"
+            />
+          }
+        >
+          <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
+          {date ? format(date, "PPP") : <span>Select date</span>}
         </PopoverTrigger>
 
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
@@ -86,7 +88,8 @@ function Input({
 }) {
   const [focused, setFocused] = useState(false);
   return (
-    <input className = "tracking-tight"
+    <input
+      className="tracking-tight"
       type={type}
       placeholder={placeholder}
       value={value}
@@ -120,7 +123,8 @@ function Label({
 }) {
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
-      <span className = "tracking-tight"
+      <span
+        className="tracking-tight"
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
@@ -170,7 +174,8 @@ export default function RegistrationPage() {
   };
 
   return (
-    <div className = "tracking-tight"
+    <div
+      className="tracking-tight"
       style={{
         minHeight: "100vh",
         background: "rgb(255,255,255)",
@@ -181,14 +186,13 @@ export default function RegistrationPage() {
         boxSizing: "border-box",
       }}
     >
-
       {/* Card */}
       <div
         style={{
           width: "70%",
           maxWidth: "900px",
           minWidth: "320px",
-          background:"#CCCCCC",
+          background: "#CCCCCC",
           backdropFilter: "blur(20px)",
           borderRadius: "24px",
           border: "2px solid rgb(0, 0, 0)",
@@ -462,7 +466,8 @@ export default function RegistrationPage() {
               paddingTop: "8px",
             }}
           >
-            <button className = "tracking-tight"
+            <button
+              className="tracking-tight"
               style={{
                 padding: "14px 56px",
                 background: "rgb(0, 0, 0)",
