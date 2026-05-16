@@ -1,6 +1,10 @@
 "use client";
  
 import { useState, useRef, useEffect } from "react";
+import { io, Socket } from "socket.io-client";
+
+
+
  
 type Status = "online" | "away" | "offline";
  
@@ -79,7 +83,7 @@ function StatusDot({ status }: { status: Status }) {
     <div style={{
       width: 9, height: 9, borderRadius: "50%",
       background: colors[status],
-      border: "2px solid #161618",
+      border: "2px solid #ffffff",
       position: "absolute", bottom: 0, right: 0,
     }} />
   );
@@ -97,6 +101,9 @@ export function ChatPage() {
  
   const contact  = CONTACTS.find((c) => c.id === activeId) ?? CONTACTS[0];
   const messages: Message[] = conversations[activeId] ?? [];
+  const socketRef = useRef<Socket | null>(null);
+
+  
  
   const filtered = CONTACTS.filter((c) =>
     c.name.toLowerCase().includes(search.toLowerCase())
@@ -107,13 +114,49 @@ export function ChatPage() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, activeId]);
+  // Connect to socket server on mount
+useEffect(() => {
+  socketRef.current = io("http://localhost:4000");
+
+   socketRef.current.on("connect", () => {
+    console.log("connected:", socketRef.current?.id);
+  });
+
+  socketRef.current.on("connect_error", (err) => {
+    console.log("connection error:", err.message);
+  });
+
+  socketRef.current.on("message", (msg: Message) => {
+    setConversations((prev) => ({
+      ...prev,
+      [activeId]: [...(prev[activeId] ?? []), msg],
+    }));
+  });
+
+  return () => {
+    socketRef.current?.disconnect();
+  };
+}, []);
+
+// Join room when switching conversations
+useEffect(() => {
+  socketRef.current?.emit("join", activeId);
+}, [activeId]);
+  
  
   const handleSend = () => {
     const text = input.trim();
     if (!text) return;
     setInput("");
     const id = nextId.current++;
+
     const msg: Message = { id, from: "me", text, time: formatTime() };
+
+    socketRef.current?.emit("message", {
+    conversationId: activeId,
+    message: msg,
+  });
+
     setConversations((prev) => ({
       ...prev,
       [activeId]: [...(prev[activeId] ?? []), msg],
@@ -143,25 +186,25 @@ export function ChatPage() {
     <div style={{
       height: "100vh", width: "100%", display: "flex",
       fontFamily: "'DM Sans', system-ui, sans-serif",
-      background: "#111113", color: "#e8e2d9",
+      background: "#F5F5F5", color: "#1A1A1A",
     }}>
  
       {/* ── Sidebar ── */}
       <div style={{
         width: 290, flexShrink: 0, display: "flex", flexDirection: "column",
-        borderRight: "1px solid #222225", background: "#161618",
+        borderRight: "1px solid #222225", background: "#ffffff",
       }}>
         {/* Sidebar header */}
         <div style={{ padding: "20px 16px 12px" }}>
-          <p style={{ fontSize: 19, fontWeight: 500, color: "#f0e8dc", marginBottom: 14, letterSpacing: "-0.02em" }}>
+          <p style={{ fontSize: 19, fontWeight: 500, color: "#0d0d0d", marginBottom: 14, letterSpacing: "-0.02em" }}>
             Chats
           </p>
           <div style={{
             display: "flex", alignItems: "center", gap: 8,
-            background: "#1e1e21", borderRadius: 10, padding: "8px 12px",
+            background: "#F5F5F5", borderRadius: 10, padding: "8px 12px",
             border: "1px solid #2a2a2d",
           }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2.2" strokeLinecap="round">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" strokeWidth="2.2" strokeLinecap="round">
               <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             <input
@@ -185,8 +228,8 @@ export function ChatPage() {
               style={{
                 display: "flex", alignItems: "center", gap: 11,
                 padding: "10px 16px", cursor: "pointer",
-                borderBottom: "1px solid #1c1c1f",
-                background: c.id === activeId ? "#252528" : "transparent",
+                borderBottom: "1px solid #ffffff",
+                background: c.id === activeId ? "#ffffff" : "transparent",
                 transition: "background 0.1s",
               }}
             >
@@ -196,12 +239,12 @@ export function ChatPage() {
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
-                  <span style={{ fontSize: 13.5, fontWeight: 500, color: "#f0e8dc" }}>{c.name}</span>
-                  <span style={{ fontSize: 10.5, color: "#555", flexShrink: 0, marginLeft: 6 }}>
+                  <span style={{ fontSize: 13.5, fontWeight: 500, color: "#000000" }}>{c.name}</span>
+                  <span style={{ fontSize: 10.5, color: "#000000", flexShrink: 0, marginLeft: 6 }}>
                     {lastMsgTime(c.id)}
                   </span>
                 </div>
-                <p style={{ fontSize: 12, color: "#666", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <p style={{ fontSize: 12, color: "#000000", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {lastMsg(c.id)}
                 </p>
               </div>
@@ -218,17 +261,17 @@ export function ChatPage() {
         <div style={{
           padding: "13px 20px", borderBottom: "1px solid #222225",
           display: "flex", alignItems: "center", gap: 11,
-          background: "#161618",
+          background: "#fafafc",
         }}>
           <div style={{ position: "relative" }}>
             <Avatar contact={contact} size={36} />
             <StatusDot status={contact.status} />
           </div>
           <div>
-            <p style={{ fontSize: 14.5, fontWeight: 500, color: "#f0e8dc", letterSpacing: "-0.01em" }}>
+            <p style={{ fontSize: 14.5, fontWeight: 500, color: "#1A1A1A", letterSpacing: "-0.01em" }}>
               {contact.name}
             </p>
-            <p style={{ fontSize: 11, color: contact.status === "online" ? "#4caf7d" : "#666" }}>
+            <p style={{ fontSize: 11, color: contact.status === "online" ? "#4caf7d" : "#1A1A1A" }}>
               {contact.status === "online" ? "Active now" : `Last seen ${contact.lastSeen}`}
             </p>
           </div>
@@ -242,7 +285,7 @@ export function ChatPage() {
           {messages.length === 0 && (
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, opacity: 0.35 }}>
               <Avatar contact={contact} size={54} />
-              <p style={{ fontSize: 13.5, color: "#888" }}>Start a conversation with {contact.name.split(" ")[0]}</p>
+              <p style={{ fontSize: 13.5, color: "#1A1A1A" }}>Start a conversation with {contact.name.split(" ")[0]}</p>
             </div>
           )}
  
@@ -277,15 +320,15 @@ export function ChatPage() {
                     borderRadius: isMe
                       ? (prevFrom === "me"   ? "18px 4px 4px 18px" : "18px 18px 4px 18px")
                       : (prevFrom === "them" ? "4px 18px 18px 4px" : "18px 18px 18px 4px"),
-                    background: isMe ? contact.color + "1a" : "#222225",
-                    border: isMe ? `1px solid ${contact.color}33` : "1px solid #2a2a2d",
-                    color: isMe ? "#f0e8dc" : "#d5cfc7",
+                    background: isMe ? contact.color + "1a" : "#7C4DFF",
+                    border: isMe ? `1px solid ${contact.color}33` : "1px solid #7C4DFF",
+                    color: isMe ? "#1A1A1A" : "#F5F5F5",
                     fontSize: 13.5, lineHeight: 1.6,
                   }}>
                     {msg.text}
-                  </div>
+                  </div>  
                   {showTime && (
-                    <span style={{ fontSize: 10, color: "#3e3e42", letterSpacing: "0.03em" }}>{msg.time}</span>
+                    <span style={{ fontSize: 10, color: "#353562", letterSpacing: "0.03em" }}>{msg.time}</span>
                   )}
                 </div>
               </div>
@@ -297,9 +340,9 @@ export function ChatPage() {
         <div style={{ padding: "10px 20px 16px", borderTop: "1px solid #222225" }}>
           <div style={{
             display: "flex", alignItems: "flex-end", gap: 9,
-            background: "#1a1a1d", borderRadius: 20,
+            background: "#F5F5F5", borderRadius: 20,
             padding: "9px 9px 9px 15px",
-            border: "1px solid #2a2a2d",
+            border: "1px solid #1A1A1A",
           }}>
             <textarea
               ref={inputRef}
@@ -310,7 +353,7 @@ export function ChatPage() {
               rows={1}
               style={{
                 flex: 1, resize: "none", border: "none", background: "transparent",
-                fontSize: 13.5, fontFamily: "inherit", color: "#e8e2d9",
+                fontSize: 13.5, fontFamily: "inherit", color: "#1A1A1A",
                 lineHeight: 1.55, maxHeight: 100, overflow: "auto", outline: "none",
               }}
               onInput={(e) => {
