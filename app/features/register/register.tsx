@@ -31,7 +31,6 @@ export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
   return (
     <Field>
       <Popover open={open} onOpenChange={setOpen}>
-<<<<<<< Updated upstream
         <PopoverTrigger
           render={
             <Button
@@ -56,30 +55,6 @@ export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
         >
           <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
           {date ? format(date, "PPP") : <span>Select date</span>}
-=======
-        <PopoverTrigger asChild>
-          <Button
-            class="text-foreground text-2xl font-bold tracking-tight"
-            variant="outline"
-            id="date"
-            type="button" // Prevents accidental form submissions
-            style={{
-              width: "100%",
-              justifyContent: "flex-start",
-              fontWeight: 400,
-              background: "rgb(255, 255, 255)",
-              border: "2px solid rgb(0, 0, 0)",
-              color: date ? "#000000" : "rgb(0, 0, 0)",
-              borderRadius: "8px",
-              padding: "11px 14px",
-              fontSize: "14px",
-              cursor: "pointer",
-            }}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
-            {date ? format(date, "PPP") : <span>Select date</span>}
-          </Button>
->>>>>>> Stashed changes
         </PopoverTrigger>
 
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
@@ -113,12 +88,8 @@ function Input({
 }) {
   const [focused, setFocused] = useState(false);
   return (
-<<<<<<< Updated upstream
     <input
       
-=======
-    <input class="text-foreground text-2xl font-bold tracking-tight"
->>>>>>> Stashed changes
       type={type}
       placeholder={placeholder}
       value={value}
@@ -152,12 +123,8 @@ function Label({
 }) {
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
-<<<<<<< Updated upstream
       <span
         
-=======
-      <span class="text-foreground text-2xl font-bold tracking-tight"
->>>>>>> Stashed changes
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
@@ -207,12 +174,8 @@ export default function RegistrationPage() {
   };
 
   return (
-<<<<<<< Updated upstream
     <div
       
-=======
-    <div class="text-foreground text-2xl font-bold tracking-tight"
->>>>>>> Stashed changes
       style={{
         minHeight: "100vh",
         background: "rgb(255,255,255)",
@@ -229,11 +192,7 @@ export default function RegistrationPage() {
           width: "70%",
           maxWidth: "700px",
           minWidth: "320px",
-<<<<<<< Updated upstream
           background: "#ffffff",
-=======
-          background:"#7C4DFF",
->>>>>>> Stashed changes
           backdropFilter: "blur(20px)",
           borderRadius: "24px",
           border: "1px solid rgb(0, 0, 0)",
@@ -366,23 +325,23 @@ export default function RegistrationPage() {
 
         {/* Heading */}
         <div style={{ textAlign: "center", padding: "16px 40px 28px" }}>
-          <h1 class="text-foreground text-2xl font-bold tracking-tight"
+          <h1
             style={{
               margin: "0 0 10px",
               fontSize: "clamp(20px, 3vw, 28px)",
               fontWeight: 700,
-              color: "#F5F5F5",
+              color: "#000000",
               letterSpacing: "-0.02em",
               lineHeight: 1.2,
             }}
           >
             Create your account:
           </h1>
-          <p class="text-foreground text-2xl font-bold tracking-tight"
+          <p
             style={{
               margin: 0,
               fontSize: "clamp(13px, 1.5vw, 15px)",
-              color: "#F5F5F5",
+              color: "rgb(0, 0, 0)",
               lineHeight: 1.6,
               maxWidth: "520px",
               marginInline: "auto",
@@ -393,18 +352,6 @@ export default function RegistrationPage() {
           </p>
         </div>
 
-<<<<<<< Updated upstream
-=======
-        {/* Divider */}
-        <div
-          style={{
-            height: "1px",
-            background: "F5F5F5",
-            marginInline: "40px",
-            marginBottom: "32px",
-          }}
-        />
->>>>>>> Stashed changes
 
         {/* Form */}
         <div
@@ -495,12 +442,8 @@ export default function RegistrationPage() {
               paddingTop: "8px",
             }}
           >
-<<<<<<< Updated upstream
             <button
               
-=======
-            <button class="text-foreground text-2xl font-bold tracking-tight"
->>>>>>> Stashed changes
               style={{
                 padding: "14px 56px",
                 background: "rgb(0, 0, 0)",
