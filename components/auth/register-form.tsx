@@ -142,7 +142,7 @@ function RegisterForm() {
 
           <p className="text-muted-foreground text-center text-sm">
             Already registered?{" "}
-            <Link className="text-foreground underline" href="/login">
+            <Link className="text-foreground underline" href="/features/login">
               Log in
             </Link>
           </p>

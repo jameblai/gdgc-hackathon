@@ -116,7 +116,7 @@ function LoginForm() {
 
           <p className="text-muted-foreground text-center text-sm">
             Need an account?{" "}
-            <Link className="text-foreground underline" href="/register">
+            <Link className="text-foreground underline" href="/features/register">
               Register
             </Link>
           </p>

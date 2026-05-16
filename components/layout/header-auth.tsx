@@ -29,7 +29,7 @@ export function HeaderAuth({ user }: { user: { name: string } | null }) {
                 variant: "ghost",
               }),
             )}
-            href="/login"
+            href="/features/login"
           >
             Log in
           </Link>
@@ -39,7 +39,7 @@ export function HeaderAuth({ user }: { user: { name: string } | null }) {
                 variant: "default",
               }),
             )}
-            href="/register"
+            href="/features/register"
           >
             Register
           </Link>

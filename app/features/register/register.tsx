@@ -34,14 +34,14 @@ export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
         <PopoverTrigger
           render={
             <Button
-              className="tracking-tight"
+              
               id="date"
               style={{
                 width: "100%",
                 justifyContent: "flex-start",
                 fontWeight: 400,
                 background: "rgb(255, 255, 255)",
-                border: "2px solid rgb(0, 0, 0)",
+                border: "1px solid rgb(0, 0, 0)",
                 color: date ? "#000000" : "rgb(0, 0, 0)",
                 borderRadius: "8px",
                 padding: "11px 14px",
@@ -89,7 +89,7 @@ function Input({
   const [focused, setFocused] = useState(false);
   return (
     <input
-      className="tracking-tight"
+      
       type={type}
       placeholder={placeholder}
       value={value}
@@ -100,7 +100,7 @@ function Input({
         width: "100%",
         padding: "11px 14px",
         borderRadius: "8px",
-        border: "2px solid rgb(0, 0, 0)",
+        border: "1px solid rgb(0, 0, 0)",
         background: "rgb(255, 255, 255)",
         color: "#000000",
         fontSize: "14px",
@@ -124,7 +124,7 @@ function Label({
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
       <span
-        className="tracking-tight"
+        
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
@@ -175,7 +175,7 @@ export default function RegistrationPage() {
 
   return (
     <div
-      className="tracking-tight"
+      
       style={{
         minHeight: "100vh",
         background: "rgb(255,255,255)",
@@ -190,31 +190,18 @@ export default function RegistrationPage() {
       <div
         style={{
           width: "70%",
-          maxWidth: "900px",
+          maxWidth: "700px",
           minWidth: "320px",
-          background: "#CCCCCC",
+          background: "#ffffff",
           backdropFilter: "blur(20px)",
           borderRadius: "24px",
-          border: "2px solid rgb(0, 0, 0)",
+          border: "1px solid rgb(0, 0, 0)",
           padding: "0 0 48px 0",
           position: "relative",
           zIndex: 1,
           overflow: "hidden",
         }}
       >
-        {/* Top glow */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "60%",
-            height: "2px",
-            background:
-              "linear-gradient(90deg, transparent, rgba(179, 179, 179, 0.8), transparent)",
-          }}
-        />
 
         {/* Profile photo */}
         <div
@@ -243,8 +230,6 @@ export default function RegistrationPage() {
                 ? `url(${photo}) center/cover`
                 : "radial-gradient(circle at 60% 35%, rgba(150, 150, 150, 1), rgba(150, 150, 150, 0.8))",
               border: "3px solid rgba(150, 150, 150, 0.6)",
-              boxShadow:
-                "0 4px 32px rgba(150, 150, 150, 0.4), 0 0 0 6px rgba(150, 150, 150, 0.2)",
               cursor: "pointer",
               display: "flex",
               flexDirection: "column",
@@ -269,7 +254,7 @@ export default function RegistrationPage() {
                   style={{
                     position: "absolute",
                     bottom: "14px",
-                    background: "rgba(71, 71, 71, 0.85)",
+                    background: "rgba(0,0,0)",
                     borderRadius: "50%",
                     width: "28px",
                     height: "28px",
@@ -367,15 +352,6 @@ export default function RegistrationPage() {
           </p>
         </div>
 
-        {/* Divider */}
-        <div
-          style={{
-            height: "1px",
-            background: "rgb(0, 0, 0)",
-            marginInline: "40px",
-            marginBottom: "32px",
-          }}
-        />
 
         {/* Form */}
         <div
@@ -467,7 +443,7 @@ export default function RegistrationPage() {
             }}
           >
             <button
-              className="tracking-tight"
+              
               style={{
                 padding: "14px 56px",
                 background: "rgb(0, 0, 0)",
@@ -484,6 +460,10 @@ export default function RegistrationPage() {
               Register
             </button>
           </div>
+          {/* login instead */}
+          <FieldGroup>
+            <p style ={{ textAlign: "center" }}>Already a user? <a href="/features/login" style ={{ color: "#0867da" }}>Login here</a></  p>
+          </FieldGroup>
         </div>
       </div>
     </div>

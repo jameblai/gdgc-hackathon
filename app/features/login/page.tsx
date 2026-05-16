@@ -22,19 +22,20 @@ function Input({ placeholder, value, onChange, type = "text" }) {
   const [focused, setFocused] = useState(false);
   return (
     <input
-      className="tracking-tight"
+      
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
+    
       style={{
         width: "100%",
         padding: "11px 14px",
         borderRadius: "8px",
         border: "1px solid #1A1A1A",
-        background: "#F5F5f5",
+        background: "#FFFFFF",
         color: "#4f4f4f",
         fontSize: "14px",
         outline: "none",
@@ -51,7 +52,7 @@ function Label({ children, sub }) {
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
       <span
-        className="tracking-tight"
+        
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
@@ -85,7 +86,7 @@ export default function LoginPage() {
     <div
       style={{
         minHeight: "100vh",
-        background: "#F5F5F5",
+        background: "#FFFFFF",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -97,35 +98,22 @@ export default function LoginPage() {
       <div
         style={{
           width: "70%",
-          maxWidth: "900px",
+          maxWidth: "500px",
           minWidth: "320px",
-          background: "#CCCCCC",
+          background: "#FFFFFF",
           backdropFilter: "blur(20px)",
           borderRadius: "24px",
-          border: "2px solid #1A1A1A",
+          border: "1px solid #1A1A1A",
           padding: "0 0 48px 0",
           position: "relative",
           zIndex: 1,
           overflow: "hidden",
         }}
       >
-        {/* Top glow */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "60%",
-            height: "2px",
-            background:
-              "linear-gradient(90deg, transparent, rgba(120,180,255,0.8), transparent)",
-          }}
-        />
-        ]{/* Heading */}
+        {/* Heading */}
         <div style={{ textAlign: "center", padding: "16px 40px 28px" }}>
-          <h1
-            className="tracking-tight"
+          <h1 className="py-6 md:py-10"
+            
             style={{
               margin: "0 0 10px",
               fontSize: "clamp(20px, 3vw, 28px)",
@@ -138,28 +126,19 @@ export default function LoginPage() {
             Log into your account:
           </h1>
           <p
-            className="tracking-tight"
+            
             style={{
               margin: 0,
               fontSize: "clamp(13px, 1.5vw, 15px)",
               color: "#1A1A1A",
               lineHeight: 1.6,
-              maxWidth: "520px",
+              maxWidth: "400px",
               marginInline: "auto",
             }}
           >
             Input your username and password to log in.
           </p>
         </div>
-        {/* Divider */}
-        <div
-          style={{
-            height: "2px",
-            background: "#1A1A1A",
-            marginInline: "40px",
-            marginBottom: "32px",
-          }}
-        />
         {/* Form */}
         <div
           style={{
@@ -171,9 +150,9 @@ export default function LoginPage() {
         >
           {/* Username */}
           <FieldGroup>
-            <Label className="tracking-tight">Username:</Label>
+            <Label >Username:</Label>
             <Input
-              className="tracking-tight"
+              
               placeholder="Username"
               value={username}
               onChange={setUsername}
@@ -182,9 +161,9 @@ export default function LoginPage() {
 
           {/* Password */}
           <FieldGroup>
-            <Label className="tracking-tight">Password:</Label>
+            <Label >Password:</Label>
             <Input
-              className="tracking-tight"
+              
               placeholder="Password"
               type="password"
               value={password}
@@ -201,11 +180,11 @@ export default function LoginPage() {
             }}
           >
             <button
-              className="tracking-tight"
+              
               style={{
                 padding: "14px 56px",
                 background: "#1A1A1A",
-                color: "#F5F5F5",
+                color: "#FFFFFF",
                 border: "none",
                 borderRadius: "10px",
                 fontSize: "16px",
@@ -218,6 +197,10 @@ export default function LoginPage() {
               Register
             </button>
           </div>
+          {/* register instead */}
+          <FieldGroup>
+            <p style ={{ textAlign: "center" }}>Need an account? <a href="/features/register" style ={{ color: "#0867da" }}>Register here</a></  p>
+          </FieldGroup>
         </div>
       </div>
     </div>
