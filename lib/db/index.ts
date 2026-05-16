@@ -1,5 +1,4 @@
-import { drizzle } from "drizzle-orm/bun-sqlite";
-import { Database } from "bun:sqlite";
+import { drizzle } from "drizzle-orm/node-postgres";
 import { env } from "@/lib/env";
 
 export const db = drizzle(env.DATABASE_URL);
