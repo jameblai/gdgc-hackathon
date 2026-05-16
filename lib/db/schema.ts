@@ -13,6 +13,7 @@ import {
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
+  avatarUrl: text("avatar_url"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -22,8 +23,66 @@ export const users = pgTable("users", {
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
+  listings: many(listings),
   claims: many(claims),
   attestations: many(attestations),
+}));
+
+export const listings = pgTable(
+  "listings",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    location: text("location").notNull(),
+    description: text("description").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [index("listings_user_id_idx").on(table.userId)],
+);
+
+export const listingsRelations = relations(listings, ({ one, many }) => ({
+  user: one(users, {
+    fields: [listings.userId],
+    references: [users.id],
+  }),
+  media: many(listingMedia),
+}));
+
+export const listingMediaType = pgEnum("listing_media_type", ["photo"]);
+
+export const listingMedia = pgTable(
+  "listing_media",
+  {
+    id: serial("id").primaryKey(),
+    listingId: integer("listing_id")
+      .notNull()
+      .references(() => listings.id, { onDelete: "cascade" }),
+    type: listingMediaType("type").notNull().default("photo"),
+    url: text("url").notNull(),
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [index("listing_media_listing_id_idx").on(table.listingId)],
+);
+
+export const listingMediaRelations = relations(listingMedia, ({ one }) => ({
+  listing: one(listings, {
+    fields: [listingMedia.listingId],
+    references: [listings.id],
+  }),
 }));
 
 export const attestationType = pgEnum("attestation_type", [
