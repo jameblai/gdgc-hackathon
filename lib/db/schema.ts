@@ -24,6 +24,8 @@ export const users = pgTable("users", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   listings: many(listings),
+  chatParticipants: many(chatParticipants),
+  chatMessages: many(chatMessages),
   claims: many(claims),
   attestations: many(attestations),
 }));
@@ -54,6 +56,97 @@ export const listingsRelations = relations(listings, ({ one, many }) => ({
     references: [users.id],
   }),
   media: many(listingMedia),
+}));
+
+export const chats = pgTable("chats", {
+  id: serial("id").primaryKey(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export const chatsRelations = relations(chats, ({ many }) => ({
+  participants: many(chatParticipants),
+  messages: many(chatMessages),
+}));
+
+export const chatParticipants = pgTable(
+  "chat_participants",
+  {
+    id: serial("id").primaryKey(),
+    chatId: integer("chat_id")
+      .notNull()
+      .references(() => chats.id, { onDelete: "cascade" }),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("chat_participants_chat_id_idx").on(table.chatId),
+    index("chat_participants_user_id_idx").on(table.userId),
+    uniqueIndex("chat_participants_chat_id_user_id_unique").on(
+      table.chatId,
+      table.userId,
+    ),
+  ],
+);
+
+export const chatParticipantsRelations = relations(
+  chatParticipants,
+  ({ one }) => ({
+    chat: one(chats, {
+      fields: [chatParticipants.chatId],
+      references: [chats.id],
+    }),
+    user: one(users, {
+      fields: [chatParticipants.userId],
+      references: [users.id],
+    }),
+  }),
+);
+
+export const chatMessages = pgTable(
+  "chat_messages",
+  {
+    id: serial("id").primaryKey(),
+    chatId: integer("chat_id")
+      .notNull()
+      .references(() => chats.id, { onDelete: "cascade" }),
+    senderId: integer("sender_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    text: text("text").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("chat_messages_chat_id_idx").on(table.chatId),
+    index("chat_messages_sender_id_idx").on(table.senderId),
+  ],
+);
+
+export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
+  chat: one(chats, {
+    fields: [chatMessages.chatId],
+    references: [chats.id],
+  }),
+  sender: one(users, {
+    fields: [chatMessages.senderId],
+    references: [users.id],
+  }),
 }));
 
 export const listingMediaType = pgEnum("listing_media_type", ["photo"]);

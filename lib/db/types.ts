@@ -2,6 +2,9 @@ import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
   attestations,
   attestationType,
+  chatParticipants,
+  chatMessages,
+  chats,
   claims,
   listingMedia,
   listingMediaType,
@@ -14,6 +17,15 @@ export type NewUser = InferInsertModel<typeof users>;
 
 export type Listing = InferSelectModel<typeof listings>;
 export type NewListing = InferInsertModel<typeof listings>;
+
+export type Chat = InferSelectModel<typeof chats>;
+export type NewChat = InferInsertModel<typeof chats>;
+
+export type ChatParticipant = InferSelectModel<typeof chatParticipants>;
+export type NewChatParticipant = InferInsertModel<typeof chatParticipants>;
+
+export type ChatMessage = InferSelectModel<typeof chatMessages>;
+export type NewChatMessage = InferInsertModel<typeof chatMessages>;
 
 export type ListingMedia = InferSelectModel<typeof listingMedia>;
 export type NewListingMedia = InferInsertModel<typeof listingMedia>;
