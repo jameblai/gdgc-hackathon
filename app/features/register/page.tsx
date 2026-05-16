@@ -1,15 +1,12 @@
-import { RegistrationForm } from "@/components/registration/registration-form";
 
+// calls the page with all the info about the registration page
+import RegistrationPage from "./register";
+
+// renders the RegistrationPage component, which contains the form
 export default function Page() {
-    return (
-        <main>
-            <h1>hellow</h1>
-             {/* square registry and everythings on */} 
-            <div id = "box" >
-
-            </div>
-
-            {/* <RegistrationForm /> */}
-        </main>
-    )
+  return (
+    <main>
+      <RegistrationPage />
+    </main>
+  );
 }
