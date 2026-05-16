@@ -14,6 +14,7 @@ function Label({
       data-slot="label"
       className={cn(
         "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+<<<<<<< HEAD
         className,
       )}
       {...props}
@@ -22,3 +23,13 @@ function Label({
 }
 
 export { Label };
+=======
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+export { Label }
+>>>>>>> 1c6a78d (Add registration page)
