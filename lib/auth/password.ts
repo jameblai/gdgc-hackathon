@@ -9,14 +9,6 @@ export const passwordHashOptions = {
   parallelism: 1,
 } as const;
 
-export function isValidEmail(email: string) {
-  return /.+@.+/.test(email) && email.length <= 255;
-}
-
-export function isValidPassword(password: string) {
-  return password.length >= 6 && password.length <= 255;
-}
-
 export async function hashPassword(password: string) {
   return hash(password, passwordHashOptions);
 }
