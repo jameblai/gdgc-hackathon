@@ -30,7 +30,7 @@ function renderFieldErrors(errors: unknown[]) {
 }
 
 function LoginForm() {
-  const action = useAction(loginAction, { throwOnNavigation: true });
+  const action = useAction(loginAction);
   const form = useForm({
     defaultValues: {
       email: "",

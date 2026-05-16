@@ -88,7 +88,9 @@ function ListingForm(props: ListingFormProps) {
   });
   const updateAction = useAction(updateListingAction, {
     onSuccess: ({ data }) => {
-      router.push(`/listings/${data.id}`);
+      if (!data.error) {
+        router.push(`/listings/${data.id}`);
+      }
     },
   });
   const [existingPhotos, setExistingPhotos] = useState<ListingPhoto[]>(
@@ -309,11 +311,12 @@ function ListingForm(props: ListingFormProps) {
             <UploadDropzone
               endpoint="listingImageUploader"
               onClientUploadComplete={(files) => {
+                const availableSlots = 6 - totalImages;
                 setUploadedImages((images) => [
                   ...images,
-                  ...files.map((file) => ({
+                  ...files.slice(0, availableSlots).map((file) => ({
                     fileKey: file.key,
-                    url: file.ufsUrl,
+                    url: file.url,
                   })),
                 ]);
                 setIsUploading(false);

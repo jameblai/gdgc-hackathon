@@ -30,7 +30,7 @@ function renderFieldErrors(errors: unknown[]) {
 }
 
 function RegisterForm() {
-  const action = useAction(registerAction, { throwOnNavigation: true });
+  const action = useAction(registerAction);
   const form = useForm({
     defaultValues: {
       email: "",

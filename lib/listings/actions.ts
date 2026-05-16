@@ -119,11 +119,12 @@ export const updateListingAction = actionClient
       }
 
       if (parsedInput.images.length > 0) {
+        const keptCount = listing.photos.length - removedPhotos.length;
         await tx.insert(listingPhotos).values(
           parsedInput.images.map((image, index) => ({
             fileKey: image.fileKey,
             listingId: listing.id,
-            sortOrder: parsedInput.existingPhotoIds.length + index,
+            sortOrder: keptCount + index,
             url: image.url,
           })),
         );

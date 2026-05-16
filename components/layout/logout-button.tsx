@@ -10,21 +10,17 @@ export function LogoutButton() {
   const action = useAction(logoutAction);
 
   return (
-    <form
-      action={() => {
-        action.execute();
-      }}
+    <button
+      className={cn(
+        buttonVariants({
+          variant: "ghost",
+        }),
+      )}
+      disabled={action.isPending}
+      onClick={() => action.execute()}
+      type="button"
     >
-      <button
-        className={cn(
-          buttonVariants({
-            variant: "ghost",
-          }),
-        )}
-        type="submit"
-      >
-        Log out
-      </button>
-    </form>
+      Log out
+    </button>
   );
 }

@@ -4,6 +4,8 @@ import { Trash2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
 
+import { FieldError } from "@/components/ui/field";
+
 import { deleteListingAction } from "@/lib/listings/actions";
 import {
   AlertDialog,
@@ -21,8 +23,10 @@ import { Button } from "@/components/ui/button";
 function DeleteListingButton({ listingId }: { listingId: string }) {
   const router = useRouter();
   const action = useAction(deleteListingAction, {
-    onSuccess: () => {
-      router.push("/listings");
+    onSuccess: ({ data }) => {
+      if (data.success) {
+        router.push("/listings");
+      }
     },
   });
 
@@ -40,6 +44,9 @@ function DeleteListingButton({ listingId }: { listingId: string }) {
           <AlertDialogDescription>
             This permanently removes the listing and its images.
           </AlertDialogDescription>
+          {action.result.data?.error ? (
+            <FieldError>{action.result.data.error}</FieldError>
+          ) : null}
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
