@@ -10,25 +10,54 @@ import {
 } from "drizzle-orm/pg-core";
 import { createId } from "@/lib/db/id";
 
-export const users = pgTable("users", {
-  id: text("id").primaryKey().$defaultFn(createId),
-  name: text("name").notNull(),
-  avatarUrl: text("avatar_url"),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-});
+export const users = pgTable(
+  "users",
+  {
+    id: text("id").primaryKey().$defaultFn(createId),
+    email: text("email").notNull(),
+    passwordHash: text("password_hash").notNull(),
+    name: text("name").notNull(),
+    avatarUrl: text("avatar_url"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [uniqueIndex("users_email_unique").on(table.email)],
+);
+
+export const sessions = pgTable(
+  "sessions",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    expiresAt: timestamp("expires_at", {
+      withTimezone: true,
+      mode: "date",
+    }).notNull(),
+  },
+  (table) => [index("sessions_user_id_idx").on(table.userId)],
+);
 
 export const usersRelations = relations(users, ({ many }) => ({
+  sessions: many(sessions),
   listings: many(listings),
   assets: many(assets),
   chatParticipants: many(chatParticipants),
   chatMessages: many(chatMessages),
   claims: many(claims),
   attestations: many(attestations),
+}));
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, {
+    fields: [sessions.userId],
+    references: [users.id],
+  }),
 }));
 
 export const listingCategory = pgEnum("listing_category", [
@@ -240,6 +269,7 @@ export const listingPhotos = pgTable(
       .notNull()
       .references(() => listings.id, { onDelete: "cascade" }),
     url: text("url").notNull(),
+    fileKey: text("file_key"),
     sortOrder: integer("sort_order").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
