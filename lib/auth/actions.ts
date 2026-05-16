@@ -1,6 +1,5 @@
 "use server";
 
-import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -46,15 +45,6 @@ const loginSchema = z.object({
     .string()
     .min(6, "Incorrect email or password.")
     .max(255, "Incorrect email or password."),
-});
-
-const updateUserEmailSchema = z.object({
-  userId: z.string().min(1),
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .pipe(z.email("Enter a valid email address.")),
 });
 
 export const registerAction = actionClient
@@ -132,16 +122,3 @@ export const logoutAction = actionClient.action(
     redirect("/features/login");
   },
 );
-
-export const updateUserEmail = actionClient
-  .inputSchema(updateUserEmailSchema)
-  .action(
-    async ({ parsedInput: { userId, email } }): Promise<AuthActionData> => {
-      await db
-        .update(users)
-        .set({ email, updatedAt: new Date() })
-        .where(eq(users.id, userId));
-
-      return {};
-    },
-  );
