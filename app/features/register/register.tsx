@@ -33,6 +33,7 @@ export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
+            className = "tracking-tight"
             variant="outline"
             id="date"
             type="button" // Prevents accidental form submissions
@@ -40,9 +41,9 @@ export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
               width: "100%",
               justifyContent: "flex-start",
               fontWeight: 400,
-              background: "rgba(255,255,255,0.12)",
-              border: "5px solid rgba(255,255,255,0.25)",
-              color: date ? "#fff" : "rgba(255,255,255,0.5)",
+              background: "rgb(255, 255, 255)",
+              border: "2px solid rgb(0, 0, 0)",
+              color: date ? "#000000" : "rgb(0, 0, 0)",
               borderRadius: "8px",
               padding: "11px 14px",
               fontSize: "14px",
@@ -85,7 +86,7 @@ function Input({
 }) {
   const [focused, setFocused] = useState(false);
   return (
-    <input
+    <input className = "tracking-tight"
       type={type}
       placeholder={placeholder}
       value={value}
@@ -96,13 +97,9 @@ function Input({
         width: "100%",
         padding: "11px 14px",
         borderRadius: "8px",
-        border: focused
-          ? "1px solid rgba(255,255,255,0.6)"
-          : "1px solid rgba(255,255,255,0.25)",
-        background: focused
-          ? "rgba(255,255,255,0.18)"
-          : "rgba(255,255,255,0.12)",
-        color: "#fff",
+        border: "2px solid rgb(0, 0, 0)",
+        background: "rgb(255, 255, 255)",
+        color: "#000000",
         fontSize: "14px",
         outline: "none",
         boxSizing: "border-box",
@@ -123,13 +120,12 @@ function Label({
 }) {
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
-      <span
+      <span className = "tracking-tight"
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
-          color: sub ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.92)",
+          color: "rbg(0,0,0)",
           letterSpacing: "0.02em",
-          fontFamily: "'DM Sans', sans-serif",
         }}
       >
         {children}
@@ -174,31 +170,17 @@ export default function RegistrationPage() {
   };
 
   return (
-    <div
+    <div className = "tracking-tight"
       style={{
         minHeight: "100vh",
-        background:
-          "linear-gradient(135deg, #0a1628 0%, #0d2347 50%, #0a1a3a 100%)",
+        background: "rgb(255,255,255)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         padding: "48px 16px",
-        fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
         boxSizing: "border-box",
       }}
     >
-      {/* Background grid */}
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          pointerEvents: "none",
-          zIndex: 0,
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
 
       {/* Card */}
       <div
@@ -206,13 +188,10 @@ export default function RegistrationPage() {
           width: "70%",
           maxWidth: "900px",
           minWidth: "320px",
-          background:
-            "linear-gradient(160deg, rgba(30,80,180,0.82) 0%, rgba(15,50,140,0.92) 60%, rgba(10,30,100,0.96) 100%)",
+          background:"rgb(200, 200, 200)",
           backdropFilter: "blur(20px)",
           borderRadius: "24px",
-          border: "1px solid rgba(100,160,255,0.2)",
-          boxShadow:
-            "0 8px 80px rgba(0,0,100,0.5), 0 2px 0 rgba(255,255,255,0.08) inset",
+          border: "2px solid rgb(0, 0, 0)",
           padding: "0 0 48px 0",
           position: "relative",
           zIndex: 1,
@@ -229,7 +208,7 @@ export default function RegistrationPage() {
             width: "60%",
             height: "2px",
             background:
-              "linear-gradient(90deg, transparent, rgba(120,180,255,0.8), transparent)",
+              "linear-gradient(90deg, transparent, rgba(179, 179, 179, 0.8), transparent)",
           }}
         />
 
@@ -258,10 +237,10 @@ export default function RegistrationPage() {
               borderRadius: "50%",
               background: photo
                 ? `url(${photo}) center/cover`
-                : "radial-gradient(circle at 60% 35%, rgba(120,170,255,0.25), rgba(30,60,160,0.6))",
-              border: "3px solid rgba(120,180,255,0.45)",
+                : "radial-gradient(circle at 60% 35%, rgba(150, 150, 150, 1), rgba(150, 150, 150, 0.8))",
+              border: "3px solid rgba(150, 150, 150, 0.6)",
               boxShadow:
-                "0 4px 32px rgba(60,120,255,0.3), 0 0 0 6px rgba(60,120,255,0.08)",
+                "0 4px 32px rgba(150, 150, 150, 0.4), 0 0 0 6px rgba(150, 150, 150, 0.2)",
               cursor: "pointer",
               display: "flex",
               flexDirection: "column",
@@ -271,14 +250,6 @@ export default function RegistrationPage() {
               transition: "all 0.25s ease",
               position: "relative",
               overflow: "hidden",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "rgba(160,210,255,0.7)";
-              e.currentTarget.style.transform = "scale(1.04)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "rgba(120,180,255,0.45)";
-              e.currentTarget.style.transform = "scale(1)";
             }}
           >
             {!photo && (
@@ -294,7 +265,7 @@ export default function RegistrationPage() {
                   style={{
                     position: "absolute",
                     bottom: "14px",
-                    background: "rgba(60,130,255,0.85)",
+                    background: "rgba(71, 71, 71, 0.85)",
                     borderRadius: "50%",
                     width: "28px",
                     height: "28px",
@@ -326,7 +297,7 @@ export default function RegistrationPage() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  background: "rgba(0,0,0,0.35)",
+                  background: "rgba(0,0,0)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -355,7 +326,7 @@ export default function RegistrationPage() {
             style={{
               marginTop: "10px",
               fontSize: "12px",
-              color: "rgba(180,210,255,0.7)",
+              color: "rgb(0, 0, 0)",
               letterSpacing: "0.04em",
             }}
           >
@@ -370,7 +341,7 @@ export default function RegistrationPage() {
               margin: "0 0 10px",
               fontSize: "clamp(20px, 3vw, 28px)",
               fontWeight: 700,
-              color: "#fff",
+              color: "#000000",
               letterSpacing: "-0.02em",
               lineHeight: 1.2,
             }}
@@ -381,7 +352,7 @@ export default function RegistrationPage() {
             style={{
               margin: 0,
               fontSize: "clamp(13px, 1.5vw, 15px)",
-              color: "rgba(180,210,255,0.75)",
+              color: "rgb(0, 0, 0)",
               lineHeight: 1.6,
               maxWidth: "520px",
               marginInline: "auto",
@@ -396,7 +367,7 @@ export default function RegistrationPage() {
         <div
           style={{
             height: "1px",
-            background: "rgba(100,160,255,0.15)",
+            background: "rgb(0, 0, 0)",
             marginInline: "40px",
             marginBottom: "32px",
           }}
@@ -491,10 +462,10 @@ export default function RegistrationPage() {
               paddingTop: "8px",
             }}
           >
-            <button
+            <button className = "tracking-tight"
               style={{
                 padding: "14px 56px",
-                background: "linear-gradient(135deg, #e02020 0%, #c0392b 100%)",
+                background: "rgb(0, 0, 0)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "10px",
@@ -502,20 +473,7 @@ export default function RegistrationPage() {
                 fontWeight: 700,
                 letterSpacing: "0.04em",
                 cursor: "pointer",
-                boxShadow:
-                  "0 4px 24px rgba(200,30,30,0.45), 0 1px 0 rgba(255,255,255,0.15) inset",
                 transition: "all 0.2s ease",
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow =
-                  "0 8px 32px rgba(200,30,30,0.55), 0 1px 0 rgba(255,255,255,0.15) inset";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow =
-                  "0 4px 24px rgba(200,30,30,0.45), 0 1px 0 rgba(255,255,255,0.15) inset";
               }}
             >
               Register
