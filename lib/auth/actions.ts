@@ -3,22 +3,19 @@
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 import {
   createSessionCookie,
   getUserByEmail,
   lucia,
   validateRequest,
 } from "@/lib/auth";
-import {
-  hashPassword,
-  isValidEmail,
-  isValidPassword,
-  verifyPassword,
-} from "@/lib/auth/password";
+import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
+import { actionClient } from "@/lib/safe-action";
 
-export type AuthActionState = {
+export type AuthActionData = {
   error?: string;
   values?: {
     email?: string;
@@ -26,124 +23,125 @@ export type AuthActionState = {
   };
 };
 
-function readString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" ? value.trim() : "";
-}
+const registerSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .pipe(z.email("Enter a valid email address.")),
+  name: z.string().trim().min(1, "Enter your name.").max(120),
+  password: z
+    .string()
+    .min(6, "Password must be between 6 and 255 characters.")
+    .max(255, "Password must be between 6 and 255 characters."),
+});
 
-export async function registerAction(
-  _state: AuthActionState,
-  formData: FormData,
-): Promise<AuthActionState> {
-  const email = readString(formData, "email").toLowerCase();
-  const name = readString(formData, "name");
-  const password = readString(formData, "password");
+const loginSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .pipe(z.email("Incorrect email or password.")),
+  password: z
+    .string()
+    .min(6, "Incorrect email or password.")
+    .max(255, "Incorrect email or password."),
+});
 
-  if (!name || name.length > 120) {
-    return { error: "Enter your name.", values: { email, name } };
-  }
+const updateUserEmailSchema = z.object({
+  userId: z.string().min(1),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .pipe(z.email("Enter a valid email address.")),
+});
 
-  if (!isValidEmail(email)) {
-    return { error: "Enter a valid email address.", values: { email, name } };
-  }
+export const registerAction = actionClient
+  .inputSchema(registerSchema)
+  .action(async ({ parsedInput: { email, name, password } }) => {
+    const values = { email, name };
+    const passwordHash = await hashPassword(password);
 
-  if (!isValidPassword(password)) {
-    return {
-      error: "Password must be between 6 and 255 characters.",
-      values: { email, name },
-    };
-  }
+    try {
+      const [user] = await db
+        .insert(users)
+        .values({
+          email,
+          name,
+          passwordHash,
+        })
+        .returning({ id: users.id });
 
-  const passwordHash = await hashPassword(password);
+      await createSessionCookie(user.id);
+    } catch {
+      return {
+        error: "An account already exists for that email.",
+        values,
+      };
+    }
 
-  try {
-    const [user] = await db
-      .insert(users)
-      .values({
-        email,
-        name,
-        passwordHash,
-      })
-      .returning({ id: users.id });
+    redirect("/");
+  });
 
-    await createSessionCookie(user.id);
-  } catch {
-    return {
-      error: "An account already exists for that email.",
-      values: { email, name },
-    };
-  }
+export const loginAction = actionClient
+  .inputSchema(loginSchema)
+  .action(
+    async ({ parsedInput: { email, password } }): Promise<AuthActionData> => {
+      const user = await getUserByEmail(email);
 
-  redirect("/");
-}
+      if (!user) {
+        return {
+          error: "Incorrect email or password.",
+          values: { email },
+        };
+      }
 
-export async function loginAction(
-  _state: AuthActionState,
-  formData: FormData,
-): Promise<AuthActionState> {
-  const email = readString(formData, "email").toLowerCase();
-  const password = readString(formData, "password");
+      const validPassword = await verifyPassword(user.passwordHash, password);
 
-  if (!isValidEmail(email) || !isValidPassword(password)) {
-    return {
-      error: "Incorrect email or password.",
-      values: { email },
-    };
-  }
+      if (!validPassword) {
+        return {
+          error: "Incorrect email or password.",
+          values: { email },
+        };
+      }
 
-  const user = await getUserByEmail(email);
-
-  if (!user) {
-    return {
-      error: "Incorrect email or password.",
-      values: { email },
-    };
-  }
-
-  const validPassword = await verifyPassword(user.passwordHash, password);
-
-  if (!validPassword) {
-    return {
-      error: "Incorrect email or password.",
-      values: { email },
-    };
-  }
-
-  await createSessionCookie(user.id);
-  redirect("/");
-}
-
-export async function logoutAction(): Promise<AuthActionState> {
-  const { session } = await validateRequest();
-
-  if (!session) {
-    return { error: "Unauthorized." };
-  }
-
-  await lucia.invalidateSession(session.id);
-
-  const sessionCookie = lucia.createBlankSessionCookie();
-  const cookieStore = await cookies();
-  cookieStore.set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes,
+      await createSessionCookie(user.id);
+      redirect("/");
+    },
   );
 
-  redirect("/features/login");
-}
+export const logoutAction = actionClient.action(
+  async (): Promise<AuthActionData> => {
+    const { session } = await validateRequest();
 
-export async function updateUserEmail(userId: string, email: string) {
-  const normalizedEmail = email.trim().toLowerCase();
+    if (!session) {
+      return { error: "Unauthorized." };
+    }
 
-  if (!isValidEmail(normalizedEmail)) {
-    return { error: "Enter a valid email address." };
-  }
+    await lucia.invalidateSession(session.id);
 
-  await db
-    .update(users)
-    .set({ email: normalizedEmail, updatedAt: new Date() })
-    .where(eq(users.id, userId));
+    const sessionCookie = lucia.createBlankSessionCookie();
+    const cookieStore = await cookies();
+    cookieStore.set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
 
-  return {};
-}
+    redirect("/features/login");
+  },
+);
+
+export const updateUserEmail = actionClient
+  .inputSchema(updateUserEmailSchema)
+  .action(
+    async ({ parsedInput: { userId, email } }): Promise<AuthActionData> => {
+      await db
+        .update(users)
+        .set({ email, updatedAt: new Date() })
+        .where(eq(users.id, userId));
+
+      return {};
+    },
+  );
