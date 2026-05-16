@@ -30,6 +30,14 @@ export const usersRelations = relations(users, ({ many }) => ({
   attestations: many(attestations),
 }));
 
+export const listingCategory = pgEnum("listing_category", [
+  "medical",
+  "food",
+  "apparel",
+  "electronics",
+  "entertainment",
+]);
+
 export const listings = pgTable(
   "listings",
   {
@@ -40,6 +48,7 @@ export const listings = pgTable(
     name: text("name").notNull(),
     location: text("location").notNull(),
     description: text("description").notNull(),
+    category: listingCategory("category").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -47,7 +56,10 @@ export const listings = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => [index("listings_user_id_idx").on(table.userId)],
+  (table) => [
+    index("listings_user_id_idx").on(table.userId),
+    index("listings_category_idx").on(table.category),
+  ],
 );
 
 export const listingsRelations = relations(listings, ({ one, many }) => ({

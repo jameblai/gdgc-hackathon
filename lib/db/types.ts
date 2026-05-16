@@ -6,6 +6,7 @@ import {
   chatMessages,
   chats,
   claims,
+  listingCategory,
   listingMedia,
   listingMediaType,
   listings,
@@ -17,6 +18,7 @@ export type NewUser = InferInsertModel<typeof users>;
 
 export type Listing = InferSelectModel<typeof listings>;
 export type NewListing = InferInsertModel<typeof listings>;
+export type ListingCategory = (typeof listingCategory.enumValues)[number];
 
 export type Chat = InferSelectModel<typeof chats>;
 export type NewChat = InferInsertModel<typeof chats>;
