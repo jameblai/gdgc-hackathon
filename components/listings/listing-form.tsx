@@ -338,15 +338,13 @@ function ListingForm(props: ListingFormProps) {
 
       {actionError ? <FieldError>{actionError}</FieldError> : null}
 
-      <div className="flex justify-end">
-        <Button disabled={isPending || isUploading} type="submit">
-          {isPending
-            ? "Saving..."
-            : props.mode === "create"
-              ? "Create listing"
-              : "Save changes"}
-        </Button>
-      </div>
+      <Button className="w-full" disabled={isPending || isUploading} size="lg" type="submit">
+        {isPending
+          ? "Saving..."
+          : props.mode === "create"
+            ? "Create listing"
+            : "Save changes"}
+      </Button>
     </form>
   );
 }

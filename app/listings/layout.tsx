@@ -30,7 +30,7 @@ export default function ListingsLayout({ children }: ListingsLayoutProps) {
               className="px-2 group-data-[collapsible=icon]:hidden"
               variant="label"
             >
-              Picasa
+              <Link href="/">Picasa</Link>
             </Typography>
             <SidebarTrigger className="ml-auto group-data-[collapsible=icon]:ml-0" />
           </div>

@@ -50,7 +50,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
 
         <div className="grid gap-6 p-4 md:p-6 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_420px]">
           <section className="space-y-4">
-            <div className="flex items-center justify-between gap-3">
+            <div>
               <Link
                 className={buttonVariants({
                   className: "px-0",
@@ -61,15 +61,6 @@ export default async function ListingPage({ params }: ListingPageProps) {
                 <ArrowLeftIcon />
                 Back to listings
               </Link>
-              {isOwner ? (
-                <Link
-                  className={buttonVariants({ variant: "outline" })}
-                  href={`/listings/${listing.id}/edit`}
-                >
-                  <PencilIcon />
-                  Edit listing
-                </Link>
-              ) : null}
             </div>
 
             <ListingPhotoGrid listing={listing} />
@@ -77,7 +68,18 @@ export default async function ListingPage({ params }: ListingPageProps) {
 
           <aside className="space-y-3 lg:sticky lg:top-6 lg:self-start">
             <ListingDetail listing={listing} />
-            {isOwner ? <DeleteListingButton listingId={listing.id} /> : null}
+            {isOwner ? (
+              <div className="bg-card space-y-2 rounded-lg border p-5">
+                <Link
+                  className={buttonVariants({ className: "w-full", variant: "outline" })}
+                  href={`/listings/${listing.id}/edit`}
+                >
+                  <PencilIcon />
+                  Edit listing
+                </Link>
+                <DeleteListingButton listingId={listing.id} />
+              </div>
+            ) : null}
           </aside>
         </div>
       </main>
