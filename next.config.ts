@@ -1,6 +1,15 @@
 import "./lib/env";
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = { output: "standalone" };
+const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        hostname: "placehold.co",
+        protocol: "https",
+      },
+    ],
+  },
+};
 
 export default nextConfig;
