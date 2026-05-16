@@ -4,14 +4,14 @@ import {
   integer,
   pgEnum,
   pgTable,
-  serial,
   text,
   timestamp,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
+import { createId } from "@/lib/db/id";
 
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+  id: text("id").primaryKey().$defaultFn(createId),
   name: text("name").notNull(),
   avatarUrl: text("avatar_url"),
   createdAt: timestamp("created_at", { withTimezone: true })
@@ -24,6 +24,7 @@ export const users = pgTable("users", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   listings: many(listings),
+  assets: many(assets),
   chatParticipants: many(chatParticipants),
   chatMessages: many(chatMessages),
   claims: many(claims),
@@ -38,17 +39,24 @@ export const listingCategory = pgEnum("listing_category", [
   "entertainment",
 ]);
 
+export const listingStatus = pgEnum("listing_status", [
+  "active",
+  "sold",
+  "archived",
+]);
+
 export const listings = pgTable(
   "listings",
   {
-    id: serial("id").primaryKey(),
-    userId: integer("user_id")
+    id: text("id").primaryKey().$defaultFn(createId),
+    userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     location: text("location").notNull(),
     description: text("description").notNull(),
     category: listingCategory("category").notNull(),
+    status: listingStatus("status").notNull().default("active"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -67,11 +75,74 @@ export const listingsRelations = relations(listings, ({ one, many }) => ({
     fields: [listings.userId],
     references: [users.id],
   }),
-  media: many(listingMedia),
+  photos: many(listingPhotos),
+}));
+
+export const assetCategory = pgEnum("asset_category", ["house", "vehicle"]);
+
+export const assets = pgTable(
+  "assets",
+  {
+    id: text("id").primaryKey().$defaultFn(createId),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    category: assetCategory("category").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("assets_user_id_idx").on(table.userId),
+    index("assets_category_idx").on(table.category),
+  ],
+);
+
+export const assetsRelations = relations(assets, ({ one, many }) => ({
+  user: one(users, {
+    fields: [assets.userId],
+    references: [users.id],
+  }),
+  evidence: many(assetEvidence),
+}));
+
+export const assetEvidenceType = pgEnum("asset_evidence_type", [
+  "pdf",
+  "image",
+]);
+
+export const assetEvidence = pgTable(
+  "asset_evidence",
+  {
+    id: text("id").primaryKey().$defaultFn(createId),
+    assetId: text("asset_id")
+      .notNull()
+      .references(() => assets.id, { onDelete: "cascade" }),
+    type: assetEvidenceType("type").notNull(),
+    url: text("url").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [index("asset_evidence_asset_id_idx").on(table.assetId)],
+);
+
+export const assetEvidenceRelations = relations(assetEvidence, ({ one }) => ({
+  asset: one(assets, {
+    fields: [assetEvidence.assetId],
+    references: [assets.id],
+  }),
 }));
 
 export const chats = pgTable("chats", {
-  id: serial("id").primaryKey(),
+  id: text("id").primaryKey().$defaultFn(createId),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -88,11 +159,11 @@ export const chatsRelations = relations(chats, ({ many }) => ({
 export const chatParticipants = pgTable(
   "chat_participants",
   {
-    id: serial("id").primaryKey(),
-    chatId: integer("chat_id")
+    id: text("id").primaryKey().$defaultFn(createId),
+    chatId: text("chat_id")
       .notNull()
       .references(() => chats.id, { onDelete: "cascade" }),
-    userId: integer("user_id")
+    userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -129,11 +200,11 @@ export const chatParticipantsRelations = relations(
 export const chatMessages = pgTable(
   "chat_messages",
   {
-    id: serial("id").primaryKey(),
-    chatId: integer("chat_id")
+    id: text("id").primaryKey().$defaultFn(createId),
+    chatId: text("chat_id")
       .notNull()
       .references(() => chats.id, { onDelete: "cascade" }),
-    senderId: integer("sender_id")
+    senderId: text("sender_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     text: text("text").notNull(),
@@ -161,16 +232,13 @@ export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
   }),
 }));
 
-export const listingMediaType = pgEnum("listing_media_type", ["photo"]);
-
-export const listingMedia = pgTable(
-  "listing_media",
+export const listingPhotos = pgTable(
+  "listing_photos",
   {
-    id: serial("id").primaryKey(),
-    listingId: integer("listing_id")
+    id: text("id").primaryKey().$defaultFn(createId),
+    listingId: text("listing_id")
       .notNull()
       .references(() => listings.id, { onDelete: "cascade" }),
-    type: listingMediaType("type").notNull().default("photo"),
     url: text("url").notNull(),
     sortOrder: integer("sort_order").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -180,12 +248,12 @@ export const listingMedia = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => [index("listing_media_listing_id_idx").on(table.listingId)],
+  (table) => [index("listing_photos_listing_id_idx").on(table.listingId)],
 );
 
-export const listingMediaRelations = relations(listingMedia, ({ one }) => ({
+export const listingPhotosRelations = relations(listingPhotos, ({ one }) => ({
   listing: one(listings, {
-    fields: [listingMedia.listingId],
+    fields: [listingPhotos.listingId],
     references: [listings.id],
   }),
 }));
@@ -199,8 +267,8 @@ export const attestationType = pgEnum("attestation_type", [
 export const claims = pgTable(
   "claims",
   {
-    id: serial("id").primaryKey(),
-    userId: integer("user_id")
+    id: text("id").primaryKey().$defaultFn(createId),
+    userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     details: text("details").notNull(),
@@ -225,11 +293,11 @@ export const claimsRelations = relations(claims, ({ one, many }) => ({
 export const attestations = pgTable(
   "attestations",
   {
-    id: serial("id").primaryKey(),
-    userId: integer("user_id")
+    id: text("id").primaryKey().$defaultFn(createId),
+    userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    claimId: integer("claim_id")
+    claimId: text("claim_id")
       .notNull()
       .references(() => claims.id, { onDelete: "cascade" }),
     type: attestationType("type").notNull(),
