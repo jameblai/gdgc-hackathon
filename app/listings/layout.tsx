@@ -39,10 +39,7 @@ export default function ListingsLayout({ children }: ListingsLayoutProps) {
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton
-                    tooltip="New Listing"
-                    variant="outline"
-                  >
+                  <SidebarMenuButton tooltip="New Listing" variant="outline">
                     <PlusIcon />
                     <span className="group-data-[collapsible=icon]:sr-only">
                       New Listing
