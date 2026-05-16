@@ -7,7 +7,7 @@ import { ListingImage } from "./listing-image";
 function ListingPhotoGrid({ listing }: { listing: ListingWithUserAndPhotos }) {
   if (listing.photos.length === 0) {
     return (
-      <div className="bg-muted relative aspect-[4/3] overflow-hidden rounded-lg border">
+      <div className="bg-muted relative aspect-4/3 overflow-hidden rounded-lg border">
         <ListingImage listing={listing} />
       </div>
     );
@@ -17,7 +17,7 @@ function ListingPhotoGrid({ listing }: { listing: ListingWithUserAndPhotos }) {
     <div className="grid gap-4 sm:grid-cols-2">
       {listing.photos.map((photo, index) => (
         <div
-          className="bg-muted relative aspect-[4/3] overflow-hidden rounded-lg border"
+          className="bg-muted relative aspect-4/3 overflow-hidden rounded-lg border"
           key={photo.id}
         >
           <Image
