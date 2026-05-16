@@ -14,6 +14,7 @@ import {
   listingPhotos,
   listingStatus,
   listings,
+  sessions,
   users,
 } from "@/lib/db/schema";
 
@@ -27,6 +28,10 @@ export type UserWithChatParticipants = User & {
 export type UserWithChatMessages = User & { chatMessages: ChatMessage[] };
 export type UserWithClaims = User & { claims: Claim[] };
 export type UserWithAttestations = User & { attestations: Attestation[] };
+
+export type Session = InferSelectModel<typeof sessions>;
+export type NewSession = InferInsertModel<typeof sessions>;
+export type SessionWithUser = Session & { user: User };
 
 export type Listing = InferSelectModel<typeof listings>;
 export type NewListing = InferInsertModel<typeof listings>;

@@ -3,6 +3,7 @@ import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
+import { hashPassword } from "@/lib/auth/password";
 import {
   assetEvidence,
   assets,
@@ -13,6 +14,7 @@ import {
   claims,
   listingPhotos,
   listings,
+  sessions,
   users,
 } from "@/lib/db/schema";
 
@@ -34,15 +36,20 @@ async function seed() {
     await tx.delete(chatMessages);
     await tx.delete(chatParticipants);
     await tx.delete(chats);
+    await tx.delete(sessions);
     await tx.delete(assetEvidence);
     await tx.delete(assets);
     await tx.delete(listingPhotos);
     await tx.delete(listings);
     await tx.delete(users);
 
+    const passwordHash = await hashPassword("password123");
+
     await tx.insert(users).values([
       {
         id: "user_maya",
+        email: "maya@example.com",
+        passwordHash,
         name: "Maya Patel",
         avatarUrl: "https://i.pravatar.cc/160?img=47",
         createdAt: now,
@@ -50,6 +57,8 @@ async function seed() {
       },
       {
         id: "user_noah",
+        email: "noah@example.com",
+        passwordHash,
         name: "Noah Williams",
         avatarUrl: "https://i.pravatar.cc/160?img=12",
         createdAt: now,
@@ -57,6 +66,8 @@ async function seed() {
       },
       {
         id: "user_ava",
+        email: "ava@example.com",
+        passwordHash,
         name: "Ava Chen",
         avatarUrl: "https://i.pravatar.cc/160?img=32",
         createdAt: now,
@@ -64,6 +75,8 @@ async function seed() {
       },
       {
         id: "user_leo",
+        email: "leo@example.com",
+        passwordHash,
         name: "Leo Thompson",
         avatarUrl: "https://i.pravatar.cc/160?img=68",
         createdAt: now,
