@@ -2,6 +2,7 @@ import type { ClaimWithUser } from "@/lib/db/types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { ShieldIcon, ShieldQuestionMarkIcon } from "lucide-react";
+import { Typography } from "../ui/typography";
 
 export function Claim({ claim }: { claim: ClaimWithUser }) {
   return (
@@ -15,10 +16,8 @@ export function Claim({ claim }: { claim: ClaimWithUser }) {
 
       <div className="space-y-2">
         <div className="space-y-1">
-          <p className="leading-none font-bold tracking-tight">
-            {claim.user.name} claims
-          </p>
-          <p className="text-foreground/80 text-sm">{claim.details}</p>
+          <Typography variant="label">{claim.user.name} claims</Typography>
+          <Typography variant="smallMuted">{claim.details}</Typography>
         </div>
 
         <div className="flex gap-1">
