@@ -188,7 +188,7 @@ export default function RegistrationPage() {
           width: "70%",
           maxWidth: "900px",
           minWidth: "320px",
-          background:"rgb(200, 200, 200)",
+          background:"#CCCCCC",
           backdropFilter: "blur(20px)",
           borderRadius: "24px",
           border: "2px solid rgb(0, 0, 0)",

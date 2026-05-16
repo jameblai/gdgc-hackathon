@@ -33,8 +33,8 @@ function Input({ placeholder, value, onChange, type = "text" }) {
         width: "100%",
         padding: "11px 14px",
         borderRadius: "8px",
-        border: "1px solid rgb(0, 0, 0)",
-        background: "rgba(255, 255, 255)",
+        border: "1px solid #1A1A1A",
+        background: "#F5F5f5",
         color: "#4f4f4f",
         fontSize: "14px",
         outline: "none",
@@ -54,7 +54,7 @@ function Label({ children, sub }) {
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
-          color: "#000000",
+          color: "#1A1A1A",
           letterSpacing: "0.02em",
         }}
       >
@@ -82,7 +82,7 @@ export default function LoginPage() {
     <div 
       style={{
         minHeight: "100vh",
-        background: "rgb(255,255,255)",
+        background: "#F5F5F5",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -97,10 +97,10 @@ export default function LoginPage() {
           width: "70%",
           maxWidth: "900px",
           minWidth: "320px",
-          background:"rgb(200, 200, 200)",
+          background:"#CCCCCC",
           backdropFilter: "blur(20px)",
           borderRadius: "24px",
-          border: "2px solid rgba(0, 0, 0, 0.6)",
+          border: "2px solid #1A1A1A",
           padding: "0 0 48px 0",
           position: "relative",
           zIndex: 1,
@@ -124,7 +124,7 @@ export default function LoginPage() {
             style={{
               margin: "0 0 10px",
               fontSize: "clamp(20px, 3vw, 28px)",
-              fontWeight: 700, color: "#000000",
+              fontWeight: 700, color: "#1A1A1A",
               letterSpacing: "-0.02em", lineHeight: 1.2,
             }}
           >
@@ -134,7 +134,7 @@ export default function LoginPage() {
             style={{
               margin: 0,
               fontSize: "clamp(13px, 1.5vw, 15px)",
-              color: "000000",
+              color: "#1A1A1A",
               lineHeight: 1.6, maxWidth: "520px", marginInline: "auto",
             }}
           >
@@ -145,7 +145,7 @@ export default function LoginPage() {
         {/* Divider */}
         <div
           style={{
-            height: "2px", background: "rgba(0, 0, 0, 0.6)",
+            height: "2px", background: "#1A1A1A",
             marginInline: "40px", marginBottom: "32px",
           }}
         />
@@ -170,8 +170,8 @@ export default function LoginPage() {
             <button className = "tracking-tight"
               style={{
                 padding: "14px 56px",
-                background: "rgb(0, 0, 0)",
-                color: "#fff", border: "none", borderRadius: "10px",
+                background: "#1A1A1A",
+                color: "#F5F5F5", border: "none", borderRadius: "10px",
                 fontSize: "16px", fontWeight: 700, letterSpacing: "0.04em",
                 cursor: "pointer",
                 transition: "all 0.2s ease",
