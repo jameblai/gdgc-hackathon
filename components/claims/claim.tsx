@@ -22,10 +22,10 @@ export function Claim({ claim }: { claim: ClaimWithUser }) {
 
         <div className="flex gap-1">
           <Button size="sm" variant="outline">
-            Attest <ShieldIcon className="text-green-600" />
+            Support <ShieldIcon className="text-green-600" />
           </Button>
           <Button size="sm" variant="outline">
-            Denounce
+            Oppose
             <ShieldIcon className="text-red-600" />
           </Button>
           <Button size="sm" variant="outline">
