@@ -1,46 +1,17 @@
 "use server";
 
 import { and, eq, inArray } from "drizzle-orm";
-import { redirect } from "next/navigation";
-import { z } from "zod";
 
-import { validateRequest } from "@/lib/auth";
+import { requireUser } from "@/lib/auth/require-user";
 import { db } from "@/lib/db";
-import { listingCategory, listingPhotos, listings } from "@/lib/db/schema";
+import { listingPhotos, listings } from "@/lib/db/schema";
 import { actionClient } from "@/lib/safe-action";
 import { utapi } from "@/lib/uploadthing-server";
-
-const uploadedImageSchema = z.object({
-  fileKey: z.string().min(1),
-  url: z.string().url(),
-});
-
-const listingFieldsSchema = z.object({
-  category: z.enum(listingCategory.enumValues),
-  description: z.string().trim().min(1, "Enter a description.").max(2000),
-  images: z.array(uploadedImageSchema).max(6).default([]),
-  location: z.string().trim().min(1, "Enter a location.").max(160),
-  name: z.string().trim().min(1, "Enter a name.").max(160),
-});
-
-const updateListingSchema = listingFieldsSchema.extend({
-  existingPhotoIds: z.array(z.string().min(1)).default([]),
-  id: z.string().min(1),
-});
-
-const deleteListingSchema = z.object({
-  id: z.string().min(1),
-});
-
-async function requireUser() {
-  const { user } = await validateRequest();
-
-  if (!user) {
-    redirect("/login");
-  }
-
-  return user;
-}
+import {
+  deleteListingSchema,
+  listingFieldsSchema,
+  updateListingSchema,
+} from "./schema";
 
 export const createListingAction = actionClient
   .inputSchema(listingFieldsSchema)
