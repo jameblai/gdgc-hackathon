@@ -5,6 +5,7 @@ import {
   integer,
   pgEnum,
   pgTable,
+  real,
   text,
   timestamp,
   uniqueIndex,
@@ -22,6 +23,11 @@ export const users = pgTable(
     occupation: text("occupation").notNull().default(""),
     company: text("company").notNull().default(""),
     avatarUrl: text("avatar_url"),
+    baseTrust: real("base_trust").default(0).notNull(),
+    claimAccuracyScore: real("claim_accuracy_score").default(0).notNull(),
+    attestationAccuracyScore: real("attestation_accuracy_score").default(0).notNull(),
+    participationScore: real("participation_score").default(0).notNull(),
+    reciprocityPenaltyFactor: real("reciprocity_penalty_factor").default(0).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -40,6 +46,7 @@ export const userDomains = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     domain: text("domain").notNull(),
+    trust: real("trust").default(0).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -325,8 +332,8 @@ export const listingPhotosRelations = relations(listingPhotos, ({ one }) => ({
 }));
 
 export const attestationType = pgEnum("attestation_type", [
-  "attest",
-  "denounce",
+  "support",
+  "oppose",
   "unsure",
 ]);
 
@@ -338,6 +345,9 @@ export const claims = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     details: text("details").notNull(),
+    domain: text("domain"),
+    claimType: integer("claim_type"),
+    status: text("status"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -367,6 +377,7 @@ export const attestations = pgTable(
       .notNull()
       .references(() => claims.id, { onDelete: "cascade" }),
     type: attestationType("type").notNull(),
+    graphDistance: integer("graph_distance").default(0).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
