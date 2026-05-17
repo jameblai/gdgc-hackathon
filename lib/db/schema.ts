@@ -25,9 +25,13 @@ export const users = pgTable(
     avatarUrl: text("avatar_url"),
     baseTrust: real("base_trust").default(0).notNull(),
     claimAccuracyScore: real("claim_accuracy_score").default(0).notNull(),
-    attestationAccuracyScore: real("attestation_accuracy_score").default(0).notNull(),
+    attestationAccuracyScore: real("attestation_accuracy_score")
+      .default(0)
+      .notNull(),
     participationScore: real("participation_score").default(0).notNull(),
-    reciprocityPenaltyFactor: real("reciprocity_penalty_factor").default(0).notNull(),
+    reciprocityPenaltyFactor: real("reciprocity_penalty_factor")
+      .default(0)
+      .notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -337,7 +341,7 @@ export const attestationType = pgEnum("attestation_type", [
   "unsure",
 ]);
 
-export const claimTypeEnum = pgEnum("claim_type", [
+export const claimType = pgEnum("claim_type", [
   "biographical",
   "relational",
   "event",
@@ -354,7 +358,7 @@ export const claims = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     details: text("details").notNull(),
     domain: text("domain"),
-    claimType: claimTypeEnum("claim_type"),
+    claimType: claimType("claim_type"),
     status: text("status"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()

@@ -9,7 +9,7 @@ import {
   chatParticipants,
   chatMessages,
   chats,
-  claimTypeEnum,
+  claimType,
   claims,
   listingCategory,
   listingPhotos,
@@ -119,4 +119,4 @@ export type AttestationWithUserAndClaim = AttestationWithUser & {
 };
 
 export type AttestationType = (typeof attestationType.enumValues)[number];
-export type ClaimType = (typeof claimTypeEnum.enumValues)[number];
+export type ClaimType = (typeof claimType.enumValues)[number];
