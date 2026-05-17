@@ -46,7 +46,7 @@ export default async function ClaimsPage() {
               href="/"
             >
               <PlusIcon />
-              New Claim
+              Submit Claim
             </Link>
           </section>
 
