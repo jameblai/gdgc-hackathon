@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@node-rs/argon2"],
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         hostname: "placehold.co",
@@ -17,6 +18,10 @@ const nextConfig: NextConfig = {
       {
         hostname: "utfs.io",
         pathname: "/f/*",
+        protocol: "https",
+      },
+      {
+        hostname: "api.dicebear.com",
         protocol: "https",
       },
     ],

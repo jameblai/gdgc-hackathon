@@ -19,6 +19,8 @@ export default function HomePage() {
         .card-2 { animation-delay: 0.2s; }
         .card-3 { animation-delay: 0.3s; }
         .card-4 { animation-delay: 0.4s; }
+        .card-5 { animation-delay: 0.5s; }
+        .card-6 { animation-delay: 0.6s; }
         .sparkle { animation: sparkle 2s ease-in-out infinite; }
         .sparkle-2 { animation-delay: 0.4s; }
         .sparkle-3 { animation-delay: 0.8s; }
@@ -28,6 +30,8 @@ export default function HomePage() {
         .btn-listings:hover { background: #1d4ed8; }
         .btn-contact:hover  { background: #166534; }
         .btn-property:hover { background: #b45309; }
+        .btn-skills:hover   { background: #0f766e; }
+        .btn-challenge:hover { background: #991b1b; }
       `}</style>
 
       {/* ── Outer card ── */}
@@ -655,6 +659,192 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
+
+          {/* ── Skills card ── */}
+          <div className="card card-5 group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <div className="absolute bottom-0 left-0 h-48 w-48 -translate-x-16 translate-y-16 rounded-full bg-teal-100 opacity-60 transition-opacity group-hover:opacity-80" />
+
+            <div className="relative flex flex-1 flex-col items-center px-7 pt-10 pb-8">
+              <div className="relative mb-6 flex h-36 w-36 items-center justify-center rounded-full bg-teal-50 transition-colors group-hover:bg-teal-100">
+                <svg
+                  viewBox="0 0 8 8"
+                  fill="#2dd4bf"
+                  className="sparkle absolute top-5 right-5 h-3 w-3"
+                >
+                  <path d="M4 0l.5 3.5L8 4l-3.5.5L4 8l-.5-3.5L0 4l3.5-.5z" />
+                </svg>
+                <svg
+                  viewBox="0 0 8 8"
+                  fill="#5eead4"
+                  className="sparkle sparkle-2 absolute right-6 bottom-6 h-2 w-2"
+                >
+                  <path d="M4 0l.5 3.5L8 4l-3.5.5L4 8l-.5-3.5L0 4l3.5-.5z" />
+                </svg>
+                <svg
+                  viewBox="0 0 8 8"
+                  fill="#2dd4bf"
+                  className="sparkle sparkle-4 absolute top-6 left-5 h-2 w-2"
+                >
+                  <path d="M4 0l.5 3.5L8 4l-3.5.5L4 8l-.5-3.5L0 4l3.5-.5z" />
+                </svg>
+
+                {/* Star / badge SVG */}
+                <svg
+                  viewBox="0 0 80 80"
+                  fill="none"
+                  className="h-20 w-20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* Star */}
+                  <path
+                    d="M40 6 L48 30 L74 30 L54 46 L62 70 L40 56 L18 70 L26 46 L6 30 L32 30Z"
+                    fill="#ccfbf1"
+                    stroke="#0d9488"
+                    strokeWidth="2.5"
+                    strokeLinejoin="round"
+                  />
+                  {/* Check mark inside star */}
+                  <path
+                    d="M30 38 L38 46 L52 32"
+                    stroke="#0d9488"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill="none"
+                  />
+                </svg>
+              </div>
+
+              <h2 className="mb-3 text-2xl font-bold text-teal-700">
+                Skills
+              </h2>
+              <p className="mb-8 flex-1 text-center text-sm leading-relaxed text-gray-500">
+                Verify and showcase your skills with our proof-based system.
+              </p>
+
+              <Link
+                className="btn-skills flex w-full items-center justify-center gap-3 rounded-xl bg-teal-600 px-6 py-3.5 text-sm font-semibold text-white transition-colors duration-200"
+                href="/skills"
+              >
+                Prove Skills
+                <svg
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="h-4 w-4 shrink-0"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M3 10a1 1 0 011-1h9.586L11.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L13.586 11H4a1 1 0 01-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
+
+          {/* ── Challenge card ── */}
+          <div className="card card-6 group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <div className="absolute right-0 bottom-0 h-48 w-48 translate-x-16 translate-y-16 rounded-full bg-red-100 opacity-60 transition-opacity group-hover:opacity-80" />
+
+            <div className="relative flex flex-1 flex-col items-center px-7 pt-10 pb-8">
+              <div className="relative mb-6 flex h-36 w-36 items-center justify-center rounded-full bg-red-50 transition-colors group-hover:bg-red-100">
+                <svg
+                  viewBox="0 0 8 8"
+                  fill="#f87171"
+                  className="sparkle absolute top-4 left-5 h-3 w-3"
+                >
+                  <path d="M4 0l.5 3.5L8 4l-3.5.5L4 8l-.5-3.5L0 4l3.5-.5z" />
+                </svg>
+                <svg
+                  viewBox="0 0 8 8"
+                  fill="#fca5a5"
+                  className="sparkle sparkle-2 absolute top-6 right-5 h-2 w-2"
+                >
+                  <path d="M4 0l.5 3.5L8 4l-3.5.5L4 8l-.5-3.5L0 4l3.5-.5z" />
+                </svg>
+                <svg
+                  viewBox="0 0 8 8"
+                  fill="#f87171"
+                  className="sparkle sparkle-3 absolute bottom-5 left-7 h-2 w-2"
+                >
+                  <path d="M4 0l.5 3.5L8 4l-3.5.5L4 8l-.5-3.5L0 4l3.5-.5z" />
+                </svg>
+
+                {/* Target / Challenge SVG */}
+                <svg
+                  viewBox="0 0 80 80"
+                  fill="none"
+                  className="h-20 w-20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* Outer ring */}
+                  <circle
+                    cx="40"
+                    cy="40"
+                    r="30"
+                    fill="#fee2e2"
+                    stroke="#dc2626"
+                    strokeWidth="2.5"
+                  />
+                  {/* Middle ring */}
+                  <circle
+                    cx="40"
+                    cy="40"
+                    r="18"
+                    fill="white"
+                    stroke="#dc2626"
+                    strokeWidth="2"
+                  />
+                  {/* Inner bullseye */}
+                  <circle
+                    cx="40"
+                    cy="40"
+                    r="8"
+                    fill="#dc2626"
+                  />
+                  {/* Arrow */}
+                  <line
+                    x1="58"
+                    y1="22"
+                    x2="46"
+                    y2="34"
+                    stroke="#991b1b"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+                  <polygon
+                    points="58,22 52,24 54,28"
+                    fill="#991b1b"
+                  />
+                </svg>
+              </div>
+
+              <h2 className="mb-3 text-2xl font-bold text-red-700">
+                Challenge
+              </h2>
+              <p className="mb-8 flex-1 text-center text-sm leading-relaxed text-gray-500">
+                Assess and verify skills with our interactive challenge system.
+              </p>
+
+              <Link
+                className="btn-challenge flex w-full items-center justify-center gap-3 rounded-xl bg-red-600 px-6 py-3.5 text-sm font-semibold text-white transition-colors duration-200"
+                href="/challenge"
+              >
+                Start Challenge
+                <svg
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="h-4 w-4 shrink-0"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M3 10a1 1 0 011-1h9.586L11.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L13.586 11H4a1 1 0 01-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
         </div>
 
         {/* ── Safety footer ── */}
@@ -681,7 +871,7 @@ export default function HomePage() {
             <span className="font-bold text-gray-800">
               Your safety is our priority.
             </span>{" "}
-            We're here to support and protect our community.
+            We&apos;re here to support and protect our community.
           </p>
         </div>
       </div>
