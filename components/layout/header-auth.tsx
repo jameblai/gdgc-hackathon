@@ -19,6 +19,16 @@ export function HeaderAuth({ user }: { user: { name: string } | null }) {
       >
         Listings
       </Link>
+      <Link
+        className={cn(
+          buttonVariants({
+            variant: "ghost",
+          }),
+        )}
+        href="/claims"
+      >
+        Claims
+      </Link>
       {user ? (
         <LogoutButton />
       ) : (
