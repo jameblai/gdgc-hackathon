@@ -337,6 +337,14 @@ export const attestationType = pgEnum("attestation_type", [
   "unsure",
 ]);
 
+export const claimTypeEnum = pgEnum("claim_type", [
+  "biographical",
+  "relational",
+  "event",
+  "ownership",
+  "skill",
+]);
+
 export const claims = pgTable(
   "claims",
   {
@@ -346,7 +354,7 @@ export const claims = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     details: text("details").notNull(),
     domain: text("domain"),
-    claimType: integer("claim_type"),
+    claimType: claimTypeEnum("claim_type"),
     status: text("status"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()

@@ -9,6 +9,7 @@ import {
   chatParticipants,
   chatMessages,
   chats,
+  claimTypeEnum,
   claims,
   listingCategory,
   listingPhotos,
@@ -35,6 +36,13 @@ export type UserWithChatParticipants = User & {
 export type UserWithChatMessages = User & { chatMessages: ChatMessage[] };
 export type UserWithClaims = User & { claims: Claim[] };
 export type UserWithAttestations = User & { attestations: Attestation[] };
+export type UserWithSessions = User & { sessions: Session[] };
+export type UserWithDomainsAndTrust = User & { domains: UserDomain[] };
+export type UserDomainWithUser = UserDomain & { user: User };
+export type UserWithClaimsAndAttestations = User & {
+  claims: ClaimWithAttestations[];
+  attestations: AttestationWithClaim[];
+};
 
 export type Session = InferSelectModel<typeof sessions>;
 export type NewSession = InferInsertModel<typeof sessions>;
@@ -111,3 +119,4 @@ export type AttestationWithUserAndClaim = AttestationWithUser & {
 };
 
 export type AttestationType = (typeof attestationType.enumValues)[number];
+export type ClaimType = (typeof claimTypeEnum.enumValues)[number];
