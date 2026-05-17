@@ -12,6 +12,7 @@ import { Typography } from "@/components/ui/typography";
 import type { ListingWithUserAndPhotos } from "@/lib/db/types";
 
 import { getInitials } from "./utils";
+import Link from "next/link";
 
 function ListingDetail({ listing }: { listing: ListingWithUserAndPhotos }) {
   return (
@@ -55,7 +56,10 @@ function ListingDetail({ listing }: { listing: ListingWithUserAndPhotos }) {
         <Separator />
 
         <section>
-          <div className="flex items-center gap-2">
+          <Link
+            className="flex items-center gap-2"
+            href="/features/profilePage"
+          >
             <Avatar size="lg">
               {listing.user.avatarUrl ? (
                 <AvatarImage
@@ -66,7 +70,7 @@ function ListingDetail({ listing }: { listing: ListingWithUserAndPhotos }) {
               <AvatarFallback>{getInitials(listing.user.name)}</AvatarFallback>
             </Avatar>
             <Typography>{listing.user.name}</Typography>
-          </div>
+          </Link>
         </section>
       </div>
     </aside>
