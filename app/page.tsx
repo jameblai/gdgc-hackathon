@@ -574,8 +574,22 @@ export default function HomePage() {
                     stroke="#d97706"
                     strokeWidth="1.5"
                   />
-                  <line x1="27" y1="40" x2="27" y2="50" stroke="#d97706" strokeWidth="1" />
-                  <line x1="22" y1="45" x2="32" y2="45" stroke="#d97706" strokeWidth="1" />
+                  <line
+                    x1="27"
+                    y1="40"
+                    x2="27"
+                    y2="50"
+                    stroke="#d97706"
+                    strokeWidth="1"
+                  />
+                  <line
+                    x1="22"
+                    y1="45"
+                    x2="32"
+                    y2="45"
+                    stroke="#d97706"
+                    strokeWidth="1"
+                  />
                   {/* Window right */}
                   <rect
                     x="48"
@@ -587,8 +601,22 @@ export default function HomePage() {
                     stroke="#d97706"
                     strokeWidth="1.5"
                   />
-                  <line x1="53" y1="40" x2="53" y2="50" stroke="#d97706" strokeWidth="1" />
-                  <line x1="48" y1="45" x2="58" y2="45" stroke="#d97706" strokeWidth="1" />
+                  <line
+                    x1="53"
+                    y1="40"
+                    x2="53"
+                    y2="50"
+                    stroke="#d97706"
+                    strokeWidth="1"
+                  />
+                  <line
+                    x1="48"
+                    y1="45"
+                    x2="58"
+                    y2="45"
+                    stroke="#d97706"
+                    strokeWidth="1"
+                  />
                   {/* Chimney */}
                   <rect
                     x="52"
