@@ -151,6 +151,7 @@ useEffect(() => {
     const id = nextId.current++;
 
     const msg: Message = { id, from: "me", text, time: formatTime() };
+    console.log("socket:", socketRef.current?.id);
 
     socketRef.current?.emit("message", {
     conversationId: activeId,
@@ -213,7 +214,7 @@ useEffect(() => {
               placeholder="Search"
               style={{
                 background: "none", border: "none", fontSize: 13.5,
-                color: "#ccc", width: "100%", fontFamily: "inherit", outline: "none",
+                color: "#121111", width: "100%", fontFamily: "inherit", outline: "none",
               }}
             />
           </div>
