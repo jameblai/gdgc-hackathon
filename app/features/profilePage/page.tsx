@@ -153,7 +153,7 @@ const LISTINGS: Listing[] = [
     id: 1,
     title: "First aid kits",
     location: "Wellington CBD",
-    imageUrl: "https://placehold.co/800x600/png?text=First+Aid+Kits",
+    imageUrl: "https://aoyko8hmkd.ufs.sh/f/StjbtwiwCO7WTOqlA8o3dVJiG42c9X0eayC6kfYgrMlvqsBL",
   },
 ];
 

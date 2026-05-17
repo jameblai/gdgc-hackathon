@@ -1,10 +1,14 @@
 import { Claim } from "@/components/claims/claim";
+import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Typography } from "@/components/ui/typography";
 import { requireUser } from "@/lib/auth/require-user";
 import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { attestations } from "@/lib/db/schema";
+import { cn } from "@/lib/utils";
+import { PlusIcon } from "lucide-react";
+import Link from "next/link";
 
 export default async function ClaimsPage() {
   const user = await requireUser();
@@ -25,12 +29,25 @@ export default async function ClaimsPage() {
     <Container>
       <main className="space-y-8 py-6 md:py-10">
         <div className="space-y-8">
-          <section className="space-y-1">
-            <Typography variant="h1">Claims</Typography>
-            <Typography variant="lead">
-              View and attest to claims made by people in your network. Support,
-              oppose, or express uncertainty about each claim.
-            </Typography>
+          <section className="flex items-start justify-between gap-4">
+            <div className="space-y-1">
+              <Typography variant="h1">Claims</Typography>
+              <Typography variant="lead">
+                View and attest to claims made by people in your network. Support,
+                oppose, or express uncertainty about each claim.
+              </Typography>
+            </div>
+            <Link
+              className={cn(
+                buttonVariants({
+                  variant: "default",
+                }),
+              )}
+              href="/"
+            >
+              <PlusIcon />
+              New Claim
+            </Link>
           </section>
 
           <section className="space-y-6">

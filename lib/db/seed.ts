@@ -184,7 +184,7 @@ async function seed() {
       {
         id: "photo_first_aid_1",
         listingId: "listing_first_aid",
-        url: "https://placehold.co/800x600/png?text=First+Aid+Kits",
+        url: "https://aoyko8hmkd.ufs.sh/f/StjbtwiwCO7WTOqlA8o3dVJiG42c9X0eayC6kfYgrMlvqsBL",
         sortOrder: 0,
         createdAt: now,
         updatedAt: now,
@@ -192,7 +192,7 @@ async function seed() {
       {
         id: "photo_meal_boxes_1",
         listingId: "listing_meal_boxes",
-        url: "https://placehold.co/800x600/png?text=Meal+Boxes",
+        url: "https://aoyko8hmkd.ufs.sh/f/StjbtwiwCO7WArVBXEqHCIDw5eBQAWTZtGfLVUkbzvagXoMJ",
         sortOrder: 0,
         createdAt: now,
         updatedAt: now,
@@ -200,7 +200,7 @@ async function seed() {
       {
         id: "photo_jackets_1",
         listingId: "listing_winter_jackets",
-        url: "https://placehold.co/800x600/png?text=Winter+Jackets",
+        url: "https://aoyko8hmkd.ufs.sh/f/StjbtwiwCO7WV3GfhAGyhx8HXEqien2UWuwYScfPot9dbVgp",
         sortOrder: 0,
         createdAt: now,
         updatedAt: now,
