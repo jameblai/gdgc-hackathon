@@ -3,8 +3,11 @@
 import { useState, useRef, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
  
 type Status = "online" | "away" | "offline";
  
@@ -53,6 +56,7 @@ const SEED_MESSAGES: Conversations = {
     { id: 8, from: "them", text: "happy birthday!! hope you have a great day 🎉", time: "Last week" },
   ],
 };
+
  
 function formatTime(): string {
   return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -98,6 +102,8 @@ export function ChatPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef  = useRef<HTMLTextAreaElement>(null);
   const nextId    = useRef(9);
+const socketRef = useRef<Socket | null>(null);
+
  
   const contact  = CONTACTS.find((c) => c.id === activeId) ?? CONTACTS[0];
   const messages: Message[] = conversations[activeId] ?? [];
@@ -114,6 +120,7 @@ export function ChatPage() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, activeId]);
+<<<<<<< Updated upstream
   // Connect to socket server on mount
 useEffect(() => {
   socketRef.current = io("http://localhost:4000");
@@ -143,11 +150,34 @@ useEffect(() => {
   socketRef.current?.emit("join", activeId);
 }, [activeId]);
   
+=======
+  // Connect to socket server on mount 
+  useEffect(() => {
+    socketRef.current = io("http://localhost:4000");
+
+    socketRef.current.on("message", (msg: Message) => {
+      setConversations((prev) => ({
+        ...prev,
+         [activeId]: [...(prev[activeId] ?? []), msg],
+      }));
+    });
+    return() => {
+      socketRef.current?.disconnect();
+    };
+  
+  }, []);
+  // Join from switch conversations
+  useEffect(() => {
+  socketRef.current?.emit("join", activeId);
+}, [activeId]);
+
+>>>>>>> Stashed changes
  
   const handleSend = () => {
     const text = input.trim();
     if (!text) return;
     setInput("");
+
     const id = nextId.current++;
 
     const msg: Message = { id, from: "me", text, time: formatTime() };
@@ -383,7 +413,6 @@ useEffect(() => {
         </div>
  
       </div>
-      {/* ── END Chat panel ── */}
  
     </div>
   );

@@ -35,7 +35,11 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn(
+<<<<<<< Updated upstream
         "group/calendar bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:--spacing(7)] in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:bg-transparent",
+=======
+        "group/calendar bg-background p-3 [--cell-radius:var(--radius-md)] [--cell-size:--spacing(8)] in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:bg-transparent",
+>>>>>>> Stashed changes
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className,
@@ -202,6 +206,10 @@ function CalendarDayButton({
 
   return (
     <Button
+<<<<<<< Updated upstream
+=======
+      ref={ref}
+>>>>>>> Stashed changes
       variant="ghost"
       size="icon"
       data-day={day.date.toLocaleDateString(locale?.code)}

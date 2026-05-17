@@ -1,7 +1,11 @@
 "use client";
 
 import * as React from "react";
+<<<<<<< Updated upstream
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
+=======
+import { Avatar as AvatarPrimitive } from "radix-ui";
+>>>>>>> Stashed changes
 
 import { cn } from "@/lib/utils";
 
@@ -9,7 +13,11 @@ function Avatar({
   className,
   size = "default",
   ...props
+<<<<<<< Updated upstream
 }: AvatarPrimitive.Root.Props & {
+=======
+}: React.ComponentProps<typeof AvatarPrimitive.Root> & {
+>>>>>>> Stashed changes
   size?: "default" | "sm" | "lg";
 }) {
   return (
@@ -25,7 +33,14 @@ function Avatar({
   );
 }
 
+<<<<<<< Updated upstream
 function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
+=======
+function AvatarImage({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+>>>>>>> Stashed changes
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
@@ -41,7 +56,11 @@ function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
 function AvatarFallback({
   className,
   ...props
+<<<<<<< Updated upstream
 }: AvatarPrimitive.Fallback.Props) {
+=======
+}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
+>>>>>>> Stashed changes
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"

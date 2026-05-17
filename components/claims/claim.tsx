@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 "use client";
 
 import { useState } from "react";
@@ -59,18 +60,35 @@ export function Claim({
   return (
     <div className="flex gap-4 items-start">
       <Avatar className="size-10 shrink-0">
+=======
+import type { ClaimWithUser } from "@/lib/db/types";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
+import { ShieldIcon, ShieldQuestionMarkIcon } from "lucide-react";
+import { Typography } from "../ui/typography";
+
+export function Claim({ claim }: { claim: ClaimWithUser }) {
+  return (
+    <div className="flex gap-2">
+      <Avatar className="size-10">
+>>>>>>> Stashed changes
         {claim.user.avatarUrl && (
           <AvatarImage src={claim.user.avatarUrl} alt={claim.user.name} />
         )}
         <AvatarFallback>{claim.user.name[0]}</AvatarFallback>
       </Avatar>
 
+<<<<<<< Updated upstream
       <div className="space-y-2 flex-1">
+=======
+      <div className="space-y-2">
+>>>>>>> Stashed changes
         <div className="space-y-1">
           <Typography variant="label">{claim.user.name} claims</Typography>
           <Typography variant="smallMuted">{claim.details}</Typography>
         </div>
 
+<<<<<<< Updated upstream
         <div className="flex flex-wrap gap-2 items-center">
           <Button
             size="sm"
@@ -110,6 +128,20 @@ export function Claim({
               Remove
             </Button>
           )}
+=======
+        <div className="flex gap-1">
+          <Button size="sm" variant="outline">
+            Attest <ShieldIcon className="text-green-600" />
+          </Button>
+          <Button size="sm" variant="outline">
+            Denounce
+            <ShieldIcon className="text-red-600" />
+          </Button>
+          <Button size="sm" variant="outline">
+            Unsure
+            <ShieldQuestionMarkIcon className="text-amber-600" />
+          </Button>
+>>>>>>> Stashed changes
         </div>
       </div>
     </div>

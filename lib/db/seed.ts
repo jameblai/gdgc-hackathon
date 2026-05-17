@@ -3,7 +3,10 @@ import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
+<<<<<<< Updated upstream
 import { hashPassword } from "@/lib/auth/password";
+=======
+>>>>>>> Stashed changes
 import {
   assetEvidence,
   assets,
@@ -14,8 +17,11 @@ import {
   claims,
   listingPhotos,
   listings,
+<<<<<<< Updated upstream
   sessions,
   userDomains,
+=======
+>>>>>>> Stashed changes
   users,
 } from "@/lib/db/schema";
 
@@ -37,11 +43,15 @@ async function seed() {
     await tx.delete(chatMessages);
     await tx.delete(chatParticipants);
     await tx.delete(chats);
+<<<<<<< Updated upstream
     await tx.delete(sessions);
+=======
+>>>>>>> Stashed changes
     await tx.delete(assetEvidence);
     await tx.delete(assets);
     await tx.delete(listingPhotos);
     await tx.delete(listings);
+<<<<<<< Updated upstream
     await tx.delete(userDomains);
     await tx.delete(users);
 
@@ -53,39 +63,60 @@ async function seed() {
         username: "maya",
         name: "Maya",
         passwordHash,
+=======
+    await tx.delete(users);
+
+    await tx.insert(users).values([
+      {
+        id: "user_maya",
+        name: "Maya Patel",
+>>>>>>> Stashed changes
         avatarUrl: "https://i.pravatar.cc/160?img=47",
         createdAt: now,
         updatedAt: now,
       },
       {
         id: "user_noah",
+<<<<<<< Updated upstream
         username: "noah",
         name: "Noah",
         passwordHash,
+=======
+        name: "Noah Williams",
+>>>>>>> Stashed changes
         avatarUrl: "https://i.pravatar.cc/160?img=12",
         createdAt: now,
         updatedAt: now,
       },
       {
         id: "user_ava",
+<<<<<<< Updated upstream
         username: "ava",
         name: "Ava",
         passwordHash,
+=======
+        name: "Ava Chen",
+>>>>>>> Stashed changes
         avatarUrl: "https://i.pravatar.cc/160?img=32",
         createdAt: now,
         updatedAt: now,
       },
       {
         id: "user_leo",
+<<<<<<< Updated upstream
         username: "leo",
         name: "Leo",
         passwordHash,
+=======
+        name: "Leo Thompson",
+>>>>>>> Stashed changes
         avatarUrl: "https://i.pravatar.cc/160?img=68",
         createdAt: now,
         updatedAt: now,
       },
     ]);
 
+<<<<<<< Updated upstream
     await tx.insert(userDomains).values([
       {
         id: "domain_maya_first_aid",
@@ -117,6 +148,8 @@ async function seed() {
       },
     ]);
 
+=======
+>>>>>>> Stashed changes
     await tx.insert(listings).values([
       {
         id: "listing_first_aid",
@@ -347,7 +380,11 @@ async function seed() {
         id: "attestation_noah_maya",
         userId: "user_noah",
         claimId: "claim_maya_verified",
+<<<<<<< Updated upstream
         type: "support",
+=======
+        type: "attest",
+>>>>>>> Stashed changes
         createdAt: now,
         updatedAt: now,
       },
@@ -355,7 +392,11 @@ async function seed() {
         id: "attestation_ava_maya",
         userId: "user_ava",
         claimId: "claim_maya_verified",
+<<<<<<< Updated upstream
         type: "support",
+=======
+        type: "attest",
+>>>>>>> Stashed changes
         createdAt: now,
         updatedAt: now,
       },

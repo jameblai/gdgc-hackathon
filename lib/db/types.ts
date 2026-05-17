@@ -22,6 +22,7 @@ import {
 
 export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;
+<<<<<<< Updated upstream
 export type UserDomain = InferSelectModel<typeof userDomains>;
 export type NewUserDomain = InferInsertModel<typeof userDomains>;
 export type UserWithDomains = User & { domains: UserDomain[] };
@@ -29,6 +30,9 @@ export type UserWithListings = User & { listings: Listing[] };
 export type UserWithListingsAndDomains = UserWithListings & {
   domains: UserDomain[];
 };
+=======
+export type UserWithListings = User & { listings: Listing[] };
+>>>>>>> Stashed changes
 export type UserWithAssets = User & { assets: Asset[] };
 export type UserWithChatParticipants = User & {
   chatParticipants: ChatParticipant[];
@@ -36,6 +40,7 @@ export type UserWithChatParticipants = User & {
 export type UserWithChatMessages = User & { chatMessages: ChatMessage[] };
 export type UserWithClaims = User & { claims: Claim[] };
 export type UserWithAttestations = User & { attestations: Attestation[] };
+<<<<<<< Updated upstream
 export type UserWithSessions = User & { sessions: Session[] };
 export type UserWithDomainsAndTrust = User & { domains: UserDomain[] };
 export type UserDomainWithUser = UserDomain & { user: User };
@@ -47,6 +52,8 @@ export type UserWithClaimsAndAttestations = User & {
 export type Session = InferSelectModel<typeof sessions>;
 export type NewSession = InferInsertModel<typeof sessions>;
 export type SessionWithUser = Session & { user: User };
+=======
+>>>>>>> Stashed changes
 
 export type Listing = InferSelectModel<typeof listings>;
 export type NewListing = InferInsertModel<typeof listings>;
