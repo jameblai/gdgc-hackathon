@@ -83,12 +83,14 @@ function ListingForm(props: ListingFormProps) {
   const router = useRouter();
   const createAction = useAction(createListingAction, {
     onSuccess: ({ data }) => {
-      router.push(`/listings/${data.id}`);
+      if (data && "id" in data) {
+        router.push(`/listings/${data.id}`);
+      }
     },
   });
   const updateAction = useAction(updateListingAction, {
     onSuccess: ({ data }) => {
-      if (!data.error) {
+      if (data && "id" in data) {
         router.push(`/listings/${data.id}`);
       }
     },
@@ -105,7 +107,9 @@ function ListingForm(props: ListingFormProps) {
   const totalImages = existingPhotos.length + uploadedImages.length;
   const isPending = createAction.isPending || updateAction.isPending;
   const actionError =
-    props.mode === "edit" ? updateAction.result.data?.error : undefined;
+    props.mode === "edit" && updateAction.result.data && "error" in updateAction.result.data
+      ? updateAction.result.data.error
+      : undefined;
 
   const form = useForm({
     defaultValues: {

@@ -50,9 +50,9 @@ export const createAssetAction = actionClient
         name: parsedInput.name,
         userId: user.id,
       })
-      .returning({ id: assets.id });
+      .returning();
 
-    return { id: asset.id };
+    return asset;
   });
 
 export const updateAssetAction = actionClient
@@ -68,13 +68,13 @@ export const updateAssetAction = actionClient
         updatedAt: new Date(),
       })
       .where(and(eq(assets.id, parsedInput.id), eq(assets.userId, user.id)))
-      .returning({ id: assets.id });
+      .returning();
 
     if (!asset) {
       return { error: "Asset not found." };
     }
 
-    return { id: asset.id };
+    return asset;
   });
 
 export const deleteAssetAction = actionClient
@@ -85,13 +85,13 @@ export const deleteAssetAction = actionClient
     const [asset] = await db
       .delete(assets)
       .where(and(eq(assets.id, parsedInput.id), eq(assets.userId, user.id)))
-      .returning({ id: assets.id });
+      .returning();
 
     if (!asset) {
       return { error: "Asset not found." };
     }
 
-    return { success: true };
+    return asset;
   });
 
 export const addAssetEvidenceAction = actionClient
@@ -117,9 +117,9 @@ export const addAssetEvidenceAction = actionClient
         type: parsedInput.type,
         url: parsedInput.url,
       })
-      .returning({ id: assetEvidence.id });
+      .returning();
 
-    return { id: evidence.id };
+    return evidence;
   });
 
 export const deleteAssetEvidenceAction = actionClient
@@ -138,9 +138,12 @@ export const deleteAssetEvidenceAction = actionClient
       return { error: "Asset evidence not found." };
     }
 
-    await db.delete(assetEvidence).where(eq(assetEvidence.id, evidence.id));
+    const [deletedEvidence] = await db
+      .delete(assetEvidence)
+      .where(eq(assetEvidence.id, evidence.id))
+      .returning();
 
-    return { success: true };
+    return deletedEvidence;
   });
 
 export const updateAssetEvidenceAction = actionClient
@@ -167,12 +170,12 @@ export const updateAssetEvidenceAction = actionClient
         url: parsedInput.url,
       })
       .where(eq(assetEvidence.id, evidence.id))
-      .returning({ id: assetEvidence.id });
+      .returning();
 
     await db
       .update(assets)
       .set({ updatedAt: new Date() })
       .where(eq(assets.id, evidence.assetId));
 
-    return { id: updatedEvidence.id };
+    return updatedEvidence;
   });
