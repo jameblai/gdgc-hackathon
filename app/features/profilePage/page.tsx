@@ -1,5 +1,3 @@
-// since it uses usestate and useRef, need use client
-
 "use client";
 
 import { useState } from "react";
