@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import Link from "next/link";
 import { PlusIcon } from "lucide-react";
 
@@ -10,16 +9,6 @@ import { Typography } from "@/components/ui/typography";
 import { db } from "@/lib/db";
 import { listingPhotos, listings as listingsTable } from "@/lib/db/schema";
 import { desc, eq } from "drizzle-orm";
-=======
-import { desc, eq } from "drizzle-orm";
-
-import { ListingCard } from "@/components/listings/listing-card";
-import { Container } from "@/components/ui/container";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Typography } from "@/components/ui/typography";
-import { db } from "@/lib/db";
-import { listingPhotos, listings as listingsTable } from "@/lib/db/schema";
->>>>>>> Stashed changes
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +25,6 @@ export default async function ListingsPage() {
   });
 
   return (
-<<<<<<< Updated upstream
     <Container>
       <main className="space-y-8 py-6 md:py-10">
         <div className="space-y-8">
@@ -60,16 +48,6 @@ export default async function ListingsPage() {
             </Link>
           </section>
 
-=======
-    <Container className="max-w-none px-0">
-      <main>
-        <header className="flex h-14 items-center gap-2 border-b px-4 md:hidden">
-          <SidebarTrigger />
-          <Typography variant="label">Listings</Typography>
-        </header>
-
-        <div className="p-4 md:p-6">
->>>>>>> Stashed changes
           <section className="space-y-4">
             {listings.length > 0 ? (
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

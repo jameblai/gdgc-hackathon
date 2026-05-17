@@ -46,12 +46,7 @@ function ListingDetail({ listing }: { listing: ListingWithUserAndPhotos }) {
 
         <Separator />
 
-<<<<<<< Updated upstream
         <section>
-=======
-        <section className="space-y-2">
-          <Typography variant="h3">Description</Typography>
->>>>>>> Stashed changes
           <Typography className="leading-relaxed" variant="small">
             {listing.description}
           </Typography>
@@ -59,12 +54,7 @@ function ListingDetail({ listing }: { listing: ListingWithUserAndPhotos }) {
 
         <Separator />
 
-<<<<<<< Updated upstream
         <section>
-=======
-        <section className="space-y-2">
-          <Typography variant="h3">Seller Information</Typography>
->>>>>>> Stashed changes
           <div className="flex items-center gap-2">
             <Avatar size="lg">
               {listing.user.avatarUrl ? (
@@ -75,11 +65,7 @@ function ListingDetail({ listing }: { listing: ListingWithUserAndPhotos }) {
               ) : null}
               <AvatarFallback>{getInitials(listing.user.name)}</AvatarFallback>
             </Avatar>
-<<<<<<< Updated upstream
             <Typography>{listing.user.name}</Typography>
-=======
-            <Typography variant="label">{listing.user.name}</Typography>
->>>>>>> Stashed changes
           </div>
         </section>
       </div>

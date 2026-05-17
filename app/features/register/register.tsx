@@ -6,11 +6,8 @@
 
 import * as React from "react";
 import { type CSSProperties, type ChangeEvent, useRef, useState } from "react";
-<<<<<<< Updated upstream
 import { useForm } from "@tanstack/react-form";
 import { useAction } from "next-safe-action/hooks";
-=======
->>>>>>> Stashed changes
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Field } from "@/components/ui/field";
@@ -21,40 +18,29 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-<<<<<<< Updated upstream
 import { registerAction } from "@/lib/auth/actions";
 import { registerSchema } from "@/lib/auth/schema";
 import { TagsInput } from "@/components/ui/tags-input";
-=======
->>>>>>> Stashed changes
 
 // ── Shadcn date picker ────────────────────────────────────────────────────────
 
 interface DatePickerSimpleProps {
   date: Date | undefined;
-<<<<<<< Updated upstream
   onBlur?: () => void;
-=======
->>>>>>> Stashed changes
   setDate: (date: Date | undefined) => void;
 }
 
 // date time picker
-<<<<<<< Updated upstream
 export function DatePickerSimple({
   date,
   onBlur,
   setDate,
 }: DatePickerSimpleProps) {
-=======
-export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
->>>>>>> Stashed changes
   const [open, setOpen] = React.useState(false);
 
   return (
     <Field>
       <Popover open={open} onOpenChange={setOpen}>
-<<<<<<< Updated upstream
         <PopoverTrigger
           render={
             <Button
@@ -79,30 +65,6 @@ export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
         >
           <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
           {date ? format(date, "PPP") : <span>Select date</span>}
-=======
-        <PopoverTrigger asChild>
-          <Button
-            className = "tracking-tight"
-            variant="outline"
-            id="date"
-            type="button" // Prevents accidental form submissions
-            style={{
-              width: "100%",
-              justifyContent: "flex-start",
-              fontWeight: 400,
-              background: "rgb(255, 255, 255)",
-              border: "2px solid rgb(0, 0, 0)",
-              color: date ? "#000000" : "rgb(0, 0, 0)",
-              borderRadius: "8px",
-              padding: "11px 14px",
-              fontSize: "14px",
-              cursor: "pointer",
-            }}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
-            {date ? format(date, "PPP") : <span>Select date</span>}
-          </Button>
->>>>>>> Stashed changes
         </PopoverTrigger>
 
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
@@ -124,51 +86,30 @@ export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
 
 // textboxes default
 function Input({
-<<<<<<< Updated upstream
   onBlur,
-=======
->>>>>>> Stashed changes
   placeholder,
   value,
   onChange,
   type = "text",
 }: {
-<<<<<<< Updated upstream
   onBlur?: () => void;
-=======
->>>>>>> Stashed changes
   onChange: (value: string) => void;
   placeholder: string;
   type?: string;
   value: string;
 }) {
-<<<<<<< Updated upstream
   return (
     <input
-=======
-  const [focused, setFocused] = useState(false);
-  return (
-    <input className = "tracking-tight"
->>>>>>> Stashed changes
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-<<<<<<< Updated upstream
       onBlur={onBlur}
-=======
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
->>>>>>> Stashed changes
       style={{
         width: "100%",
         padding: "11px 14px",
         borderRadius: "8px",
-<<<<<<< Updated upstream
         border: "1px solid rgb(0, 0, 0)",
-=======
-        border: "2px solid rgb(0, 0, 0)",
->>>>>>> Stashed changes
         background: "rgb(255, 255, 255)",
         color: "#000000",
         fontSize: "14px",
@@ -181,7 +122,6 @@ function Input({
   );
 }
 
-<<<<<<< Updated upstream
 function renderFieldErrors(errors: unknown[]) {
   if (errors.length === 0) {
     return null;
@@ -228,8 +168,6 @@ type RegisterFormValues = {
   username: string;
 };
 
-=======
->>>>>>> Stashed changes
 // font properties for headings and sub headings
 function Label({
   children,
@@ -240,11 +178,7 @@ function Label({
 }) {
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
-<<<<<<< Updated upstream
       <span
-=======
-      <span className = "tracking-tight"
->>>>>>> Stashed changes
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
@@ -277,7 +211,6 @@ function FieldGroup({
 
 // regestry form
 export default function RegistrationPage() {
-<<<<<<< Updated upstream
   const action = useAction(registerAction);
   const [photo, setPhoto] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -310,17 +243,6 @@ export default function RegistrationPage() {
   });
 
   const actionError = action.result.data?.error;
-=======
-  const [photo, setPhoto] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [dob, setDob] = useState<Date | undefined>(undefined); // ← replaces day/month/year
-  const [skills, setSkills] = useState("");
-  const [occupation, setOccupation] = useState("");
-  const [company, setCompany] = useState("");
-  const fileRef = useRef<HTMLInputElement>(null);
->>>>>>> Stashed changes
 
   const handlePhotoClick = () => fileRef.current?.click();
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -329,11 +251,7 @@ export default function RegistrationPage() {
   };
 
   return (
-<<<<<<< Updated upstream
     <div
-=======
-    <div className = "tracking-tight"
->>>>>>> Stashed changes
       style={{
         minHeight: "100vh",
         background: "rgb(255,255,255)",
@@ -344,52 +262,22 @@ export default function RegistrationPage() {
         boxSizing: "border-box",
       }}
     >
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
       {/* Card */}
       <div
         style={{
           width: "70%",
-<<<<<<< Updated upstream
           maxWidth: "700px",
           minWidth: "320px",
           background: "#ffffff",
           backdropFilter: "blur(20px)",
           borderRadius: "24px",
           border: "1px solid rgb(0, 0, 0)",
-=======
-          maxWidth: "900px",
-          minWidth: "320px",
-          background:"#CCCCCC",
-          backdropFilter: "blur(20px)",
-          borderRadius: "24px",
-          border: "2px solid rgb(0, 0, 0)",
->>>>>>> Stashed changes
           padding: "0 0 48px 0",
           position: "relative",
           zIndex: 1,
           overflow: "hidden",
         }}
       >
-<<<<<<< Updated upstream
-=======
-        {/* Top glow */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "60%",
-            height: "2px",
-            background:
-              "linear-gradient(90deg, transparent, rgba(179, 179, 179, 0.8), transparent)",
-          }}
-        />
-
->>>>>>> Stashed changes
         {/* Profile photo */}
         <div
           style={{
@@ -417,11 +305,6 @@ export default function RegistrationPage() {
                 ? `url(${photo}) center/cover`
                 : "radial-gradient(circle at 60% 35%, rgba(150, 150, 150, 1), rgba(150, 150, 150, 0.8))",
               border: "3px solid rgba(150, 150, 150, 0.6)",
-<<<<<<< Updated upstream
-=======
-              boxShadow:
-                "0 4px 32px rgba(150, 150, 150, 0.4), 0 0 0 6px rgba(150, 150, 150, 0.2)",
->>>>>>> Stashed changes
               cursor: "pointer",
               display: "flex",
               flexDirection: "column",
@@ -446,11 +329,7 @@ export default function RegistrationPage() {
                   style={{
                     position: "absolute",
                     bottom: "14px",
-<<<<<<< Updated upstream
                     background: "rgba(0,0,0)",
-=======
-                    background: "rgba(71, 71, 71, 0.85)",
->>>>>>> Stashed changes
                     borderRadius: "50%",
                     width: "28px",
                     height: "28px",
@@ -548,30 +427,14 @@ export default function RegistrationPage() {
           </p>
         </div>
 
-<<<<<<< Updated upstream
         {/* Form */}
         <form
-=======
-        {/* Divider */}
-        <div
-          style={{
-            height: "1px",
-            background: "rgb(0, 0, 0)",
-            marginInline: "40px",
-            marginBottom: "32px",
-          }}
-        />
-
-        {/* Form */}
-        <div
->>>>>>> Stashed changes
           style={{
             padding: "0 40px",
             display: "flex",
             flexDirection: "column",
             gap: "24px",
           }}
-<<<<<<< Updated upstream
           onSubmit={(event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -744,80 +607,6 @@ export default function RegistrationPage() {
               {actionError}
             </p>
           ) : null}
-=======
-        >
-          {/* Name */}
-          <FieldGroup>
-            <Label>Name:</Label>
-            <Input
-              placeholder="Your full name"
-              value={name}
-              onChange={setName}
-            />
-          </FieldGroup>
-
-          {/* Username */}
-          <FieldGroup>
-            <Label>Username:</Label>
-            <Input
-              placeholder="Username"
-              value={username}
-              onChange={setUsername}
-            />
-          </FieldGroup>
-
-          {/* Password */}
-          <FieldGroup>
-            <Label>Password:</Label>
-            <Input
-              placeholder="Password"
-              type="password"
-              value={password}
-              onChange={setPassword}
-            />
-          </FieldGroup>
-
-          {/* Date of birth — shadcn picker */}
-          <FieldGroup>
-            <Label>Date of Birth:</Label>
-            <DatePickerSimple date={dob} setDate={setDob} />
-          </FieldGroup>
-
-          {/* Skills */}
-          <FieldGroup>
-            <Label>Skills:</Label>
-            <Label sub>
-              If you aren&apos;t interested in selling any services, you can
-              leave this section empty. (if you intend on providing more than
-              one service, separate them with commas)
-            </Label>
-            <Input
-              placeholder="e.g. Web Design, Plumbing, Tutoring…"
-              value={skills}
-              onChange={setSkills}
-            />
-          </FieldGroup>
-
-          {/* Occupation */}
-          <FieldGroup>
-            <Label>Occupation:</Label>
-            <Input
-              placeholder="Your current occupation"
-              value={occupation}
-              onChange={setOccupation}
-            />
-          </FieldGroup>
-
-          {/* Company */}
-          <FieldGroup>
-            <Label>Company:</Label>
-            <Input
-              placeholder="Your company or organisation"
-              value={company}
-              onChange={setCompany}
-            />
-          </FieldGroup>
->>>>>>> Stashed changes
 
           {/* Register */}
           <div
@@ -827,13 +616,9 @@ export default function RegistrationPage() {
               paddingTop: "8px",
             }}
           >
-<<<<<<< Updated upstream
             <button
               disabled={action.isPending}
               type="submit"
-=======
-            <button className = "tracking-tight"
->>>>>>> Stashed changes
               style={{
                 padding: "14px 56px",
                 background: "rgb(0, 0, 0)",
@@ -847,7 +632,6 @@ export default function RegistrationPage() {
                 transition: "all 0.2s ease",
               }}
             >
-<<<<<<< Updated upstream
               {action.isPending ? "Creating account..." : "Register"}
             </button>
           </div>
@@ -861,12 +645,6 @@ export default function RegistrationPage() {
             </p>
           </FieldGroup>
         </form>
-=======
-              Register
-            </button>
-          </div>
-        </div>
->>>>>>> Stashed changes
       </div>
     </div>
   );

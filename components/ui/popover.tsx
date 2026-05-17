@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-<<<<<<< Updated upstream
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 
 import { cn } from "@/lib/utils";
@@ -11,28 +10,12 @@ function Popover({ ...props }: PopoverPrimitive.Root.Props) {
 }
 
 function PopoverTrigger({ ...props }: PopoverPrimitive.Trigger.Props) {
-=======
-import { Popover as PopoverPrimitive } from "radix-ui";
-
-import { cn } from "@/lib/utils";
-
-function Popover({
-  ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Root>) {
-  return <PopoverPrimitive.Root data-slot="popover" {...props} />;
-}
-
-function PopoverTrigger({
-  ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
->>>>>>> Stashed changes
   return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
 }
 
 function PopoverContent({
   className,
   align = "center",
-<<<<<<< Updated upstream
   alignOffset = 0,
   side = "bottom",
   sideOffset = 4,
@@ -60,59 +43,23 @@ function PopoverContent({
           {...props}
         />
       </PopoverPrimitive.Positioner>
-=======
-  sideOffset = 4,
-  ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Content>) {
-  return (
-    <PopoverPrimitive.Portal>
-      <PopoverPrimitive.Content
-        data-slot="popover-content"
-        align={align}
-        sideOffset={sideOffset}
-        className={cn(
-          "bg-popover text-popover-foreground ring-foreground/10 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 z-50 flex w-72 origin-(--radix-popover-content-transform-origin) flex-col gap-4 rounded-md p-4 text-sm shadow-md ring-1 outline-hidden duration-100",
-          className,
-        )}
-        {...props}
-      />
->>>>>>> Stashed changes
     </PopoverPrimitive.Portal>
   );
 }
 
-<<<<<<< Updated upstream
-=======
-function PopoverAnchor({
-  ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {
-  return <PopoverPrimitive.Anchor data-slot="popover-anchor" {...props} />;
-}
-
->>>>>>> Stashed changes
 function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="popover-header"
-<<<<<<< Updated upstream
       className={cn("flex flex-col gap-0.5 text-sm", className)}
-=======
-      className={cn("flex flex-col gap-1 text-sm", className)}
->>>>>>> Stashed changes
       {...props}
     />
   );
 }
 
-<<<<<<< Updated upstream
 function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
   return (
     <PopoverPrimitive.Title
-=======
-function PopoverTitle({ className, ...props }: React.ComponentProps<"h2">) {
-  return (
-    <div
->>>>>>> Stashed changes
       data-slot="popover-title"
       className={cn("font-medium", className)}
       {...props}
@@ -123,15 +70,9 @@ function PopoverTitle({ className, ...props }: React.ComponentProps<"h2">) {
 function PopoverDescription({
   className,
   ...props
-<<<<<<< Updated upstream
 }: PopoverPrimitive.Description.Props) {
   return (
     <PopoverPrimitive.Description
-=======
-}: React.ComponentProps<"p">) {
-  return (
-    <p
->>>>>>> Stashed changes
       data-slot="popover-description"
       className={cn("text-muted-foreground", className)}
       {...props}
@@ -141,10 +82,6 @@ function PopoverDescription({
 
 export {
   Popover,
-<<<<<<< Updated upstream
-=======
-  PopoverAnchor,
->>>>>>> Stashed changes
   PopoverContent,
   PopoverDescription,
   PopoverHeader,
