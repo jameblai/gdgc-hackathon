@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server"
-import { db } from "@/lib/db"
-import { claims, users, attestations, userDomains } from "@/lib/db/schema"
-import { and, eq, ne, sql } from "drizzle-orm"
+import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { claims, users, attestations, userDomains } from "@/lib/db/schema";
+import { and, eq, ne, sql } from "drizzle-orm";
 
 // ==============================
 // GET /api/claims/feed
@@ -26,14 +26,14 @@ import { and, eq, ne, sql } from "drizzle-orm"
 // ==============================
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url)
-  const userId = searchParams.get("user_id")
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get("user_id");
 
   if (!userId) {
     return NextResponse.json(
       { error: "Missing required query param: user_id" },
-      { status: 400 }
-    )
+      { status: 400 },
+    );
   }
 
   try {
@@ -41,25 +41,25 @@ export async function GET(req: NextRequest) {
       .select({ id: users.id })
       .from(users)
       .where(eq(users.id, userId))
-      .limit(1)
+      .limit(1);
 
     if (userRow.length === 0) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     const feed = await db
       .select({
-        id:        claims.id,
-        userId:    claims.userId,
-        details:   claims.details,
-        domain:    claims.domain,
+        id: claims.id,
+        userId: claims.userId,
+        details: claims.details,
+        domain: claims.domain,
         claimType: claims.claimType,
-        status:    claims.status,
+        status: claims.status,
         createdAt: claims.createdAt,
 
         supportCount: sql<number>`COUNT(CASE WHEN ${attestations.type} = 'support' THEN 1 END)::int`,
-        opposeCount:  sql<number>`COUNT(CASE WHEN ${attestations.type} = 'oppose'  THEN 1 END)::int`,
-        unsureCount:  sql<number>`COUNT(CASE WHEN ${attestations.type} = 'unsure'  THEN 1 END)::int`,
+        opposeCount: sql<number>`COUNT(CASE WHEN ${attestations.type} = 'oppose'  THEN 1 END)::int`,
+        unsureCount: sql<number>`COUNT(CASE WHEN ${attestations.type} = 'unsure'  THEN 1 END)::int`,
 
         // User's trust in this claim's domain (0 if no entry).
         domainAffinity: sql<number>`
@@ -107,17 +107,22 @@ export async function GET(req: NextRequest) {
               WHERE a.claim_id = ${claims.id}
                 AND a.user_id  = ${userId}
             )
-          `
-        )
+          `,
+        ),
       )
       .groupBy(claims.id)
       // Sort: highest domain affinity first, unattested before attested at equal affinity
-      .orderBy(sql`domain_affinity DESC, not_attested DESC, ${claims.createdAt} DESC`)
-      .limit(10)
+      .orderBy(
+        sql`domain_affinity DESC, not_attested DESC, ${claims.createdAt} DESC`,
+      )
+      .limit(10);
 
-    return NextResponse.json(feed)
+    return NextResponse.json(feed);
   } catch (err) {
-    console.error("[GET /api/claims/feed]", err)
-    return NextResponse.json({ error: "Failed to fetch claim feed" }, { status: 500 })
+    console.error("[GET /api/claims/feed]", err);
+    return NextResponse.json(
+      { error: "Failed to fetch claim feed" },
+      { status: 500 },
+    );
   }
 }

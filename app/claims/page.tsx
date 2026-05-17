@@ -19,9 +19,7 @@ export default async function ClaimsPage() {
     where: eq(attestations.userId, user.id),
   });
 
-  const attestationMap = new Map(
-    userAttestations.map((a) => [a.claimId, a]),
-  );
+  const attestationMap = new Map(userAttestations.map((a) => [a.claimId, a]));
 
   return (
     <Container>

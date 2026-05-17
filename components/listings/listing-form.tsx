@@ -107,7 +107,9 @@ function ListingForm(props: ListingFormProps) {
   const totalImages = existingPhotos.length + uploadedImages.length;
   const isPending = createAction.isPending || updateAction.isPending;
   const actionError =
-    props.mode === "edit" && updateAction.result.data && "error" in updateAction.result.data
+    props.mode === "edit" &&
+    updateAction.result.data &&
+    "error" in updateAction.result.data
       ? updateAction.result.data.error
       : undefined;
 

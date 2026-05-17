@@ -57,7 +57,7 @@ export function Claim({
   const selectedType = attestation?.type;
 
   return (
-    <div className="flex gap-4 items-start">
+    <div className="flex items-start gap-4">
       <Avatar className="size-10 shrink-0">
         {claim.user.avatarUrl && (
           <AvatarImage src={claim.user.avatarUrl} alt={claim.user.name} />
@@ -65,13 +65,13 @@ export function Claim({
         <AvatarFallback>{claim.user.name[0]}</AvatarFallback>
       </Avatar>
 
-      <div className="space-y-2 flex-1">
+      <div className="flex-1 space-y-2">
         <div className="space-y-1">
           <Typography variant="label">{claim.user.name} claims</Typography>
           <Typography variant="smallMuted">{claim.details}</Typography>
         </div>
 
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             size="sm"
             variant={selectedType === "support" ? "default" : "outline"}
