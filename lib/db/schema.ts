@@ -1,9 +1,11 @@
 import { relations } from "drizzle-orm";
 import {
+  date,
   index,
   integer,
   pgEnum,
   pgTable,
+  real,
   text,
   timestamp,
   uniqueIndex,
@@ -14,10 +16,22 @@ export const users = pgTable(
   "users",
   {
     id: text("id").primaryKey().$defaultFn(createId),
-    email: text("email").notNull(),
-    passwordHash: text("password_hash").notNull(),
+    username: text("username").notNull(),
     name: text("name").notNull(),
+    passwordHash: text("password_hash").notNull(),
+    dateOfBirth: date("date_of_birth", { mode: "date" }),
+    occupation: text("occupation").notNull().default(""),
+    company: text("company").notNull().default(""),
     avatarUrl: text("avatar_url"),
+    baseTrust: real("base_trust").default(0).notNull(),
+    claimAccuracyScore: real("claim_accuracy_score").default(0).notNull(),
+    attestationAccuracyScore: real("attestation_accuracy_score")
+      .default(0)
+      .notNull(),
+    participationScore: real("participation_score").default(0).notNull(),
+    reciprocityPenaltyFactor: real("reciprocity_penalty_factor")
+      .default(0)
+      .notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -25,7 +39,32 @@ export const users = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => [uniqueIndex("users_email_unique").on(table.email)],
+  (table) => [uniqueIndex("users_name_unique").on(table.username)],
+);
+
+export const userDomains = pgTable(
+  "user_domains",
+  {
+    id: text("id").primaryKey().$defaultFn(createId),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    domain: text("domain").notNull(),
+    trust: real("trust").default(0).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("user_domains_user_id_idx").on(table.userId),
+    uniqueIndex("user_domains_user_id_domain_unique").on(
+      table.userId,
+      table.domain,
+    ),
+  ],
 );
 
 export const sessions = pgTable(
@@ -44,6 +83,7 @@ export const sessions = pgTable(
 );
 
 export const usersRelations = relations(users, ({ many }) => ({
+  domains: many(userDomains),
   sessions: many(sessions),
   listings: many(listings),
   assets: many(assets),
@@ -51,6 +91,13 @@ export const usersRelations = relations(users, ({ many }) => ({
   chatMessages: many(chatMessages),
   claims: many(claims),
   attestations: many(attestations),
+}));
+
+export const userDomainsRelations = relations(userDomains, ({ one }) => ({
+  user: one(users, {
+    fields: [userDomains.userId],
+    references: [users.id],
+  }),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -289,9 +336,17 @@ export const listingPhotosRelations = relations(listingPhotos, ({ one }) => ({
 }));
 
 export const attestationType = pgEnum("attestation_type", [
-  "attest",
-  "denounce",
+  "support",
+  "oppose",
   "unsure",
+]);
+
+export const claimType = pgEnum("claim_type", [
+  "biographical",
+  "relational",
+  "event",
+  "ownership",
+  "skill",
 ]);
 
 export const claims = pgTable(
@@ -302,6 +357,9 @@ export const claims = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     details: text("details").notNull(),
+    domain: text("domain"),
+    claimType: claimType("claim_type"),
+    status: text("status"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -331,6 +389,7 @@ export const attestations = pgTable(
       .notNull()
       .references(() => claims.id, { onDelete: "cascade" }),
     type: attestationType("type").notNull(),
+    graphDistance: integer("graph_distance").default(0).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),

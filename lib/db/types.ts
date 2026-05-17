@@ -9,18 +9,26 @@ import {
   chatParticipants,
   chatMessages,
   chats,
+  claimType,
   claims,
   listingCategory,
   listingPhotos,
   listingStatus,
   listings,
   sessions,
+  userDomains,
   users,
 } from "@/lib/db/schema";
 
 export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;
+export type UserDomain = InferSelectModel<typeof userDomains>;
+export type NewUserDomain = InferInsertModel<typeof userDomains>;
+export type UserWithDomains = User & { domains: UserDomain[] };
 export type UserWithListings = User & { listings: Listing[] };
+export type UserWithListingsAndDomains = UserWithListings & {
+  domains: UserDomain[];
+};
 export type UserWithAssets = User & { assets: Asset[] };
 export type UserWithChatParticipants = User & {
   chatParticipants: ChatParticipant[];
@@ -28,6 +36,13 @@ export type UserWithChatParticipants = User & {
 export type UserWithChatMessages = User & { chatMessages: ChatMessage[] };
 export type UserWithClaims = User & { claims: Claim[] };
 export type UserWithAttestations = User & { attestations: Attestation[] };
+export type UserWithSessions = User & { sessions: Session[] };
+export type UserWithDomainsAndTrust = User & { domains: UserDomain[] };
+export type UserDomainWithUser = UserDomain & { user: User };
+export type UserWithClaimsAndAttestations = User & {
+  claims: ClaimWithAttestations[];
+  attestations: AttestationWithClaim[];
+};
 
 export type Session = InferSelectModel<typeof sessions>;
 export type NewSession = InferInsertModel<typeof sessions>;
@@ -104,3 +119,4 @@ export type AttestationWithUserAndClaim = AttestationWithUser & {
 };
 
 export type AttestationType = (typeof attestationType.enumValues)[number];
+export type ClaimType = (typeof claimType.enumValues)[number];
