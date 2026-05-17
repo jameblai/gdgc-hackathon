@@ -42,9 +42,9 @@ export const updateCurrentUserProfileAction = actionClient
         updatedAt: new Date(),
       })
       .where(eq(users.id, user.id))
-      .returning({ id: users.id });
+      .returning();
 
-    return { id: updatedUser.id };
+    return updatedUser;
   });
 
 export const replaceCurrentUserDomainsAction = actionClient
@@ -71,7 +71,14 @@ export const replaceCurrentUserDomainsAction = actionClient
         .where(eq(users.id, user.id));
     });
 
-    return { success: true };
+    const updatedUser = await db.query.users.findFirst({
+      where: eq(users.id, user.id),
+      with: {
+        domains: true,
+      },
+    });
+
+    return updatedUser;
   });
 
 export const createCurrentUserDomainAction = actionClient
@@ -86,14 +93,26 @@ export const createCurrentUserDomainAction = actionClient
         userId: user.id,
       })
       .onConflictDoNothing()
-      .returning({ id: userDomains.id });
+      .returning();
 
     await db
       .update(users)
       .set({ updatedAt: new Date() })
       .where(eq(users.id, user.id));
 
-    return { id: domain?.id ?? null };
+    if (domain) {
+      return domain;
+    }
+
+    // Domain already existed — fetch and return the existing one
+    const existingDomain = await db.query.userDomains.findFirst({
+      where: and(
+        eq(userDomains.userId, user.id),
+        eq(userDomains.domain, parsedInput.domain),
+      ),
+    });
+
+    return existingDomain;
   });
 
 export const updateCurrentUserDomainAction = actionClient
@@ -113,7 +132,7 @@ export const updateCurrentUserDomainAction = actionClient
           eq(userDomains.userId, user.id),
         ),
       )
-      .returning({ id: userDomains.id });
+      .returning();
 
     if (!domain) {
       return { error: "Domain not found." };
@@ -124,7 +143,7 @@ export const updateCurrentUserDomainAction = actionClient
       .set({ updatedAt: new Date() })
       .where(eq(users.id, user.id));
 
-    return { id: domain.id };
+    return domain;
   });
 
 export const deleteCurrentUserDomainAction = actionClient
@@ -140,7 +159,7 @@ export const deleteCurrentUserDomainAction = actionClient
           eq(userDomains.userId, user.id),
         ),
       )
-      .returning({ id: userDomains.id });
+      .returning();
 
     if (!domain) {
       return { error: "Domain not found." };
@@ -151,5 +170,5 @@ export const deleteCurrentUserDomainAction = actionClient
       .set({ updatedAt: new Date() })
       .where(eq(users.id, user.id));
 
-    return { success: true };
+    return domain;
   });

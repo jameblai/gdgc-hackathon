@@ -87,9 +87,7 @@ export const createChatAction = actionClient
     ];
 
     const chat = await db.transaction(async (tx) => {
-      const [createdChat] = await tx.insert(chats).values({}).returning({
-        id: chats.id,
-      });
+      const [createdChat] = await tx.insert(chats).values({}).returning();
 
       await tx.insert(chatParticipants).values(
         participantUserIds.map((participantUserId) => ({
@@ -109,7 +107,7 @@ export const createChatAction = actionClient
       return createdChat;
     });
 
-    return { id: chat.id };
+    return chat;
   });
 
 export const sendChatMessageAction = actionClient
@@ -132,14 +130,14 @@ export const sendChatMessageAction = actionClient
         senderId: user.id,
         text: parsedInput.text,
       })
-      .returning({ id: chatMessages.id });
+      .returning();
 
     await db
       .update(chats)
       .set({ updatedAt: new Date() })
       .where(eq(chats.id, parsedInput.chatId));
 
-    return { id: message.id };
+    return message;
   });
 
 export const updateChatMessageAction = actionClient
@@ -165,14 +163,14 @@ export const updateChatMessageAction = actionClient
         updatedAt: new Date(),
       })
       .where(eq(chatMessages.id, message.id))
-      .returning({ id: chatMessages.id });
+      .returning();
 
     await db
       .update(chats)
       .set({ updatedAt: new Date() })
       .where(eq(chats.id, message.chatId));
 
-    return { id: updatedMessage.id };
+    return updatedMessage;
   });
 
 export const deleteChatMessageAction = actionClient
@@ -188,7 +186,7 @@ export const deleteChatMessageAction = actionClient
           eq(chatMessages.senderId, user.id),
         ),
       )
-      .returning({ chatId: chatMessages.chatId, id: chatMessages.id });
+      .returning();
 
     if (!message) {
       return { error: "Message not found." };
@@ -199,7 +197,7 @@ export const deleteChatMessageAction = actionClient
       .set({ updatedAt: new Date() })
       .where(eq(chats.id, message.chatId));
 
-    return { success: true };
+    return message;
   });
 
 export const addChatParticipantAction = actionClient
@@ -222,14 +220,26 @@ export const addChatParticipantAction = actionClient
         userId: parsedInput.userId,
       })
       .onConflictDoNothing()
-      .returning({ id: chatParticipants.id });
+      .returning();
 
     await db
       .update(chats)
       .set({ updatedAt: new Date() })
       .where(eq(chats.id, parsedInput.chatId));
 
-    return { id: createdParticipant?.id ?? null };
+    if (createdParticipant) {
+      return createdParticipant;
+    }
+
+    // Participant already existed — fetch and return the existing one
+    const existingParticipant = await db.query.chatParticipants.findFirst({
+      where: and(
+        eq(chatParticipants.chatId, parsedInput.chatId),
+        eq(chatParticipants.userId, parsedInput.userId),
+      ),
+    });
+
+    return existingParticipant;
   });
 
 export const removeChatParticipantAction = actionClient
@@ -245,21 +255,22 @@ export const removeChatParticipantAction = actionClient
       return { error: "Chat not found." };
     }
 
-    await db
+    const [removedParticipant] = await db
       .delete(chatParticipants)
       .where(
         and(
           eq(chatParticipants.chatId, parsedInput.chatId),
           eq(chatParticipants.userId, parsedInput.userId),
         ),
-      );
+      )
+      .returning();
 
     await db
       .update(chats)
       .set({ updatedAt: new Date() })
       .where(eq(chats.id, parsedInput.chatId));
 
-    return { success: true };
+    return removedParticipant;
   });
 
 export const deleteChatAction = actionClient
@@ -272,7 +283,10 @@ export const deleteChatAction = actionClient
       return { error: "Chat not found." };
     }
 
-    await db.delete(chats).where(eq(chats.id, parsedInput.id));
+    const [chat] = await db
+      .delete(chats)
+      .where(eq(chats.id, parsedInput.id))
+      .returning();
 
-    return { success: true };
+    return chat;
   });
