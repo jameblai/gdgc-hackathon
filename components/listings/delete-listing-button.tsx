@@ -24,7 +24,7 @@ function DeleteListingButton({ listingId }: { listingId: string }) {
   const router = useRouter();
   const action = useAction(deleteListingAction, {
     onSuccess: ({ data }) => {
-      if (data.success) {
+      if (data && "id" in data) {
         router.push("/listings");
       }
     },
@@ -44,7 +44,7 @@ function DeleteListingButton({ listingId }: { listingId: string }) {
           <AlertDialogDescription>
             This permanently removes the listing and its images.
           </AlertDialogDescription>
-          {action.result.data?.error ? (
+          {action.result.data && "error" in action.result.data ? (
             <FieldError>{action.result.data.error}</FieldError>
           ) : null}
         </AlertDialogHeader>

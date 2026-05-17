@@ -27,7 +27,7 @@ export const createListingAction = actionClient
         name: parsedInput.name,
         userId: user.id,
       })
-      .returning({ id: listings.id });
+      .returning();
 
     if (parsedInput.images.length > 0) {
       await db.insert(listingPhotos).values(
@@ -40,7 +40,7 @@ export const createListingAction = actionClient
       );
     }
 
-    return { id: listing.id };
+    return listing;
   });
 
 export const updateListingAction = actionClient
@@ -114,7 +114,14 @@ export const updateListingAction = actionClient
       }
     }
 
-    return { id: listing.id };
+    const updatedListing = await db.query.listings.findFirst({
+      where: eq(listings.id, listing.id),
+      with: {
+        photos: true,
+      },
+    });
+
+    return updatedListing;
   });
 
 export const deleteListingAction = actionClient
@@ -147,5 +154,5 @@ export const deleteListingAction = actionClient
       }
     }
 
-    return { success: true };
+    return listing;
   });
