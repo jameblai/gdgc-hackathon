@@ -18,6 +18,7 @@ export default function HomePage() {
         .card-1 { animation-delay: 0.1s; }
         .card-2 { animation-delay: 0.2s; }
         .card-3 { animation-delay: 0.3s; }
+        .card-4 { animation-delay: 0.4s; }
         .sparkle { animation: sparkle 2s ease-in-out infinite; }
         .sparkle-2 { animation-delay: 0.4s; }
         .sparkle-3 { animation-delay: 0.8s; }
@@ -26,6 +27,7 @@ export default function HomePage() {
         .btn-claims:hover  { background: #6d28d9; }
         .btn-listings:hover { background: #1d4ed8; }
         .btn-contact:hover  { background: #166534; }
+        .btn-property:hover { background: #b45309; }
       `}</style>
 
       {/* ── Outer card ── */}
@@ -38,7 +40,7 @@ export default function HomePage() {
         </div>
 
         {/* ── Cards grid ── */}
-        <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* ── Claims card ── */}
           <div className="card card-1 group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             {/* Blob bg */}
@@ -481,6 +483,136 @@ export default function HomePage() {
                 href="/features/chats"
               >
                 Message
+                <svg
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="h-4 w-4 shrink-0"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M3 10a1 1 0 011-1h9.586L11.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L13.586 11H4a1 1 0 01-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
+
+          {/* ── Property card ── */}
+          <div className="card card-4 group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+            <div className="absolute right-0 bottom-0 h-48 w-48 translate-x-16 translate-y-16 rounded-full bg-amber-100 opacity-60 transition-opacity group-hover:opacity-80" />
+
+            <div className="relative flex flex-1 flex-col items-center px-7 pt-10 pb-8">
+              <div className="relative mb-6 flex h-36 w-36 items-center justify-center rounded-full bg-amber-50 transition-colors group-hover:bg-amber-100">
+                <svg
+                  viewBox="0 0 8 8"
+                  fill="#fbbf24"
+                  className="sparkle absolute top-4 left-5 h-3 w-3"
+                >
+                  <path d="M4 0l.5 3.5L8 4l-3.5.5L4 8l-.5-3.5L0 4l3.5-.5z" />
+                </svg>
+                <svg
+                  viewBox="0 0 8 8"
+                  fill="#fcd34d"
+                  className="sparkle sparkle-2 absolute top-6 right-5 h-2 w-2"
+                >
+                  <path d="M4 0l.5 3.5L8 4l-3.5.5L4 8l-.5-3.5L0 4l3.5-.5z" />
+                </svg>
+                <svg
+                  viewBox="0 0 8 8"
+                  fill="#fbbf24"
+                  className="sparkle sparkle-3 absolute bottom-5 left-7 h-2 w-2"
+                >
+                  <path d="M4 0l.5 3.5L8 4l-3.5.5L4 8l-.5-3.5L0 4l3.5-.5z" />
+                </svg>
+
+                {/* House SVG */}
+                <svg
+                  viewBox="0 0 80 80"
+                  fill="none"
+                  className="h-20 w-20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* House body */}
+                  <rect
+                    x="16"
+                    y="32"
+                    width="48"
+                    height="32"
+                    rx="2"
+                    fill="#fef3c7"
+                    stroke="#d97706"
+                    strokeWidth="2.5"
+                  />
+                  {/* Roof */}
+                  <path
+                    d="M8 32 L40 8 L72 32Z"
+                    fill="#d97706"
+                    stroke="#d97706"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  {/* Door */}
+                  <rect
+                    x="34"
+                    y="48"
+                    width="12"
+                    height="16"
+                    rx="1"
+                    fill="#d97706"
+                  />
+                  {/* Door knob */}
+                  <circle cx="43" cy="56" r="1.5" fill="white" />
+                  {/* Window left */}
+                  <rect
+                    x="22"
+                    y="40"
+                    width="10"
+                    height="10"
+                    rx="1"
+                    fill="white"
+                    stroke="#d97706"
+                    strokeWidth="1.5"
+                  />
+                  <line x1="27" y1="40" x2="27" y2="50" stroke="#d97706" strokeWidth="1" />
+                  <line x1="22" y1="45" x2="32" y2="45" stroke="#d97706" strokeWidth="1" />
+                  {/* Window right */}
+                  <rect
+                    x="48"
+                    y="40"
+                    width="10"
+                    height="10"
+                    rx="1"
+                    fill="white"
+                    stroke="#d97706"
+                    strokeWidth="1.5"
+                  />
+                  <line x1="53" y1="40" x2="53" y2="50" stroke="#d97706" strokeWidth="1" />
+                  <line x1="48" y1="45" x2="58" y2="45" stroke="#d97706" strokeWidth="1" />
+                  {/* Chimney */}
+                  <rect
+                    x="52"
+                    y="14"
+                    width="8"
+                    height="14"
+                    rx="1"
+                    fill="#d97706"
+                  />
+                </svg>
+              </div>
+
+              <h2 className="mb-3 text-2xl font-bold text-amber-700">
+                Property
+              </h2>
+              <p className="mb-8 flex-1 text-center text-sm leading-relaxed text-gray-500">
+                Browse and manage property listings with our real estate tools.
+              </p>
+
+              <Link
+                className="btn-property flex w-full items-center justify-center gap-3 rounded-xl bg-amber-600 px-6 py-3.5 text-sm font-semibold text-white transition-colors duration-200"
+                href="/property"
+              >
+                View Properties
                 <svg
                   viewBox="0 0 20 20"
                   fill="currentColor"

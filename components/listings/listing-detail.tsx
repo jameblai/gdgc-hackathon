@@ -6,8 +6,9 @@ import {
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import { Typography } from "@/components/ui/typography";
 import type { ListingWithUserAndPhotos } from "@/lib/db/types";
 
@@ -29,10 +30,13 @@ function ListingDetail({ listing }: { listing: ListingWithUserAndPhotos }) {
           </Typography>
         </div>
 
-        <Button className="w-full" size="lg">
+        <Link
+          className={cn(buttonVariants({ size: "lg", className: "w-full" }))}
+          href="/features/chats"
+        >
           <MessageSquareIcon />
           Send Offer
-        </Button>
+        </Link>
 
         <div className="-mt-2 grid grid-cols-2 gap-2">
           <Button variant="outline">
