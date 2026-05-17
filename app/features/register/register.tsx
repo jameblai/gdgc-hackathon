@@ -34,7 +34,6 @@ export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
         <PopoverTrigger
           render={
             <Button
-              
               id="date"
               style={{
                 width: "100%",
@@ -89,7 +88,6 @@ function Input({
   const [focused, setFocused] = useState(false);
   return (
     <input
-      
       type={type}
       placeholder={placeholder}
       value={value}
@@ -124,7 +122,6 @@ function Label({
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
       <span
-        
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
@@ -175,7 +172,6 @@ export default function RegistrationPage() {
 
   return (
     <div
-      
       style={{
         minHeight: "100vh",
         background: "rgb(255,255,255)",
@@ -202,7 +198,6 @@ export default function RegistrationPage() {
           overflow: "hidden",
         }}
       >
-
         {/* Profile photo */}
         <div
           style={{
@@ -352,7 +347,6 @@ export default function RegistrationPage() {
           </p>
         </div>
 
-
         {/* Form */}
         <div
           style={{
@@ -443,7 +437,6 @@ export default function RegistrationPage() {
             }}
           >
             <button
-              
               style={{
                 padding: "14px 56px",
                 background: "rgb(0, 0, 0)",
@@ -462,7 +455,12 @@ export default function RegistrationPage() {
           </div>
           {/* login instead */}
           <FieldGroup>
-            <p style ={{ textAlign: "center" }}>Already a user? <a href="/features/login" style ={{ color: "#0867da" }}>Login here</a></  p>
+            <p style={{ textAlign: "center" }}>
+              Already a user?{" "}
+              <a href="/features/login" style={{ color: "#0867da" }}>
+                Login here
+              </a>
+            </p>
           </FieldGroup>
         </div>
       </div>

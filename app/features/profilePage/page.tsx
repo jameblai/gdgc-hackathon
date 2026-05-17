@@ -35,37 +35,40 @@ function VerificationBar({
 }: VerificationBarProps) {
   const pct = ((current - min) / (max - min)) * 100;
 
-  const trackColor =
-    color === "teal" ? "bg-teal-100" : "bg-emerald-100";
+  const trackColor = color === "teal" ? "bg-teal-100" : "bg-emerald-100";
   const fillColor =
     color === "teal"
       ? "bg-gradient-to-r from-teal-400 to-teal-600"
       : "bg-gradient-to-r from-emerald-400 to-emerald-600";
-  const dotColor =
-    color === "teal" ? "bg-teal-500" : "bg-emerald-500";
-  const labelColor =
-    color === "teal" ? "text-teal-700" : "text-emerald-700";
+  const dotColor = color === "teal" ? "bg-teal-500" : "bg-emerald-500";
+  const labelColor = color === "teal" ? "text-teal-700" : "text-emerald-700";
 
   return (
-    <div className="flex flex-col gap-1 min-w-[220px] w-full max-w-xs">
+    <div className="flex w-full max-w-xs min-w-[220px] flex-col gap-1">
       <span className={`text-xs font-semibold tracking-wide ${labelColor}`}>
         {label}
       </span>
-      <span className="text-[10px] text-stone-400 -mt-0.5">{subLabel}</span>
+      <span className="-mt-0.5 text-[10px] text-stone-400">{subLabel}</span>
       <div className="relative flex items-center gap-2">
         {/* thumb left */}
-        <span className="text-rose-500 text-base leading-none select-none">👎</span>
+        <span className="text-base leading-none text-rose-500 select-none">
+          👎
+        </span>
         {/* track */}
-        <div className={`relative flex-1 h-1.5 rounded-full ${trackColor} overflow-hidden`}>
+        <div
+          className={`relative h-1.5 flex-1 rounded-full ${trackColor} overflow-hidden`}
+        >
           <div
-            className={`absolute left-0 top-0 h-full rounded-full ${fillColor} transition-all duration-700`}
+            className={`absolute top-0 left-0 h-full rounded-full ${fillColor} transition-all duration-700`}
             style={{ width: `${pct}%` }}
           />
         </div>
         {/* thumb right */}
-        <span className="text-emerald-600 text-base leading-none select-none">👍</span>
+        <span className="text-base leading-none text-emerald-600 select-none">
+          👍
+        </span>
       </div>
-      <div className="flex justify-between text-[10px] text-stone-400 px-7">
+      <div className="flex justify-between px-7 text-[10px] text-stone-400">
         <span>{min}</span>
         <span className={`font-bold ${labelColor}`}>{current}</span>
         <span>{max}</span>
@@ -74,33 +77,25 @@ function VerificationBar({
   );
 }
 
-
 // listing cards
 function ListingCard({ listing }: { listing: Listing }) {
   return (
-    <div className="group flex flex-col gap-0 cursor-pointer">
-      <div
-        className="
-          relative w-full h-[300px] rounded-t-2xl border-2 border-b-0 border-stone-200
-          bg-stone-50 overflow-hidden
-          transition-all duration-300
-          group-hover:border-teal-400 group-hover:shadow-lg group-hover:-translate-y-1
-        "
-      >
+    <div className="group flex cursor-pointer flex-col gap-0">
+      <div className="relative h-[300px] w-full overflow-hidden rounded-t-2xl border-2 border-b-0 border-stone-200 bg-stone-50 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-teal-400 group-hover:shadow-lg">
         {listing.imageUrl ? (
           <img
             src={listing.imageUrl}
             alt={listing.title}
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-stone-300">
+          <div className="flex h-full w-full items-center justify-center text-stone-300">
             <svg
               viewBox="0 0 48 48"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
-              className="w-12 h-12"
+              className="h-12 w-12"
             >
               <rect x="6" y="6" width="36" height="36" rx="4" />
               <circle cx="18" cy="19" r="4" />
@@ -109,23 +104,18 @@ function ListingCard({ listing }: { listing: Listing }) {
           </div>
         )}
         {/* hover overlay */}
-        <div className="absolute inset-0 bg-teal-500/0 group-hover:bg-teal-500/10 transition-all duration-300" />
+        <div className="absolute inset-0 bg-teal-500/0 transition-all duration-300 group-hover:bg-teal-500/10" />
       </div>
 
-      <div className="
-        rounded-b-2xl border-2 border-t-0 border-stone-200
-        bg-white px-3 py-3
-        transition-all duration-300
-        group-hover:border-teal-400
-      ">
-        <p className="font-bold text-stone-800 text-sm leading-tight">
+      <div className="rounded-b-2xl border-2 border-t-0 border-stone-200 bg-white px-3 py-3 transition-all duration-300 group-hover:border-teal-400">
+        <p className="text-sm leading-tight font-bold text-stone-800">
           {listing.title}
         </p>
-        <p className="text-xs text-stone-400 mt-0.5 flex items-center gap-1">
+        <p className="mt-0.5 flex items-center gap-1 text-xs text-stone-400">
           <svg
             viewBox="0 0 16 16"
             fill="currentColor"
-            className="w-3 h-3 text-teal-400 shrink-0"
+            className="h-3 w-3 shrink-0 text-teal-400"
           >
             <path d="M8 0a5 5 0 0 1 5 5c0 3-5 11-5 11S3 8 3 5a5 5 0 0 1 5-5zm0 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
           </svg>
@@ -146,16 +136,14 @@ interface ProfileFieldProps {
 
 function ProfileField({ label, value, verification }: ProfileFieldProps) {
   return (
-    <div className="flex items-center justify-between py-4 border-b border-stone-100 gap-4">
-      <div className="flex items-baseline gap-6 min-w-0">
-        <span className="text-xs font-bold uppercase tracking-widest text-stone-400 shrink-0 w-28">
+    <div className="flex items-center justify-between gap-4 border-b border-stone-100 py-4">
+      <div className="flex min-w-0 items-baseline gap-6">
+        <span className="w-28 shrink-0 text-xs font-bold tracking-widest text-stone-400 uppercase">
           {label}
         </span>
-        <span className="text-stone-700 font-medium truncate">{value}</span>
+        <span className="truncate font-medium text-stone-700">{value}</span>
       </div>
-      {verification && (
-        <div className="shrink-0">{verification}</div>
-      )}
+      {verification && <div className="shrink-0">{verification}</div>}
     </div>
   );
 }
@@ -174,28 +162,23 @@ export default function ProfilePage() {
   return (
     <div>
       {/* ── Page wrapper ── */}
-      <div className="max-w-3xl mx-auto px-6 py-10">
-
+      <div className="mx-auto max-w-3xl px-6 py-10">
         {/* ── HEADER ─────────────────────────────────────────── */}
-        <div className="fade-up fade-up-1 flex items-center justify-between mb-10">
+        <div className="fade-up fade-up-1 mb-10 flex items-center justify-between">
           {/* Avatar + name */}
           <div className="flex items-center gap-4">
             {/* Avatar ring */}
-            <div
-              className="
-                w-16 h-16 rounded-full
-                border-[3px] border-fuchsia-300
-                bg-gradient-to-br from-fuchsia-100 to-pink-50
-                flex items-center justify-center
-                shadow-sm
-              "
-            >
-              <span className="serif text-2xl italic text-fuchsia-400 select-none">K</span>
+            <div className="flex h-16 w-16 items-center justify-center rounded-full border-[3px] border-fuchsia-300 bg-gradient-to-br from-fuchsia-100 to-pink-50 shadow-sm">
+              <span className="serif text-2xl text-fuchsia-400 italic select-none">
+                K
+              </span>
             </div>
 
             <div>
-              <h1 className="serif text-3xl text-stone-800 leading-none">Kevin</h1>
-              <p className="text-xs text-stone-400 mt-1 tracking-wide">
+              <h1 className="serif text-3xl leading-none text-stone-800">
+                Kevin
+              </h1>
+              <p className="mt-1 text-xs tracking-wide text-stone-400">
                 Member since 16 / 05 / 2026
               </p>
             </div>
@@ -205,21 +188,18 @@ export default function ProfilePage() {
           <button
             onMouseEnter={() => setChatHovered(true)}
             onMouseLeave={() => setChatHovered(false)}
-            className={`
-              px-6 py-2.5 rounded-xl border-2 border-stone-800
-              text-sm font-semibold tracking-wide
-              transition-all duration-200
-              ${chatHovered
-                ? "bg-stone-800 text-white shadow-lg -translate-y-0.5"
-                : "bg-transparent text-stone-800"}
-            `}
+            className={`rounded-xl border-2 border-stone-800 px-6 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 ${
+              chatHovered
+                ? "-translate-y-0.5 bg-stone-800 text-white shadow-lg"
+                : "bg-transparent text-stone-800"
+            } `}
           >
             {chatHovered ? "Start chat →" : "Chat"}
           </button>
         </div>
 
         {/* ── PROFILE FIELDS ────────────────────────────────── */}
-        <div className="fade-up fade-up-2 bg-white rounded-2xl shadow-sm border border-stone-100 px-6 mb-8">
+        <div className="fade-up fade-up-2 mb-8 rounded-2xl border border-stone-100 bg-white px-6 shadow-sm">
           <ProfileField
             label="Occupation"
             value="General Practitioner"
@@ -279,10 +259,10 @@ export default function ProfilePage() {
         </div>
 
         {/* ── LISTINGS ─────────────────────────────────────── */}
-        <div className="fade-up fade-up-3 ">
-          <h2 className="serif text-2xl text-stone-800 mb-5">Listings</h2>
+        <div className="fade-up fade-up-3">
+          <h2 className="serif mb-5 text-2xl text-stone-800">Listings</h2>
 
-          <div className="grid grid-cols-1 display-flex gap-5" >
+          <div className="display-flex grid grid-cols-1 gap-5">
             {LISTINGS.map((listing, i) => (
               <div
                 key={listing.id}
@@ -294,7 +274,6 @@ export default function ProfilePage() {
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );

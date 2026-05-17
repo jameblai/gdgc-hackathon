@@ -22,14 +22,12 @@ function Input({ placeholder, value, onChange, type = "text" }) {
   const [focused, setFocused] = useState(false);
   return (
     <input
-      
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
-    
       style={{
         width: "100%",
         padding: "11px 14px",
@@ -52,7 +50,6 @@ function Label({ children, sub }) {
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
       <span
-        
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
@@ -112,8 +109,8 @@ export default function LoginPage() {
       >
         {/* Heading */}
         <div style={{ textAlign: "center", padding: "16px 40px 28px" }}>
-          <h1 className="py-6 md:py-10"
-            
+          <h1
+            className="py-6 md:py-10"
             style={{
               margin: "0 0 10px",
               fontSize: "clamp(20px, 3vw, 28px)",
@@ -126,7 +123,6 @@ export default function LoginPage() {
             Log into your account:
           </h1>
           <p
-            
             style={{
               margin: 0,
               fontSize: "clamp(13px, 1.5vw, 15px)",
@@ -150,9 +146,8 @@ export default function LoginPage() {
         >
           {/* Username */}
           <FieldGroup>
-            <Label >Username:</Label>
+            <Label>Username:</Label>
             <Input
-              
               placeholder="Username"
               value={username}
               onChange={setUsername}
@@ -161,9 +156,8 @@ export default function LoginPage() {
 
           {/* Password */}
           <FieldGroup>
-            <Label >Password:</Label>
+            <Label>Password:</Label>
             <Input
-              
               placeholder="Password"
               type="password"
               value={password}
@@ -180,7 +174,6 @@ export default function LoginPage() {
             }}
           >
             <button
-              
               style={{
                 padding: "14px 56px",
                 background: "#1A1A1A",
@@ -199,7 +192,12 @@ export default function LoginPage() {
           </div>
           {/* register instead */}
           <FieldGroup>
-            <p style ={{ textAlign: "center" }}>Need an account? <a href="/features/register" style ={{ color: "#0867da" }}>Register here</a></  p>
+            <p style={{ textAlign: "center" }}>
+              Need an account?{" "}
+              <a href="/features/register" style={{ color: "#0867da" }}>
+                Register here
+              </a>
+            </p>
           </FieldGroup>
         </div>
       </div>
