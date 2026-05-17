@@ -64,7 +64,7 @@ export const registerAction = actionClient
         };
       }
 
-      redirect("/");
+      redirect("/claims");
     },
   );
 
@@ -88,7 +88,7 @@ export const loginAction = actionClient
     }
 
     await createSessionCookie(user.id);
-    redirect("/");
+    redirect("/claims");
   });
 
 export const logoutAction = actionClient.action(async () => {

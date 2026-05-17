@@ -58,9 +58,9 @@ export const createClaimAction = actionClient
         details: parsedInput.details,
         userId: user.id,
       })
-      .returning({ id: claims.id });
+      .returning();
 
-    return { id: claim.id };
+    return claim;
   });
 
 export const deleteClaimAction = actionClient
@@ -71,13 +71,13 @@ export const deleteClaimAction = actionClient
     const [claim] = await db
       .delete(claims)
       .where(and(eq(claims.id, parsedInput.id), eq(claims.userId, user.id)))
-      .returning({ id: claims.id });
+      .returning();
 
     if (!claim) {
       return { error: "Claim not found." };
     }
 
-    return { success: true };
+    return claim;
   });
 
 export const createOrUpdateAttestationAction = actionClient
@@ -107,9 +107,9 @@ export const createOrUpdateAttestationAction = actionClient
         },
         target: [attestations.userId, attestations.claimId],
       })
-      .returning({ id: attestations.id });
+      .returning();
 
-    return { id: attestation.id };
+    return attestation;
   });
 
 export const deleteAttestationAction = actionClient
@@ -125,11 +125,11 @@ export const deleteAttestationAction = actionClient
           eq(attestations.userId, user.id),
         ),
       )
-      .returning({ id: attestations.id });
+      .returning();
 
     if (!attestation) {
       return { error: "Attestation not found." };
     }
 
-    return { success: true };
+    return attestation;
   });
