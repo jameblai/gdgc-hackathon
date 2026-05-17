@@ -114,7 +114,7 @@ function LoginForm() {
             Need an account?{" "}
             <Link
               className="text-foreground underline"
-              href="/features/register"
+              href="/register"
             >
               Register
             </Link>

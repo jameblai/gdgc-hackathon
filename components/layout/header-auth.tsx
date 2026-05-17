@@ -49,7 +49,7 @@ export function HeaderAuth({ user }: { user: { name: string } | null }) {
                 variant: "default",
               }),
             )}
-            href="/features/register"
+            href="/register"
           >
             Register
           </Link>

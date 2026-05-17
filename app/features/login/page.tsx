@@ -266,7 +266,7 @@ export default function LoginPage() {
           <FieldGroup>
             <p style={{ textAlign: "center" }}>
               Need an account?{" "}
-              <a href="/features/register" style={{ color: "#0867da" }}>
+              <a href="/register" style={{ color: "#0867da" }}>
                 Register here
               </a>
             </p>
