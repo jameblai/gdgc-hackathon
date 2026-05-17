@@ -4,30 +4,34 @@
 
 // import shadcn libarries
 
-import * as React from "react";
-import { useState, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Field, FieldLabel } from "@/components/ui/field";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { type CSSProperties, type ReactNode } from "react";
+import { useForm } from "@tanstack/react-form";
+import { useAction } from "next-safe-action/hooks";
+
+import { loginAction } from "@/lib/auth/actions";
+import { loginSchema } from "@/lib/auth/schema";
 
 // textboxes default
-function Input({ placeholder, value, onChange, type = "text" }) {
-  const [focused, setFocused] = useState(false);
+function Input({
+  onBlur,
+  onChange,
+  placeholder,
+  type = "text",
+  value,
+}: {
+  onBlur?: () => void;
+  onChange: (value: string) => void;
+  placeholder: string;
+  type?: string;
+  value: string;
+}) {
   return (
     <input
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
+      onBlur={onBlur}
       style={{
         width: "100%",
         padding: "11px 14px",
@@ -46,7 +50,13 @@ function Input({ placeholder, value, onChange, type = "text" }) {
 }
 
 // font properties for headings and sub headings
-function Label({ children, sub }) {
+function Label({
+  children,
+  sub = false,
+}: {
+  children: ReactNode;
+  sub?: boolean;
+}) {
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
       <span
@@ -64,7 +74,13 @@ function Label({ children, sub }) {
 }
 
 // orienting the textboxes and labels in a column, with spacing
-function FieldGroup({ children, style }) {
+function FieldGroup({
+  children,
+  style,
+}: {
+  children: ReactNode;
+  style?: CSSProperties;
+}) {
   return (
     <div
       style={{ display: "flex", flexDirection: "column", gap: "6px", ...style }}
@@ -74,10 +90,41 @@ function FieldGroup({ children, style }) {
   );
 }
 
+function renderFieldErrors(errors: unknown[]) {
+  if (errors.length === 0) {
+    return null;
+  }
+
+  const [error] = errors;
+  const message =
+    typeof error === "object" && error && "message" in error
+      ? String(error.message)
+      : String(error);
+
+  return (
+    <p style={{ color: "#b42318", fontSize: "12px", margin: "4px 0 0" }}>
+      {message}
+    </p>
+  );
+}
+
 // regestry form
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const action = useAction(loginAction);
+  const form = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    onSubmit: ({ value }) => {
+      action.execute(value);
+    },
+    validators: {
+      onChange: loginSchema,
+    },
+  });
+
+  const actionError = action.result.data?.error;
 
   return (
     <div
@@ -136,34 +183,57 @@ export default function LoginPage() {
           </p>
         </div>
         {/* Form */}
-        <div
+        <form
           style={{
             padding: "0 40px",
             display: "flex",
             flexDirection: "column",
             gap: "24px",
           }}
+          onSubmit={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            form.handleSubmit();
+          }}
         >
           {/* Username */}
-          <FieldGroup>
-            <Label>Username:</Label>
-            <Input
-              placeholder="Username"
-              value={username}
-              onChange={setUsername}
-            />
-          </FieldGroup>
+          <form.Field name="username">
+            {(field) => (
+              <FieldGroup>
+                <Label>Username:</Label>
+                <Input
+                  onBlur={field.handleBlur}
+                  placeholder="Username"
+                  value={field.state.value}
+                  onChange={field.handleChange}
+                />
+                {renderFieldErrors(field.state.meta.errors)}
+              </FieldGroup>
+            )}
+          </form.Field>
 
           {/* Password */}
-          <FieldGroup>
-            <Label>Password:</Label>
-            <Input
-              placeholder="Password"
-              type="password"
-              value={password}
-              onChange={setPassword}
-            />
-          </FieldGroup>
+          <form.Field name="password">
+            {(field) => (
+              <FieldGroup>
+                <Label>Password:</Label>
+                <Input
+                  onBlur={field.handleBlur}
+                  placeholder="Password"
+                  type="password"
+                  value={field.state.value}
+                  onChange={field.handleChange}
+                />
+                {renderFieldErrors(field.state.meta.errors)}
+              </FieldGroup>
+            )}
+          </form.Field>
+
+          {actionError ? (
+            <p style={{ color: "#b42318", fontSize: "12px", margin: 0 }}>
+              {actionError}
+            </p>
+          ) : null}
 
           {/* Log in */}
           <div
@@ -174,6 +244,8 @@ export default function LoginPage() {
             }}
           >
             <button
+              disabled={action.isPending}
+              type="submit"
               style={{
                 padding: "14px 56px",
                 background: "#1A1A1A",
@@ -187,7 +259,7 @@ export default function LoginPage() {
                 transition: "all 0.2s ease",
               }}
             >
-              Register
+              {action.isPending ? "Logging in..." : "Log in"}
             </button>
           </div>
           {/* register instead */}
@@ -199,7 +271,7 @@ export default function LoginPage() {
               </a>
             </p>
           </FieldGroup>
-        </div>
+        </form>
       </div>
     </div>
   );

@@ -227,7 +227,7 @@ export default function ProfilePage() {
             }
           />
           <ProfileField
-            label="Skills"
+            label="Domains"
             value="Diagnostics, Patient Care, Surgery"
             verification={
               <VerificationBar

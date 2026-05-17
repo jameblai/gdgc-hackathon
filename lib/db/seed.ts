@@ -15,6 +15,7 @@ import {
   listingPhotos,
   listings,
   sessions,
+  userDomains,
   users,
 } from "@/lib/db/schema";
 
@@ -41,6 +42,7 @@ async function seed() {
     await tx.delete(assets);
     await tx.delete(listingPhotos);
     await tx.delete(listings);
+    await tx.delete(userDomains);
     await tx.delete(users);
 
     const passwordHash = await hashPassword("password123");
@@ -48,37 +50,68 @@ async function seed() {
     await tx.insert(users).values([
       {
         id: "user_maya",
-        email: "maya@example.com",
+        username: "maya",
+        name: "Maya",
         passwordHash,
-        name: "Maya Patel",
         avatarUrl: "https://i.pravatar.cc/160?img=47",
         createdAt: now,
         updatedAt: now,
       },
       {
         id: "user_noah",
-        email: "noah@example.com",
+        username: "noah",
+        name: "Noah",
         passwordHash,
-        name: "Noah Williams",
         avatarUrl: "https://i.pravatar.cc/160?img=12",
         createdAt: now,
         updatedAt: now,
       },
       {
         id: "user_ava",
-        email: "ava@example.com",
+        username: "ava",
+        name: "Ava",
         passwordHash,
-        name: "Ava Chen",
         avatarUrl: "https://i.pravatar.cc/160?img=32",
         createdAt: now,
         updatedAt: now,
       },
       {
         id: "user_leo",
-        email: "leo@example.com",
+        username: "leo",
+        name: "Leo",
         passwordHash,
-        name: "Leo Thompson",
         avatarUrl: "https://i.pravatar.cc/160?img=68",
+        createdAt: now,
+        updatedAt: now,
+      },
+    ]);
+
+    await tx.insert(userDomains).values([
+      {
+        id: "domain_maya_first_aid",
+        userId: "user_maya",
+        domain: "First aid",
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        id: "domain_noah_delivery",
+        userId: "user_noah",
+        domain: "Delivery",
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        id: "domain_ava_clothing",
+        userId: "user_ava",
+        domain: "Clothing",
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        id: "domain_leo_electronics",
+        userId: "user_leo",
+        domain: "Electronics",
         createdAt: now,
         updatedAt: now,
       },
