@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { attestations } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
-import { PlusIcon } from "lucide-react";
+import { SendIcon } from "lucide-react";
 import Link from "next/link";
 
 export default async function ClaimsPage() {
@@ -45,8 +45,8 @@ export default async function ClaimsPage() {
               )}
               href="/"
             >
-              <PlusIcon />
-              Submit Claim
+              Submit
+              <SendIcon />
             </Link>
           </section>
 

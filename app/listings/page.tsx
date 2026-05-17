@@ -43,8 +43,8 @@ export default async function ListingsPage() {
               )}
               href="/listings/new"
             >
-              <PlusIcon />
               New Listing
+              <PlusIcon />
             </Link>
           </section>
 
