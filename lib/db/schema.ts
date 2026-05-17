@@ -1,6 +1,5 @@
 import { relations } from "drizzle-orm";
 import {
-  date,
   index,
   integer,
   pgEnum,
@@ -15,12 +14,9 @@ export const users = pgTable(
   "users",
   {
     id: text("id").primaryKey().$defaultFn(createId),
-    username: text("username").notNull(),
-    name: text("name").notNull(),
+    email: text("email").notNull(),
     passwordHash: text("password_hash").notNull(),
-    dateOfBirth: date("date_of_birth", { mode: "date" }),
-    occupation: text("occupation").notNull().default(""),
-    company: text("company").notNull().default(""),
+    name: text("name").notNull(),
     avatarUrl: text("avatar_url"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
@@ -29,31 +25,7 @@ export const users = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => [uniqueIndex("users_name_unique").on(table.username)],
-);
-
-export const userDomains = pgTable(
-  "user_domains",
-  {
-    id: text("id").primaryKey().$defaultFn(createId),
-    userId: text("user_id")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
-    domain: text("domain").notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
-  },
-  (table) => [
-    index("user_domains_user_id_idx").on(table.userId),
-    uniqueIndex("user_domains_user_id_domain_unique").on(
-      table.userId,
-      table.domain,
-    ),
-  ],
+  (table) => [uniqueIndex("users_email_unique").on(table.email)],
 );
 
 export const sessions = pgTable(
@@ -72,7 +44,6 @@ export const sessions = pgTable(
 );
 
 export const usersRelations = relations(users, ({ many }) => ({
-  domains: many(userDomains),
   sessions: many(sessions),
   listings: many(listings),
   assets: many(assets),
@@ -80,13 +51,6 @@ export const usersRelations = relations(users, ({ many }) => ({
   chatMessages: many(chatMessages),
   claims: many(claims),
   attestations: many(attestations),
-}));
-
-export const userDomainsRelations = relations(userDomains, ({ one }) => ({
-  user: one(users, {
-    fields: [userDomains.userId],
-    references: [users.id],
-  }),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({

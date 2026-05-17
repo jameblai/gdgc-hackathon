@@ -2,111 +2,123 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 import {
   createSessionCookie,
-  getUserByUsername,
+  getUserByEmail,
   lucia,
   validateRequest,
 } from "@/lib/auth";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import { db } from "@/lib/db";
-import { users, userDomains } from "@/lib/db/schema";
+import { users } from "@/lib/db/schema";
 import { actionClient } from "@/lib/safe-action";
-import { loginSchema, registerSchema } from "./schema";
-import { INCORRECT_USERNAME_OR_PASSWORD } from "./constants";
+
+export type AuthActionData = {
+  error?: string;
+  values?: {
+    email?: string;
+    name?: string;
+  };
+};
+
+const registerSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .pipe(z.email("Enter a valid email address.")),
+  name: z.string().trim().min(1, "Enter your name.").max(120),
+  password: z
+    .string()
+    .min(6, "Password must be between 6 and 255 characters.")
+    .max(255, "Password must be between 6 and 255 characters."),
+});
+
+const loginSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .pipe(z.email("Incorrect email or password.")),
+  password: z
+    .string()
+    .min(6, "Incorrect email or password.")
+    .max(255, "Incorrect email or password."),
+});
 
 export const registerAction = actionClient
   .inputSchema(registerSchema)
+  .action(async ({ parsedInput: { email, name, password } }) => {
+    const values = { email, name };
+    const passwordHash = await hashPassword(password);
+
+    try {
+      const [user] = await db
+        .insert(users)
+        .values({
+          email,
+          name,
+          passwordHash,
+        })
+        .returning({ id: users.id });
+
+      await createSessionCookie(user.id);
+    } catch {
+      return {
+        error: "An account already exists for that email.",
+        values,
+      };
+    }
+
+    redirect("/");
+  });
+
+export const loginAction = actionClient
+  .inputSchema(loginSchema)
   .action(
-    async ({
-      parsedInput: {
-        company,
-        dateOfBirth,
-        domains,
-        name,
-        occupation,
-        password,
-        username,
-      },
-    }) => {
-      const passwordHash = await hashPassword(password);
+    async ({ parsedInput: { email, password } }): Promise<AuthActionData> => {
+      const user = await getUserByEmail(email);
 
-      try {
-        const user = await db.transaction(async (tx) => {
-          const [createdUser] = await tx
-            .insert(users)
-            .values({
-              company,
-              dateOfBirth,
-              name,
-              occupation,
-              passwordHash,
-              username,
-            })
-            .returning({ id: users.id });
-
-          if (domains.length > 0) {
-            await tx.insert(userDomains).values(
-              domains.map((domain) => ({
-                domain,
-                userId: createdUser.id,
-              })),
-            );
-          }
-
-          return createdUser;
-        });
-
-        await createSessionCookie(user.id);
-      } catch {
+      if (!user) {
         return {
-          error: "An account already exists for that username.",
+          error: "Incorrect email or password.",
+          values: { email },
         };
       }
 
+      const validPassword = await verifyPassword(user.passwordHash, password);
+
+      if (!validPassword) {
+        return {
+          error: "Incorrect email or password.",
+          values: { email },
+        };
+      }
+
+      await createSessionCookie(user.id);
       redirect("/");
     },
   );
 
-export const loginAction = actionClient
-  .inputSchema(loginSchema)
-  .action(async ({ parsedInput: { username, password } }) => {
-    const user = await getUserByUsername(username);
+export const logoutAction = actionClient.action(
+  async (): Promise<AuthActionData> => {
+    const { session } = await validateRequest();
 
-    if (!user) {
-      return {
-        error: INCORRECT_USERNAME_OR_PASSWORD,
-      };
+    if (!session) {
+      return { error: "Unauthorized." };
     }
 
-    const validPassword = await verifyPassword(user.passwordHash, password);
+    await lucia.invalidateSession(session.id);
 
-    if (!validPassword) {
-      return {
-        error: INCORRECT_USERNAME_OR_PASSWORD,
-      };
-    }
+    const sessionCookie = lucia.createBlankSessionCookie();
+    const cookieStore = await cookies();
+    cookieStore.set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
 
-    await createSessionCookie(user.id);
-    redirect("/");
-  });
-
-export const logoutAction = actionClient.action(async () => {
-  const { session } = await validateRequest();
-
-  if (!session) {
-    return { error: "Unauthorized." };
-  }
-
-  await lucia.invalidateSession(session.id);
-
-  const sessionCookie = lucia.createBlankSessionCookie();
-  const cookieStore = await cookies();
-  cookieStore.set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes,
-  );
-
-  redirect("/login");
-});
+    redirect("/login");
+  },
+);

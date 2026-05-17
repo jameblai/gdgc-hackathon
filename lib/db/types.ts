@@ -15,19 +15,12 @@ import {
   listingStatus,
   listings,
   sessions,
-  userDomains,
   users,
 } from "@/lib/db/schema";
 
 export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;
-export type UserDomain = InferSelectModel<typeof userDomains>;
-export type NewUserDomain = InferInsertModel<typeof userDomains>;
-export type UserWithDomains = User & { domains: UserDomain[] };
 export type UserWithListings = User & { listings: Listing[] };
-export type UserWithListingsAndDomains = UserWithListings & {
-  domains: UserDomain[];
-};
 export type UserWithAssets = User & { assets: Asset[] };
 export type UserWithChatParticipants = User & {
   chatParticipants: ChatParticipant[];

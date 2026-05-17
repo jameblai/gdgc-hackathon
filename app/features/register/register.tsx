@@ -6,8 +6,6 @@
 
 import * as React from "react";
 import { type CSSProperties, type ChangeEvent, useRef, useState } from "react";
-import { useForm } from "@tanstack/react-form";
-import { useAction } from "next-safe-action/hooks";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Field } from "@/components/ui/field";
@@ -18,23 +16,16 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { registerAction } from "@/lib/auth/actions";
-import { registerSchema } from "@/lib/auth/schema";
 
 // ── Shadcn date picker ────────────────────────────────────────────────────────
 
 interface DatePickerSimpleProps {
   date: Date | undefined;
-  onBlur?: () => void;
   setDate: (date: Date | undefined) => void;
 }
 
 // date time picker
-export function DatePickerSimple({
-  date,
-  onBlur,
-  setDate,
-}: DatePickerSimpleProps) {
+export function DatePickerSimple({ date, setDate }: DatePickerSimpleProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -43,6 +34,7 @@ export function DatePickerSimple({
         <PopoverTrigger
           render={
             <Button
+              
               id="date"
               style={{
                 width: "100%",
@@ -56,7 +48,6 @@ export function DatePickerSimple({
                 fontSize: "14px",
                 cursor: "pointer",
               }}
-              onBlur={onBlur}
               type="button"
               variant="outline"
             />
@@ -85,25 +76,26 @@ export function DatePickerSimple({
 
 // textboxes default
 function Input({
-  onBlur,
   placeholder,
   value,
   onChange,
   type = "text",
 }: {
-  onBlur?: () => void;
   onChange: (value: string) => void;
   placeholder: string;
   type?: string;
   value: string;
 }) {
+  const [focused, setFocused] = useState(false);
   return (
     <input
+      
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      onBlur={onBlur}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       style={{
         width: "100%",
         padding: "11px 14px",
@@ -121,59 +113,6 @@ function Input({
   );
 }
 
-function renderFieldErrors(errors: unknown[]) {
-  if (errors.length === 0) {
-    return null;
-  }
-
-  const [error] = errors;
-  const message =
-    typeof error === "object" && error && "message" in error
-      ? String(error.message)
-      : String(error);
-
-  return (
-    <p style={{ color: "#b42318", fontSize: "12px", margin: "4px 0 0" }}>
-      {message}
-    </p>
-  );
-}
-
-function parseDomains(value: string) {
-  return value
-    .split(",")
-    .map((domain) => domain.trim())
-    .filter(Boolean);
-}
-
-function validateWithSchema(schema: {
-  safeParse: (
-    value: unknown,
-  ) =>
-    | { success: true }
-    | { error: { issues: Array<{ message: string }> }; success: false };
-}) {
-  return ({ value }: { value: unknown }) => {
-    const result = schema.safeParse(value);
-
-    if (result.success) {
-      return undefined;
-    }
-
-    return result.error.issues[0]?.message;
-  };
-}
-
-type RegisterFormValues = {
-  company: string;
-  dateOfBirth: Date | undefined;
-  domains: string[];
-  name: string;
-  occupation: string;
-  password: string;
-  username: string;
-};
-
 // font properties for headings and sub headings
 function Label({
   children,
@@ -185,6 +124,7 @@ function Label({
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
       <span
+        
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
@@ -217,39 +157,15 @@ function FieldGroup({
 
 // regestry form
 export default function RegistrationPage() {
-  const action = useAction(registerAction);
   const [photo, setPhoto] = useState<string | null>(null);
-  const [domainsText, setDomainsText] = useState("");
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [dob, setDob] = useState<Date | undefined>(undefined); // ← replaces day/month/year
+  const [skills, setSkills] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [company, setCompany] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
-  const defaultValues: RegisterFormValues = {
-    username: "",
-    name: "",
-    password: "",
-    dateOfBirth: undefined,
-    domains: [],
-    occupation: "",
-    company: "",
-  };
-  const form = useForm({
-    defaultValues,
-    onSubmit: ({ value }) => {
-      if (!value.dateOfBirth) {
-        return;
-      }
-
-      action.execute({
-        company: value.company,
-        dateOfBirth: value.dateOfBirth,
-        domains: value.domains,
-        name: value.name,
-        occupation: value.occupation,
-        password: value.password,
-        username: value.username,
-      });
-    },
-  });
-
-  const actionError = action.result.data?.error;
 
   const handlePhotoClick = () => fileRef.current?.click();
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -259,6 +175,7 @@ export default function RegistrationPage() {
 
   return (
     <div
+      
       style={{
         minHeight: "100vh",
         background: "rgb(255,255,255)",
@@ -285,6 +202,7 @@ export default function RegistrationPage() {
           overflow: "hidden",
         }}
       >
+
         {/* Profile photo */}
         <div
           style={{
@@ -434,187 +352,87 @@ export default function RegistrationPage() {
           </p>
         </div>
 
+
         {/* Form */}
-        <form
+        <div
           style={{
             padding: "0 40px",
             display: "flex",
             flexDirection: "column",
             gap: "24px",
           }}
-          onSubmit={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            form.handleSubmit();
-          }}
         >
           {/* Name */}
-          <form.Field
-            name="name"
-            validators={{
-              onChange: validateWithSchema(registerSchema.shape.name),
-              onSubmit: validateWithSchema(registerSchema.shape.name),
-            }}
-          >
-            {(field) => (
-              <FieldGroup>
-                <Label>Name:</Label>
-                <Input
-                  onBlur={field.handleBlur}
-                  placeholder="Your full name"
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                />
-                {renderFieldErrors(field.state.meta.errors)}
-              </FieldGroup>
-            )}
-          </form.Field>
+          <FieldGroup>
+            <Label>Name:</Label>
+            <Input
+              placeholder="Your full name"
+              value={name}
+              onChange={setName}
+            />
+          </FieldGroup>
 
           {/* Username */}
-          <form.Field
-            name="username"
-            validators={{
-              onChange: validateWithSchema(registerSchema.shape.username),
-              onSubmit: validateWithSchema(registerSchema.shape.username),
-            }}
-          >
-            {(field) => (
-              <FieldGroup>
-                <Label>Username:</Label>
-                <Input
-                  onBlur={field.handleBlur}
-                  placeholder="Username"
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                />
-                {renderFieldErrors(field.state.meta.errors)}
-              </FieldGroup>
-            )}
-          </form.Field>
+          <FieldGroup>
+            <Label>Username:</Label>
+            <Input
+              placeholder="Username"
+              value={username}
+              onChange={setUsername}
+            />
+          </FieldGroup>
 
           {/* Password */}
-          <form.Field
-            name="password"
-            validators={{
-              onChange: validateWithSchema(registerSchema.shape.password),
-              onSubmit: validateWithSchema(registerSchema.shape.password),
-            }}
-          >
-            {(field) => (
-              <FieldGroup>
-                <Label>Password:</Label>
-                <Input
-                  onBlur={field.handleBlur}
-                  placeholder="Password"
-                  type="password"
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                />
-                {renderFieldErrors(field.state.meta.errors)}
-              </FieldGroup>
-            )}
-          </form.Field>
+          <FieldGroup>
+            <Label>Password:</Label>
+            <Input
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={setPassword}
+            />
+          </FieldGroup>
 
           {/* Date of birth — shadcn picker */}
-          <form.Field
-            name="dateOfBirth"
-            validators={{
-              onChange: validateWithSchema(registerSchema.shape.dateOfBirth),
-              onSubmit: validateWithSchema(registerSchema.shape.dateOfBirth),
-            }}
-          >
-            {(field) => (
-              <FieldGroup>
-                <Label>Date of Birth:</Label>
-                <DatePickerSimple
-                  date={field.state.value}
-                  onBlur={field.handleBlur}
-                  setDate={field.handleChange}
-                />
-                {renderFieldErrors(field.state.meta.errors)}
-              </FieldGroup>
-            )}
-          </form.Field>
+          <FieldGroup>
+            <Label>Date of Birth:</Label>
+            <DatePickerSimple date={dob} setDate={setDob} />
+          </FieldGroup>
 
-          {/* Domains */}
-          <form.Field
-            name="domains"
-            validators={{
-              onChange: validateWithSchema(registerSchema.shape.domains),
-              onSubmit: validateWithSchema(registerSchema.shape.domains),
-            }}
-          >
-            {(field) => (
-              <FieldGroup>
-                <Label>Domains:</Label>
-                <Label sub>
-                  If you aren&apos;t interested in selling any services, you can
-                  leave this section empty. (if you intend on providing more
-                  than one domain, separate them with commas)
-                </Label>
-                <Input
-                  onBlur={field.handleBlur}
-                  placeholder="e.g. Web Design, Plumbing, Tutoring..."
-                  value={domainsText}
-                  onChange={(value) => {
-                    setDomainsText(value);
-                    field.handleChange(parseDomains(value));
-                  }}
-                />
-                {renderFieldErrors(field.state.meta.errors)}
-              </FieldGroup>
-            )}
-          </form.Field>
+          {/* Skills */}
+          <FieldGroup>
+            <Label>Skills:</Label>
+            <Label sub>
+              If you aren&apos;t interested in selling any services, you can
+              leave this section empty. (if you intend on providing more than
+              one service, separate them with commas)
+            </Label>
+            <Input
+              placeholder="e.g. Web Design, Plumbing, Tutoring…"
+              value={skills}
+              onChange={setSkills}
+            />
+          </FieldGroup>
 
           {/* Occupation */}
-          <form.Field
-            name="occupation"
-            validators={{
-              onChange: validateWithSchema(registerSchema.shape.occupation),
-              onSubmit: validateWithSchema(registerSchema.shape.occupation),
-            }}
-          >
-            {(field) => (
-              <FieldGroup>
-                <Label>Occupation:</Label>
-                <Input
-                  onBlur={field.handleBlur}
-                  placeholder="Your current occupation"
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                />
-                {renderFieldErrors(field.state.meta.errors)}
-              </FieldGroup>
-            )}
-          </form.Field>
+          <FieldGroup>
+            <Label>Occupation:</Label>
+            <Input
+              placeholder="Your current occupation"
+              value={occupation}
+              onChange={setOccupation}
+            />
+          </FieldGroup>
 
           {/* Company */}
-          <form.Field
-            name="company"
-            validators={{
-              onChange: validateWithSchema(registerSchema.shape.company),
-              onSubmit: validateWithSchema(registerSchema.shape.company),
-            }}
-          >
-            {(field) => (
-              <FieldGroup>
-                <Label>Company:</Label>
-                <Input
-                  onBlur={field.handleBlur}
-                  placeholder="Your company or organisation"
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                />
-                {renderFieldErrors(field.state.meta.errors)}
-              </FieldGroup>
-            )}
-          </form.Field>
-
-          {actionError ? (
-            <p style={{ color: "#b42318", fontSize: "12px", margin: 0 }}>
-              {actionError}
-            </p>
-          ) : null}
+          <FieldGroup>
+            <Label>Company:</Label>
+            <Input
+              placeholder="Your company or organisation"
+              value={company}
+              onChange={setCompany}
+            />
+          </FieldGroup>
 
           {/* Register */}
           <div
@@ -625,8 +443,7 @@ export default function RegistrationPage() {
             }}
           >
             <button
-              disabled={action.isPending}
-              type="submit"
+              
               style={{
                 padding: "14px 56px",
                 background: "rgb(0, 0, 0)",
@@ -640,19 +457,14 @@ export default function RegistrationPage() {
                 transition: "all 0.2s ease",
               }}
             >
-              {action.isPending ? "Creating account..." : "Register"}
+              Register
             </button>
           </div>
           {/* login instead */}
           <FieldGroup>
-            <p style={{ textAlign: "center" }}>
-              Already a user?{" "}
-              <a href="/features/login" style={{ color: "#0867da" }}>
-                Login here
-              </a>
-            </p>
+            <p style ={{ textAlign: "center" }}>Already a user? <a href="/features/login" style ={{ color: "#0867da" }}>Login here</a></  p>
           </FieldGroup>
-        </form>
+        </div>
       </div>
     </div>
   );

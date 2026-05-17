@@ -18,7 +18,7 @@ export const lucia = new Lucia(adapter, {
     },
   },
   getUserAttributes: (attributes) => ({
-    username: attributes.username,
+    email: attributes.email,
     name: attributes.name,
     avatarUrl: attributes.avatarUrl,
   }),
@@ -75,11 +75,11 @@ export async function createSessionCookie(userId: string) {
   );
 }
 
-export async function getUserByUsername(username: string) {
+export async function getUserByEmail(email: string) {
   const [user] = await db
     .select()
     .from(users)
-    .where(eq(users.username, username))
+    .where(eq(users.email, email))
     .limit(1);
 
   return user ?? null;
@@ -89,7 +89,7 @@ declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
     DatabaseUserAttributes: {
-      username: string;
+      email: string;
       name: string;
       avatarUrl: string | null;
     };

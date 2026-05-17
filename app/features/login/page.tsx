@@ -4,34 +4,32 @@
 
 // import shadcn libarries
 
-import { type CSSProperties, type ReactNode } from "react";
-import { useForm } from "@tanstack/react-form";
-import { useAction } from "next-safe-action/hooks";
-
-import { loginAction } from "@/lib/auth/actions";
-import { loginSchema } from "@/lib/auth/schema";
+import * as React from "react";
+import { useState, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Field, FieldLabel } from "@/components/ui/field";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
 
 // textboxes default
-function Input({
-  onBlur,
-  onChange,
-  placeholder,
-  type = "text",
-  value,
-}: {
-  onBlur?: () => void;
-  onChange: (value: string) => void;
-  placeholder: string;
-  type?: string;
-  value: string;
-}) {
+function Input({ placeholder, value, onChange, type = "text" }) {
+  const [focused, setFocused] = useState(false);
   return (
     <input
+      
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      onBlur={onBlur}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+    
       style={{
         width: "100%",
         padding: "11px 14px",
@@ -50,16 +48,11 @@ function Input({
 }
 
 // font properties for headings and sub headings
-function Label({
-  children,
-  sub = false,
-}: {
-  children: ReactNode;
-  sub?: boolean;
-}) {
+function Label({ children, sub }) {
   return (
     <div style={{ marginBottom: sub ? "4px" : "8px" }}>
       <span
+        
         style={{
           fontSize: sub ? "12px" : "14px",
           fontWeight: sub ? 400 : 600,
@@ -74,13 +67,7 @@ function Label({
 }
 
 // orienting the textboxes and labels in a column, with spacing
-function FieldGroup({
-  children,
-  style,
-}: {
-  children: ReactNode;
-  style?: CSSProperties;
-}) {
+function FieldGroup({ children, style }) {
   return (
     <div
       style={{ display: "flex", flexDirection: "column", gap: "6px", ...style }}
@@ -90,41 +77,10 @@ function FieldGroup({
   );
 }
 
-function renderFieldErrors(errors: unknown[]) {
-  if (errors.length === 0) {
-    return null;
-  }
-
-  const [error] = errors;
-  const message =
-    typeof error === "object" && error && "message" in error
-      ? String(error.message)
-      : String(error);
-
-  return (
-    <p style={{ color: "#b42318", fontSize: "12px", margin: "4px 0 0" }}>
-      {message}
-    </p>
-  );
-}
-
 // regestry form
 export default function LoginPage() {
-  const action = useAction(loginAction);
-  const form = useForm({
-    defaultValues: {
-      username: "",
-      password: "",
-    },
-    onSubmit: ({ value }) => {
-      action.execute(value);
-    },
-    validators: {
-      onChange: loginSchema,
-    },
-  });
-
-  const actionError = action.result.data?.error;
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <div
@@ -156,8 +112,8 @@ export default function LoginPage() {
       >
         {/* Heading */}
         <div style={{ textAlign: "center", padding: "16px 40px 28px" }}>
-          <h1
-            className="py-6 md:py-10"
+          <h1 className="py-6 md:py-10"
+            
             style={{
               margin: "0 0 10px",
               fontSize: "clamp(20px, 3vw, 28px)",
@@ -170,6 +126,7 @@ export default function LoginPage() {
             Log into your account:
           </h1>
           <p
+            
             style={{
               margin: 0,
               fontSize: "clamp(13px, 1.5vw, 15px)",
@@ -183,57 +140,36 @@ export default function LoginPage() {
           </p>
         </div>
         {/* Form */}
-        <form
+        <div
           style={{
             padding: "0 40px",
             display: "flex",
             flexDirection: "column",
             gap: "24px",
           }}
-          onSubmit={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            form.handleSubmit();
-          }}
         >
           {/* Username */}
-          <form.Field name="username">
-            {(field) => (
-              <FieldGroup>
-                <Label>Username:</Label>
-                <Input
-                  onBlur={field.handleBlur}
-                  placeholder="Username"
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                />
-                {renderFieldErrors(field.state.meta.errors)}
-              </FieldGroup>
-            )}
-          </form.Field>
+          <FieldGroup>
+            <Label >Username:</Label>
+            <Input
+              
+              placeholder="Username"
+              value={username}
+              onChange={setUsername}
+            />
+          </FieldGroup>
 
           {/* Password */}
-          <form.Field name="password">
-            {(field) => (
-              <FieldGroup>
-                <Label>Password:</Label>
-                <Input
-                  onBlur={field.handleBlur}
-                  placeholder="Password"
-                  type="password"
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                />
-                {renderFieldErrors(field.state.meta.errors)}
-              </FieldGroup>
-            )}
-          </form.Field>
-
-          {actionError ? (
-            <p style={{ color: "#b42318", fontSize: "12px", margin: 0 }}>
-              {actionError}
-            </p>
-          ) : null}
+          <FieldGroup>
+            <Label >Password:</Label>
+            <Input
+              
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={setPassword}
+            />
+          </FieldGroup>
 
           {/* Log in */}
           <div
@@ -244,8 +180,7 @@ export default function LoginPage() {
             }}
           >
             <button
-              disabled={action.isPending}
-              type="submit"
+              
               style={{
                 padding: "14px 56px",
                 background: "#1A1A1A",
@@ -259,19 +194,14 @@ export default function LoginPage() {
                 transition: "all 0.2s ease",
               }}
             >
-              {action.isPending ? "Logging in..." : "Log in"}
+              Register
             </button>
           </div>
           {/* register instead */}
           <FieldGroup>
-            <p style={{ textAlign: "center" }}>
-              Need an account?{" "}
-              <a href="/features/register" style={{ color: "#0867da" }}>
-                Register here
-              </a>
-            </p>
+            <p style ={{ textAlign: "center" }}>Need an account? <a href="/features/register" style ={{ color: "#0867da" }}>Register here</a></  p>
           </FieldGroup>
-        </form>
+        </div>
       </div>
     </div>
   );

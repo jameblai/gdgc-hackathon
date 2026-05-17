@@ -20,34 +20,24 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { loginSchema } from "@/lib/auth/schema";
 
 function renderFieldErrors(errors: unknown[]) {
   if (errors.length === 0) {
     return null;
   }
 
-  const [error] = errors;
-
-  if (typeof error === "object" && error && "message" in error) {
-    return <FieldError>{String(error.message)}</FieldError>;
-  }
-
-  return <FieldError>{String(error)}</FieldError>;
+  return <FieldError>{String(errors[0])}</FieldError>;
 }
 
 function LoginForm() {
   const action = useAction(loginAction);
   const form = useForm({
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
     onSubmit: ({ value }) => {
       action.execute(value);
-    },
-    validators: {
-      onChange: loginSchema,
     },
   });
 
@@ -69,16 +59,23 @@ function LoginForm() {
           }}
         >
           <FieldGroup className="gap-4">
-            <form.Field name="username">
+            <form.Field
+              name="email"
+              validators={{
+                onChange: ({ value }) =>
+                  value.trim().length === 0 ? "Enter your email." : undefined,
+              }}
+            >
               {(field) => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                   <Input
+                    autoComplete="email"
                     id={field.name}
                     name={field.name}
                     onBlur={field.handleBlur}
                     onChange={(event) => field.handleChange(event.target.value)}
-                    type="text"
+                    type="email"
                     value={field.state.value}
                   />
                   {renderFieldErrors(field.state.meta.errors)}
@@ -86,11 +83,18 @@ function LoginForm() {
               )}
             </form.Field>
 
-            <form.Field name="password">
+            <form.Field
+              name="password"
+              validators={{
+                onChange: ({ value }) =>
+                  value.length === 0 ? "Enter your password." : undefined,
+              }}
+            >
               {(field) => (
                 <Field>
                   <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                   <Input
+                    autoComplete="current-password"
                     id={field.name}
                     name={field.name}
                     onBlur={field.handleBlur}
@@ -112,10 +116,7 @@ function LoginForm() {
 
           <p className="text-muted-foreground text-center text-sm">
             Need an account?{" "}
-            <Link
-              className="text-foreground underline"
-              href="/features/register"
-            >
+            <Link className="text-foreground underline" href="/features/register">
               Register
             </Link>
           </p>
