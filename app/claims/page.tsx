@@ -33,8 +33,8 @@ export default async function ClaimsPage() {
             <div className="space-y-1">
               <Typography variant="h1">Claims</Typography>
               <Typography variant="lead">
-                View and attest to claims made by people in your network. Support,
-                oppose, or express uncertainty about each claim.
+                View and attest to claims made by people in your network.
+                Support, oppose, or express uncertainty about each claim.
               </Typography>
             </div>
             <Link
