@@ -149,9 +149,12 @@ function ProfileField({ label, value, verification }: ProfileFieldProps) {
 // listings data
 
 const LISTINGS: Listing[] = [
-  { id: 1, title: "Item / Service", location: "Auckland, NZ" },
-  { id: 2, title: "Item / Service", location: "Wellington, NZ" },
-  { id: 3, title: "Item / Service", location: "Christchurch, NZ" },
+  {
+    id: 1,
+    title: "First aid kits",
+    location: "Wellington CBD",
+    imageUrl: "https://placehold.co/800x600/png?text=First+Aid+Kits",
+  },
 ];
 
 export default function ProfilePage() {
@@ -166,18 +169,20 @@ export default function ProfilePage() {
           {/* Avatar + name */}
           <div className="flex items-center gap-4">
             {/* Avatar ring */}
-            <div className="flex h-16 w-16 items-center justify-center rounded-full border-[3px] border-fuchsia-300 bg-gradient-to-br from-fuchsia-100 to-pink-50 shadow-sm">
-              <span className="serif text-2xl text-fuchsia-400 italic select-none">
-                K
-              </span>
+            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-[3px] border-fuchsia-300 bg-gradient-to-br from-fuchsia-100 to-pink-50 shadow-sm">
+              <img
+                src="https://i.pravatar.cc/160?img=47"
+                alt="Maya"
+                className="h-full w-full object-cover"
+              />
             </div>
 
             <div>
               <h1 className="serif text-3xl leading-none text-stone-800">
-                Kevin
+                Maya
               </h1>
               <p className="mt-1 text-xs tracking-wide text-stone-400">
-                Member since 16 / 05 / 2026
+                Member since 17 / 05 / 2026
               </p>
             </div>
           </div>
@@ -200,42 +205,42 @@ export default function ProfilePage() {
         <div className="fade-up fade-up-2 mb-8 rounded-2xl border border-stone-100 bg-white px-6 shadow-sm">
           <ProfileField
             label="Occupation"
-            value="General Practitioner"
+            value="Community Coordinator"
             verification={
               <VerificationBar
-                label="Verified by 11 out of 12 other doctors"
+                label="Verified by 2 out of 2 community members"
                 subLabel=""
-                min={1}
-                max={12}
-                current={11}
+                min={0}
+                max={2}
+                current={2}
                 color="green"
               />
             }
           />
           <ProfileField
             label="Company"
-            value="Auckland Medical Group"
+            value="Wellington Mutual Aid Pantry"
             verification={
               <VerificationBar
-                label="Verified by 5 coworkers"
+                label="Verified by 2 community members"
                 subLabel=""
-                min={1}
-                max={5}
-                current={5}
+                min={0}
+                max={2}
+                current={2}
                 color="teal"
               />
             }
           />
           <ProfileField
             label="Domains"
-            value="Diagnostics, Patient Care, Surgery"
+            value="First aid"
             verification={
               <VerificationBar
-                label="Approved by 9 out of 12 other doctors"
+                label="Verified by 1 community member"
                 subLabel=""
-                min={3}
-                max={12}
-                current={9}
+                min={0}
+                max={1}
+                current={1}
                 color="green"
               />
             }
@@ -245,11 +250,11 @@ export default function ProfilePage() {
             value="Approved seller"
             verification={
               <VerificationBar
-                label="Approved by 9 out of 12 other doctors"
+                label="Approved by 2 out of 2 community members"
                 subLabel=""
-                min={3}
-                max={12}
-                current={9}
+                min={0}
+                max={2}
+                current={2}
                 color="green"
               />
             }
